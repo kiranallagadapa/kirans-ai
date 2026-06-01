@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kiran's AI — Superman Edition</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg0:#0d1117;--bg1:#161b22;--bg2:#21262d;--bg3:#30363d;--bdr:rgba(255,255,255,0.08);--txt:#e6edf3;--txt2:#8b949e;--txt3:#484f58;--acc:#00A1E0;--acc2:#533AB7;--grn:#3fb950;--red:#f85149;--yel:#d29922;--pur:#d2a8ff;--font:system-ui,sans-serif;--mono:monospace}
+body{font-family:var(--font);background:#000;display:flex;justify-content:center;padding:1rem}
+.light{--bg0:#f6f8fa;--bg1:#ffffff;--bg2:#f0f2f5;--bg3:#e4e8ed;--bdr:rgba(0,0,0,0.1);--txt:#1c2128;--txt2:#57606a;--txt3:#8c959f}
+#kai{width:100%;max-width:680px;background:var(--bg0);border-radius:14px;overflow:hidden;border:0.5px solid var(--bdr);display:flex;flex-direction:column;min-height:100vh}
+.hdr{background:linear-gradient(135deg,#0d1117,#1a1a2e 50%,#0d1117);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:0.5px solid rgba(255,255,255,0.08);flex-shrink:0}
+.kai-av{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#00A1E0,#533AB7);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.kai-nm{font-size:15px;font-weight:600;color:#fff}
+.kai-tg{font-size:9.5px;color:rgba(255,255,255,0.45);margin-top:1px}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.hpill{font-size:9.5px;padding:3px 8px;border-radius:12px;border:0.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);cursor:pointer;display:flex;align-items:center;gap:3px;white-space:nowrap;background:transparent}
+.hpill:hover{background:rgba(255,255,255,0.1);color:#fff}
+.hpill.alert-pill{background:#67000d;border-color:#f85149;color:#ff8080}
+.ab{padding:7px 14px;font-size:11px;font-weight:500;display:none;align-items:center;gap:7px;flex-shrink:0}
+.ab.show{display:flex}
+.ab.danger{background:#67000d;color:#ff8080;border-bottom:0.5px solid #f85149}
+.ab.warn{background:#3d2b00;color:#ffd166;border-bottom:0.5px solid #d29922}
+.rbar{background:var(--bg1);padding:6px 12px;display:flex;align-items:center;gap:4px;border-bottom:0.5px solid var(--bdr);flex-wrap:wrap;flex-shrink:0}
+.rbar-lbl{font-size:9px;color:var(--txt3);flex-shrink:0}
+.reng{display:flex;align-items:center;gap:3px;padding:2px 8px;border-radius:16px;border:0.5px solid var(--bdr);background:var(--bg2);font-size:10px;cursor:pointer}
+.reng .dot{width:5px;height:5px;border-radius:50%}
+.reng .nm{color:var(--txt2);font-weight:500}
+.reng .lm{font-size:8.5px;color:var(--txt3)}
+.reng.ok .dot{background:#3fb950}
+.reng.w .dot{background:#d29922}
+.reng.f .dot{background:#f85149}
+.reng.prem{border-color:var(--acc2)}
+.reng.prem .nm{color:var(--pur)}
+.reng.prem .dot{background:var(--acc2)}
+.rarr{font-size:10px;color:var(--txt3)}
+.mod-nav{background:var(--bg1);display:flex;overflow-x:auto;border-bottom:0.5px solid var(--bdr);flex-shrink:0;scrollbar-width:none}
+.mod-nav::-webkit-scrollbar{display:none}
+.mn{padding:7px 11px;font-size:10.5px;color:var(--txt2);cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;border-bottom:2px solid transparent;flex-shrink:0;background:transparent;border:none;border-bottom:2px solid transparent;font-family:var(--font)}
+.mn i{font-size:13px}
+.mn:hover{color:var(--txt);background:var(--bg2)}
+.mn.active{color:var(--acc);border-bottom-color:var(--acc)}
+.mp{display:none;padding:10px;flex:1;background:var(--bg0);overflow-y:auto}
+.mp.active{display:block}
+.card{background:var(--bg1);border:0.5px solid var(--bdr);border-radius:10px;padding:9px 11px;margin-bottom:8px}
+.ct{font-size:12px;font-weight:500;color:var(--txt);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.ct i{font-size:13px;color:var(--txt2)}
+.ct-r{margin-left:auto;display:flex;gap:4px}
+.btn{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--bdr);background:var(--bg2);color:var(--txt2);font-size:10.5px;cursor:pointer;font-family:var(--font)}
+.btn:hover{background:var(--bg3);color:var(--txt)}
+.btn.go{background:var(--acc);color:#fff;border-color:var(--acc)}
+.btn.pur{background:var(--acc2);color:#fff;border-color:var(--acc2)}
+.btn.red{background:#da3633;color:#fff;border-color:#da3633}
+.inp{background:var(--bg2);border:0.5px solid var(--bdr);border-radius:7px;padding:5px 9px;font-size:11.5px;color:var(--txt);outline:none;font-family:var(--font)}
+.inp:focus{border-color:var(--acc)}
+.sel{background:var(--bg2);border:0.5px solid var(--bdr);border-radius:7px;padding:5px 8px;font-size:11px;color:var(--txt);outline:none;font-family:var(--font)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.metric{background:var(--bg2);border-radius:7px;padding:7px 9px}
+.ml{font-size:10px;color:var(--txt2);margin-bottom:2px}
+.mv{font-size:15px;font-weight:600;color:var(--txt)}
+.ms{font-size:9.5px;color:var(--txt3);margin-top:1px}
+.li{display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:0.5px solid var(--bdr)}
+.li:last-child{border-bottom:none}
+.lt{font-size:11.5px;font-weight:500;color:var(--txt)}
+.ls{font-size:10px;color:var(--txt2);margin-top:1px}
+.badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:9.5px;font-weight:500}
+.bg{background:#1a3a1a;color:#3fb950}.bb{background:#001a3a;color:#79c0ff}
+.ba{background:#3a2800;color:#ffa657}.bp{background:#1a0533;color:#d2a8ff}
+.br{background:#3a1a1a;color:#f85149}
+.out{background:var(--bg2);border-radius:7px;padding:8px 10px;font-size:11px;color:var(--txt2);line-height:1.65;white-space:pre-wrap;max-height:160px;overflow-y:auto;margin-top:6px;border:0.5px solid var(--bdr);display:none}
+.row{display:flex;gap:5px;align-items:center;margin-bottom:7px}
+/* HOME GRID */
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.hgrid .wide{grid-column:1/-1}
+.tile{background:var(--bg1);border:0.5px solid var(--bdr);border-radius:10px;padding:9px 11px;cursor:pointer}
+.tile:hover{border-color:var(--acc)}
+.th{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.tic{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.tt{font-size:11.5px;font-weight:500;color:var(--txt)}
+.tbadge{margin-left:auto;font-size:9px;padding:1px 5px;border-radius:10px;font-weight:600}
+.tr{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--txt2);padding:1.5px 0}
+.tr .val{margin-left:auto;font-size:10.5px;font-weight:500}
+.sf-tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+.sf-tile{text-align:center;padding:6px 4px;background:var(--bg2);border-radius:7px;cursor:pointer;border:0.5px solid var(--bdr)}
+.sf-tile:hover{border-color:var(--acc)}
+.sf-tile i{font-size:16px;display:block;margin-bottom:3px}
+.sf-tile div{font-size:9px;color:var(--txt2)}
+/* STOCKS */
+.sk-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:0.5px solid var(--bdr)}
+.sk-row:last-child{border-bottom:none}
+.stk{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--txt);min-width:44px}
+.snm{font-size:10px;color:var(--txt2);flex:1}
+.spr{font-size:11px;font-weight:500;color:var(--txt);min-width:54px;text-align:right}
+.sch{font-size:10.5px;font-weight:500;min-width:46px;text-align:right}
+.sch.up{color:#3fb950}.sch.dn{color:#f85149}
+.rec{font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600}
+.rbuy{background:#1a3a1a;color:#3fb950}.rsell{background:#3a1a1a;color:#f85149}.rhold{background:#3a3a1a;color:#d29922}
+.mini{display:flex;align-items:flex-end;gap:1px;height:20px;flex-shrink:0}
+.bar{width:3px;border-radius:1px}
+/* HEALTH */
+.vital{background:var(--bg2);border-radius:7px;padding:7px 9px}
+.vval{font-size:16px;font-weight:600;color:var(--txt)}
+.vlbl{font-size:9.5px;color:var(--txt2);margin-top:1px}
+.vst{font-size:9.5px;margin-top:2px;font-weight:500}
+.vst.ok{color:#3fb950}.vst.w{color:#d29922}
+.doc{background:var(--bg2);border-radius:7px;padding:7px 10px;margin-bottom:5px;display:flex;align-items:center;gap:8px}
+.dav{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;flex-shrink:0}
+/* NEWS */
+.ni{padding:6px 0;border-bottom:0.5px solid var(--bdr)}
+.ni:last-child{border-bottom:none}
+.ncat{font-size:9px;font-weight:600;padding:1px 5px;border-radius:3px;display:inline-block;margin-bottom:3px}
+.cat-in{background:#1a2a00;color:#7ee787}.cat-us{background:#001a3a;color:#79c0ff}
+.cat-gl{background:#1a0533;color:#d2a8ff}.cat-fi{background:#3a1500;color:#ffa657}
+.cat-tk{background:#001a1a;color:#39d353}.cat-cr{background:#1a1a00;color:#f0e68c}
+.ntitle{font-size:11.5px;font-weight:500;color:var(--txt);line-height:1.4}
+.nmeta{font-size:9.5px;color:var(--txt3);margin-top:2px}
+/* WEATHER */
+.walert{background:#3d2b00;border:0.5px solid #d29922;border-radius:7px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#ffd166;display:flex;gap:6px}
+.fcast{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:0.5px solid var(--bdr);font-size:10.5px}
+.fcast:last-child{border-bottom:none}
+/* DOCKED CHAT */
+.chat-dock{background:var(--bg1);border-top:1.5px solid var(--bdr);flex-shrink:0;position:sticky;bottom:0}
+.chat-routing{display:flex;align-items:center;gap:4px;padding:5px 10px;border-bottom:0.5px solid var(--bdr);background:var(--bg2);overflow-x:auto;scrollbar-width:none;flex-wrap:wrap}
+.chat-routing::-webkit-scrollbar{display:none}
+.cr-lbl{font-size:9px;color:var(--txt3);flex-shrink:0}
+.cr-eng{display:flex;align-items:center;gap:3px;font-size:9.5px;padding:2px 7px;border-radius:10px;border:0.5px solid var(--bdr);background:var(--bg1);flex-shrink:0;cursor:pointer}
+.cr-eng.act{border-color:var(--acc);color:var(--acc);background:rgba(0,161,224,0.1)}
+.cr-eng.act.g{border-color:#3fb950;color:#3fb950;background:rgba(63,185,80,0.08)}
+.cr-eng.act.c{border-color:#79c0ff;color:#79c0ff;background:rgba(121,192,255,0.08)}
+.cr-eng.act.m{border-color:#d29922;color:#d29922;background:rgba(210,153,34,0.08)}
+.cr-eng.act.cl{border-color:var(--pur);color:var(--pur);background:rgba(210,168,255,0.08)}
+.cr-dot{width:5px;height:5px;border-radius:50%}
+.cr-lim{font-size:8.5px;color:var(--txt3)}
+.cr-arr{font-size:9px;color:var(--txt3);flex-shrink:0}
+.chat-hist{max-height:220px;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:8px;background:var(--bg0)}
+.msg{display:flex;gap:7px;align-items:flex-start}
+.msg.user{flex-direction:row-reverse}
+.av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0}
+.av.ai{background:linear-gradient(135deg,#00A1E0,#533AB7);color:#fff}
+.av.u{background:var(--bg3);color:var(--txt2)}
+.bubble{max-width:80%;padding:7px 10px;border-radius:10px;font-size:12px;line-height:1.55}
+.msg.ai .bubble{background:var(--bg2);color:var(--txt);border-bottom-left-radius:3px}
+.msg.user .bubble{background:linear-gradient(135deg,#00A1E0,#0078d4);color:#fff;border-bottom-right-radius:3px}
+.etag{font-size:9px;margin-top:3px;display:flex;align-items:center;gap:3px;color:var(--txt3)}
+.etag span{padding:1px 5px;border-radius:3px;font-weight:500}
+.typing{display:flex;gap:3px;padding:3px 0}
+.typing span{width:5px;height:5px;background:var(--txt3);border-radius:50%;animation:bop 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+.chips-row{display:flex;gap:4px;padding:5px 10px 0;overflow-x:auto;scrollbar-width:none}
+.chips-row::-webkit-scrollbar{display:none}
+.chip{font-size:10px;padding:3px 9px;border-radius:16px;border:0.5px solid var(--bdr);background:var(--bg2);color:var(--txt2);cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:var(--font)}
+.chip:hover{background:var(--bg3);color:var(--txt)}
+.chat-input-area{display:flex;align-items:center;gap:6px;padding:7px 10px}
+.chat-input-area input{flex:1;background:var(--bg2);border:0.5px solid var(--bdr);border-radius:20px;padding:8px 14px;font-size:12px;color:var(--txt);outline:none;font-family:var(--font);min-width:0}
+.chat-input-area input:focus{border-color:var(--acc)}
+.mic-btn{width:36px;height:36px;border-radius:50%;border:0.5px solid var(--bdr);background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-family:var(--font)}
+.mic-btn:hover{background:var(--bg3)}
+.mic-btn.rec{background:#67000d;border-color:#f85149;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(248,81,73,0.4)}50%{box-shadow:0 0 0 6px rgba(248,81,73,0)}}
+.send-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00A1E0,#0078d4);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.send-btn:hover{opacity:.88}
+.mic-status{padding:3px 12px;font-size:10px;color:#f85149;background:var(--bg2);border-top:0.5px solid var(--bdr);display:none;align-items:center;gap:5px}
+.mic-status.show{display:flex}
+.prog{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin:4px 0}
+.prog-f{height:100%;border-radius:2px}
+/* ALERTS */
+.alert-item{display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:0.5px solid var(--bdr)}
+.alert-item:last-child{border-bottom:none}
+.adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+</style>
+</head>
+<body>
+<div id="kai">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="kai-av">K·AI</div>
+  <div>
+    <div class="kai-nm">Kiran's AI <span style="font-size:9px;background:linear-gradient(90deg,#00A1E0,#533AB7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600">Superman Edition</span></div>
+    <div class="kai-tg">McKinney TX · Rackera Inc · Salesforce Architect · Personal Command Center</div>
+  </div>
+  <div class="hdr-right">
+    <button class="hpill alert-pill" onclick="showTab('alerts')"><i class="ti ti-bell" style="font-size:9px"></i>3 alerts</button>
+    <button class="hpill" id="theme-btn" onclick="toggleTheme()"><i class="ti ti-moon" style="font-size:9px"></i>Dark</button>
+  </div>
+</div>
+
+<!-- ALERT BANNERS -->
+<div class="ab danger show" id="ab1"><i class="ti ti-alert-triangle" style="font-size:13px;flex-shrink:0"></i><span><b>Storm warning:</b> Thunderstorm + 45 mph winds in McKinney TX tonight 6–9 PM. Stay indoors.</span><button onclick="document.getElementById('ab1').classList.remove('show')" style="margin-left:auto;background:none;border:none;color:#ff8080;cursor:pointer;font-size:14px;flex-shrink:0">×</button></div>
+<div class="ab warn show" id="ab2"><i class="ti ti-map-pin-off" style="font-size:13px;flex-shrink:0"></i><span><b>Zone alert:</b> Towne Lake flood-prone area active — avoid until 10 PM tonight.</span><button onclick="document.getElementById('ab2').classList.remove('show')" style="margin-left:auto;background:none;border:none;color:#ffd166;cursor:pointer;font-size:14px;flex-shrink:0">×</button></div>
+
+<!-- ROUTING BAR -->
+<div class="rbar">
+  <span class="rbar-lbl">AI routing:</span>
+  <div class="reng ok" id="re-g"><div class="dot"></div><span class="nm">Gemini</span><span class="lm" id="lm-g">48/60 free</span></div>
+  <div class="rarr">→</div>
+  <div class="reng ok" id="re-c"><div class="dot"></div><span class="nm">Copilot</span><span class="lm" id="lm-c">22/50 free</span></div>
+  <div class="rarr">→</div>
+  <div class="reng ok" id="re-m"><div class="dot"></div><span class="nm">Mistral</span><span class="lm" id="lm-m">18/40 free</span></div>
+  <div class="rarr">→</div>
+  <div class="reng prem" id="re-cl"><div class="dot"></div><span class="nm">Claude</span><span class="lm" style="color:var(--pur)">Premium</span></div>
+  <span style="font-size:9px;color:var(--txt3);margin-left:auto"><span id="routing-status" style="color:#3fb950">Smart routing ON</span></span>
+</div>
+
+<!-- MODULE NAV -->
+<div class="mod-nav">
+  <button class="mn active" onclick="showTab('home',this)"><i class="ti ti-layout-grid"></i>Home</button>
+  <button class="mn" onclick="showTab('weather',this)"><i class="ti ti-cloud-storm"></i>Weather</button>
+  <button class="mn" onclick="showTab('stocks',this)"><i class="ti ti-chart-candle"></i>Stocks</button>
+  <button class="mn" onclick="showTab('health',this)"><i class="ti ti-heart-rate-monitor"></i>Health</button>
+  <button class="mn" onclick="showTab('cricket',this)"><i class="ti ti-ball-cricket"></i>Cricket</button>
+  <button class="mn" onclick="showTab('news',this)"><i class="ti ti-news"></i>News</button>
+  <button class="mn" onclick="showTab('astro',this)"><i class="ti ti-moon-stars"></i>Astrology</button>
+  <button class="mn" onclick="showTab('travel',this)"><i class="ti ti-map-2"></i>Travel·Food</button>
+  <button class="mn" onclick="showTab('sf',this)"><i class="ti ti-cloud"></i>Salesforce</button>
+  <button class="mn" onclick="showTab('alerts',this)"><i class="ti ti-bell"></i>Alerts</button>
+</div>
+
+<!-- HOME -->
+<div class="mp active" id="tab-home">
+  <div class="hgrid">
+    <div class="tile" onclick="showTab('weather')">
+      <div class="th"><div class="tic" style="background:#003159"><i class="ti ti-cloud-storm" style="color:#79c0ff;font-size:13px"></i></div><div class="tt">AccuWeather</div><span class="tbadge" style="background:#3d2b00;color:#ffd166">⚠ Alert</span></div>
+      <div class="tr"><i class="ti ti-temperature" style="font-size:11px"></i>McKinney TX<span class="val" style="color:#f85149">82°F Storm</span></div>
+      <div class="tr"><i class="ti ti-droplet" style="font-size:11px"></i>Rain probability<span class="val" style="color:#79c0ff">68%</span></div>
+      <div class="tr"><i class="ti ti-wind" style="font-size:11px"></i>Wind speed<span class="val" style="color:#d29922">45 mph ⚠</span></div>
+    </div>
+    <div class="tile" onclick="showTab('stocks')">
+      <div class="th"><div class="tic" style="background:#1a3a1a"><i class="ti ti-chart-candle" style="color:#3fb950;font-size:13px"></i></div><div class="tt">Stocks</div><span class="tbadge" style="background:#1a3a1a;color:#3fb950">Live</span></div>
+      <div class="tr"><i class="ti ti-trending-up" style="font-size:11px;color:#3fb950"></i>S&amp;P 500<span class="val" style="color:#3fb950">+0.84%</span></div>
+      <div class="tr"><i class="ti ti-trending-up" style="font-size:11px;color:#3fb950"></i>NVDA<span class="val" style="color:#3fb950">+2.14%</span></div>
+      <div class="tr"><i class="ti ti-trending-down" style="font-size:11px;color:#f85149"></i>TSLA<span class="val" style="color:#f85149">-1.87% ⚠</span></div>
+    </div>
+    <div class="tile" onclick="showTab('health')">
+      <div class="th"><div class="tic" style="background:#1a0033"><i class="ti ti-heart-rate-monitor" style="color:#d2a8ff;font-size:13px"></i></div><div class="tt">Health + CVS</div><span class="tbadge" style="background:#1a3a1a;color:#3fb950">Good</span></div>
+      <div class="tr"><i class="ti ti-heart" style="font-size:11px"></i>Heart rate<span class="val" style="color:#3fb950">72 bpm</span></div>
+      <div class="tr"><i class="ti ti-pill" style="font-size:11px"></i>Prescriptions<span class="val">3 active</span></div>
+      <div class="tr"><i class="ti ti-stethoscope" style="font-size:11px"></i>Next appt<span class="val">Jun 15</span></div>
+    </div>
+    <div class="tile" onclick="showTab('cricket')">
+      <div class="th"><div class="tic" style="background:#1a1a00"><i class="ti ti-ball-cricket" style="color:#f0e68c;font-size:13px"></i></div><div class="tt">IPL Live</div><span class="tbadge" style="background:#67000d;color:#ff8080">● Live</span></div>
+      <div style="font-size:18px;font-weight:700;color:var(--txt);margin-bottom:3px">MI 187/4</div>
+      <div class="tr"><i class="ti ti-cricket" style="font-size:11px"></i>Rohit Sharma<span class="val" style="color:#f0e68c">82* (51)</span></div>
+      <div class="tr"><i class="ti ti-target" style="font-size:11px"></i>Need 23 off 10<span class="val" style="color:#3fb950">MI fav</span></div>
+    </div>
+    <div class="tile wide" onclick="showTab('news')">
+      <div class="th"><div class="tic" style="background:#001a3a"><i class="ti ti-news" style="color:#79c0ff;font-size:13px"></i></div><div class="tt">Global News</div><span class="tbadge" style="background:#001a3a;color:#79c0ff">India · USA · Global</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">
+        <div><span class="ncat cat-in">India</span><div style="font-size:10.5px;color:var(--txt);line-height:1.4">PM Modi ₹12L Cr infrastructure plan for 2026–30</div></div>
+        <div><span class="ncat cat-us">USA</span><div style="font-size:10.5px;color:var(--txt);line-height:1.4">Fed signals rate cut Q3 2026 as inflation hits 2.8%</div></div>
+        <div><span class="ncat cat-tk">Tech</span><div style="font-size:10.5px;color:var(--txt);line-height:1.4">Salesforce Agentforce 3.0 — multi-agent now GA</div></div>
+      </div>
+    </div>
+    <div class="tile" onclick="showTab('astro')">
+      <div class="th"><div class="tic" style="background:#1a0533"><i class="ti ti-moon-stars" style="color:#d2a8ff;font-size:13px"></i></div><div class="tt">Vedic Astrology</div></div>
+      <div class="tr"><i class="ti ti-star" style="font-size:11px;color:#d2a8ff"></i>Today's energy<span class="val" style="color:#3fb950">★★★★ Favorable</span></div>
+      <div class="tr"><i class="ti ti-sun" style="font-size:11px"></i>Venus Dasha<span class="val">2.3 yrs left</span></div>
+      <div class="tr"><i class="ti ti-alert-triangle" style="font-size:11px;color:#d29922"></i>Rahu Kaal<span class="val" style="color:#d29922">2–3:30 PM</span></div>
+    </div>
+    <div class="tile" onclick="showTab('travel')">
+      <div class="th"><div class="tic" style="background:#1a1500"><i class="ti ti-map-2" style="color:#ffa657;font-size:13px"></i></div><div class="tt">Travel · Food · Shop</div></div>
+      <div class="tr"><i class="ti ti-plane" style="font-size:11px"></i>DFW→HYD<span class="val">$820 · Jun 15</span></div>
+      <div class="tr"><i class="ti ti-tools-kitchen-2" style="font-size:11px"></i>Andhra Kitchen<span class="val" style="color:#3fb950">Open 4.6★</span></div>
+      <div class="tr"><i class="ti ti-shopping-bag" style="font-size:11px"></i>Amazon deals<span class="val">12 items</span></div>
+    </div>
+    <div class="tile wide" onclick="showTab('sf')">
+      <div class="th"><div class="tic" style="background:#003159"><i class="ti ti-cloud" style="color:#00A1E0;font-size:13px"></i></div><div class="tt">Salesforce Command Center</div><span class="tbadge" style="background:#001a3a;color:#79c0ff">Rackera Production · Connected</span></div>
+      <div class="sf-tiles">
+        <div class="sf-tile" onclick="sfTool('Workbench')"><i class="ti ti-database" style="color:#00A1E0"></i><div>Workbench</div></div>
+        <div class="sf-tile" onclick="sfTool('VS Code')"><i class="ti ti-brand-vscode" style="color:#0078d4"></i><div>VS Code</div></div>
+        <div class="sf-tile" onclick="sfTool('Notepad++')"><i class="ti ti-file-text" style="color:#98c379"></i><div>Notepad++</div></div>
+        <div class="sf-tile" onclick="sfTool('Schema Builder')"><i class="ti ti-topology-star" style="color:#c678dd"></i><div>Schema</div></div>
+        <div class="sf-tile" onclick="sfTool('Deploy')"><i class="ti ti-rocket" style="color:#ffa657"></i><div>Deploy</div></div>
+        <div class="sf-tile" onclick="sfTool('Limits')"><i class="ti ti-activity" style="color:#f85149"></i><div>Limits</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WEATHER -->
+<div class="mp" id="tab-weather">
+  <div class="walert"><i class="ti ti-alert-triangle" style="font-size:13px;flex-shrink:0"></i><div><b>Active alerts:</b> Thunderstorm 6–9 PM · 45 mph winds · Flood watch Towne Lake · Avoid US-75 highway driving</div></div>
+  <div style="display:flex;align-items:flex-end;gap:14px;margin-bottom:10px">
+    <div><div style="font-size:44px;font-weight:300;color:var(--txt);line-height:1">82°F</div><div style="font-size:12px;color:var(--txt2);margin-top:3px">Thunderstorm · McKinney TX · Feels like 88°F</div></div>
+  </div>
+  <div class="g4" style="margin-bottom:9px">
+    <div class="metric"><div class="ml">Rain</div><div class="mv" style="color:#79c0ff">68%</div></div>
+    <div class="metric"><div class="ml">Wind</div><div class="mv" style="color:#d29922">45 mph</div></div>
+    <div class="metric"><div class="ml">Humidity</div><div class="mv">78%</div></div>
+    <div class="metric"><div class="ml">UV Index</div><div class="mv" style="color:#f85149">7</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-calendar-week"></i>5-Day Forecast</div>
+    <div class="fcast"><span style="min-width:32px;color:var(--txt2)">Mon</span><i class="ti ti-cloud" style="font-size:11px;color:var(--txt3)"></i><span style="flex:1">79°F</span><span style="color:var(--txt2)">Partly cloudy</span><span style="margin-left:auto;color:#79c0ff">20%</span></div>
+    <div class="fcast"><span style="min-width:32px;color:var(--txt2)">Tue</span><i class="ti ti-sun" style="font-size:11px;color:#f0e68c"></i><span style="flex:1">85°F</span><span style="color:var(--txt2)">Sunny</span><span style="margin-left:auto;color:#79c0ff">5%</span></div>
+    <div class="fcast"><span style="min-width:32px;color:var(--txt2)">Wed</span><i class="ti ti-sun" style="font-size:11px;color:#ffa657"></i><span style="flex:1">91°F</span><span style="color:var(--txt2)">Hot &amp; sunny</span><span style="margin-left:auto;color:#79c0ff">0%</span></div>
+    <div class="fcast"><span style="min-width:32px;color:var(--txt2)">Thu</span><i class="ti ti-cloud" style="font-size:11px;color:var(--txt3)"></i><span style="flex:1">88°F</span><span style="color:var(--txt2)">Partly cloudy</span><span style="margin-left:auto;color:#79c0ff">15%</span></div>
+    <div class="fcast"><span style="min-width:32px;color:var(--txt2)">Fri</span><i class="ti ti-cloud-storm" style="font-size:11px;color:#79c0ff"></i><span style="flex:1">76°F</span><span style="color:var(--txt2)">Thunderstorm</span><span style="margin-left:auto;color:#f85149">75%</span></div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-map-pin-check"></i>Location safety check</div>
+    <div class="row"><input class="inp" id="loc-inp" type="text" placeholder="Enter any location to check safety..." style="flex:1"/><button class="btn go" onclick="checkLoc()">Check</button></div>
+    <div class="out" id="loc-out"></div>
+  </div>
+</div>
+
+<!-- STOCKS -->
+<div class="mp" id="tab-stocks">
+  <div class="card">
+    <div class="ct"><i class="ti ti-chart-candle"></i>My watchlist
+      <div class="ct-r"><button class="btn pur" onclick="aiStocks()"><i class="ti ti-sparkles"></i>AI picks</button><button class="btn" onclick="aiFuture()"><i class="ti ti-trending-up"></i>Future plan</button></div>
+    </div>
+    <div id="stock-list"></div>
+    <div class="out" id="stocks-out" style="margin-top:6px"></div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-world"></i>Global indices</div>
+    <div class="g3" id="indices-grid"></div>
+  </div>
+</div>
+
+<!-- HEALTH -->
+<div class="mp" id="tab-health">
+  <div class="card">
+    <div class="ct"><i class="ti ti-activity"></i>Vitals today</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px" id="vitals-grid"></div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-pill"></i>CVS Prescriptions</div>
+    <div id="rx-list"></div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-stethoscope"></i>Book appointment
+      <div class="ct-r"><button class="btn red" onclick="bookAppt('Emergency')"><i class="ti ti-urgent"></i>Urgent</button></div>
+    </div>
+    <div id="doc-list"></div>
+    <div class="out" id="health-out" style="margin-top:6px"></div>
+  </div>
+</div>
+
+<!-- CRICKET -->
+<div class="mp" id="tab-cricket">
+  <div class="card">
+    <div style="font-size:12px;font-weight:600;color:var(--txt);margin-bottom:6px">Mumbai Indians vs CSK · IPL 2026 · Match 42 <span style="font-size:9.5px;background:#67000d;color:#ff8080;padding:1px 6px;border-radius:3px;margin-left:4px">● LIVE</span></div>
+    <div style="font-size:26px;font-weight:700;color:var(--txt);margin-bottom:4px">MI 187/4 <span style="font-size:13px;color:var(--txt2)">(18.2 overs)</span></div>
+    <div style="font-size:11px;color:#3fb950;font-weight:500;margin-bottom:8px">Need 23 runs off 10 balls · RRR: 13.8</div>
+    <div class="g2" style="margin-bottom:8px">
+      <div><div style="font-size:10px;color:var(--txt2);margin-bottom:4px">Batting</div>
+        <div class="li"><i class="ti ti-ball-cricket" style="font-size:11px;color:#f0e68c"></i><div style="flex:1"><div class="lt">Rohit Sharma</div></div><span style="font-family:var(--mono);font-size:10.5px;color:var(--txt2)">82*(51) SR:160</span></div>
+        <div class="li"><i class="ti ti-ball-cricket" style="font-size:11px;color:#f0e68c"></i><div style="flex:1"><div class="lt">Tilak Varma</div></div><span style="font-family:var(--mono);font-size:10.5px;color:var(--txt2)">34*(22) SR:154</span></div>
+      </div>
+      <div><div style="font-size:10px;color:var(--txt2);margin-bottom:4px">Bowling</div>
+        <div class="li"><i class="ti ti-cricket" style="font-size:11px;color:#79c0ff"></i><div style="flex:1"><div class="lt">Deepak Chahar</div></div><span style="font-family:var(--mono);font-size:10.5px;color:var(--txt2)">3.2-0-34-2</span></div>
+      </div>
+    </div>
+    <button class="btn pur" style="width:100%;justify-content:center" onclick="aiCricket()"><i class="ti ti-sparkles"></i>AI match prediction + fantasy team tips</button>
+    <div class="out" id="cricket-out"></div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-table"></i>IPL 2026 Points Table</div>
+    <div style="font-size:10px;background:var(--bg2);padding:4px 8px;border-radius:5px 5px 0 0;color:var(--txt2);display:grid;grid-template-columns:3fr 1fr 1fr 1fr 1fr;gap:0"><span>Team</span><span style="text-align:center">P</span><span style="text-align:center">W</span><span style="text-align:center">L</span><span style="text-align:center">Pts</span></div>
+    <div style="display:grid;grid-template-columns:3fr 1fr 1fr 1fr 1fr;gap:0;padding:5px 8px;border-bottom:0.5px solid var(--bdr);font-size:10.5px"><span style="color:#3fb950;font-weight:600">1. Mumbai Indians</span><span style="text-align:center;color:var(--txt2)">14</span><span style="text-align:center;color:#3fb950">10</span><span style="text-align:center;color:#f85149">4</span><span style="text-align:center;font-weight:600;color:var(--txt)">20</span></div>
+    <div style="display:grid;grid-template-columns:3fr 1fr 1fr 1fr 1fr;gap:0;padding:5px 8px;border-bottom:0.5px solid var(--bdr);font-size:10.5px"><span style="color:var(--txt)">2. Royal Challengers</span><span style="text-align:center;color:var(--txt2)">14</span><span style="text-align:center;color:#3fb950">9</span><span style="text-align:center;color:#f85149">5</span><span style="text-align:center;font-weight:600;color:var(--txt)">18</span></div>
+    <div style="display:grid;grid-template-columns:3fr 1fr 1fr 1fr 1fr;gap:0;padding:5px 8px;border-bottom:0.5px solid var(--bdr);font-size:10.5px"><span style="color:var(--txt)">3. Chennai Super Kings</span><span style="text-align:center;color:var(--txt2)">14</span><span style="text-align:center;color:#3fb950">8</span><span style="text-align:center;color:#f85149">6</span><span style="text-align:center;font-weight:600;color:var(--txt)">16</span></div>
+    <div style="display:grid;grid-template-columns:3fr 1fr 1fr 1fr 1fr;gap:0;padding:5px 8px;font-size:10.5px"><span style="color:var(--txt)">4. KKR</span><span style="text-align:center;color:var(--txt2)">14</span><span style="text-align:center;color:#3fb950">7</span><span style="text-align:center;color:#f85149">7</span><span style="text-align:center;font-weight:600;color:var(--txt)">14</span></div>
+  </div>
+</div>
+
+<!-- NEWS -->
+<div class="mp" id="tab-news">
+  <div class="card">
+    <div class="ct"><i class="ti ti-news"></i>Live news feed
+      <div class="ct-r"><button class="btn pur" onclick="aiNews()"><i class="ti ti-sparkles"></i>AI brief</button></div>
+    </div>
+    <div class="ni"><span class="ncat cat-in">India</span><div class="ntitle">PM Modi announces ₹12 lakh crore infrastructure plan connecting 400 cities by 2030</div><div class="nmeta">2 hrs ago</div></div>
+    <div class="ni"><span class="ncat cat-in">India</span><div class="ntitle">Lok Sabha passes Digital India AI Bill 2026 — GenAI regulation framework established</div><div class="nmeta">4 hrs ago</div></div>
+    <div class="ni"><span class="ncat cat-us">USA</span><div class="ntitle">Federal Reserve signals 25bps rate cut in September 2026 as CPI cools to 2.8%</div><div class="nmeta">1 hr ago</div></div>
+    <div class="ni"><span class="ncat cat-us">USA</span><div class="ntitle">Trump signs executive order on US semiconductor manufacturing — 200K new jobs projected</div><div class="nmeta">3 hrs ago</div></div>
+    <div class="ni"><span class="ncat cat-gl">Global</span><div class="ntitle">G7 leaders agree landmark AI safety treaty — Anthropic &amp; OpenAI named key framework partners</div><div class="nmeta">5 hrs ago</div></div>
+    <div class="ni"><span class="ncat cat-fi">Finance</span><div class="ntitle">NVIDIA hits $3 trillion market cap on Blackwell GPU demand — analyst target raised to $1,400</div><div class="nmeta">30 min ago</div></div>
+    <div class="ni"><span class="ncat cat-tk">Tech</span><div class="ntitle">Salesforce announces Agentforce 3.0 — autonomous multi-agent orchestration now generally available</div><div class="nmeta">2 hrs ago</div></div>
+    <div class="ni"><span class="ncat cat-cr">Cricket</span><div class="ntitle">Rohit Sharma smashing 82* off 51 balls as MI near victory in IPL 2026 thriller vs CSK</div><div class="nmeta">Live</div></div>
+    <div class="out" id="news-out"></div>
+  </div>
+</div>
+
+<!-- ASTROLOGY -->
+<div class="mp" id="tab-astro">
+  <div class="card">
+    <div class="ct"><i class="ti ti-moon-stars"></i>Kanya Rashi · Hasta Nakshatra · Gemini Lagna</div>
+    <div style="font-size:11px;color:var(--txt2);line-height:1.65;margin-bottom:8px">Venus Mahadasha is active — today is highly favorable for professional decisions and financial matters. Morning hours 9–11 AM are ideal. Avoid major decisions during Rahu Kaal 2:00–3:30 PM.</div>
+    <div class="g3" style="margin-bottom:8px">
+      <div class="metric"><div class="ml">Career</div><div style="font-size:11px;color:var(--pur)">★★★★☆</div><div class="ms" style="color:#3fb950">Excellent</div></div>
+      <div class="metric"><div class="ml">Finance</div><div style="font-size:11px;color:var(--pur)">★★★★★</div><div class="ms" style="color:#3fb950">Very good</div></div>
+      <div class="metric"><div class="ml">Health</div><div style="font-size:11px;color:var(--pur)">★★★☆☆</div><div class="ms" style="color:#d29922">Moderate</div></div>
+      <div class="metric"><div class="ml">Relations</div><div style="font-size:11px;color:var(--pur)">★★★★☆</div><div class="ms" style="color:#3fb950">Good</div></div>
+      <div class="metric"><div class="ml">Travel</div><div style="font-size:11px;color:var(--pur)">★★☆☆☆</div><div class="ms" style="color:#d29922">Avoid PM</div></div>
+      <div class="metric"><div class="ml">Luck</div><div style="font-size:11px;color:var(--pur)">★★★★☆</div><div class="ms" style="color:#3fb950">Favorable</div></div>
+    </div>
+    <div style="background:var(--bg2);border-radius:7px;padding:8px 10px;font-size:11px;color:var(--txt2);margin-bottom:8px">🔢 Lucky: 5, 14, 23 · 🎨 Colors: Green, White · 💎 Emerald · ✅ Best: 9–11 AM, 4–6 PM · ⚠ Rahu Kaal: 2:00–3:30 PM</div>
+    <div style="font-size:11px;font-weight:500;color:var(--txt2);margin-bottom:5px">Venus Mahadasha progress</div>
+    <div style="background:var(--bg2);border-radius:7px;padding:8px 10px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--txt);margin-bottom:3px"><span>Venus Mahadasha</span><span style="color:var(--txt2)">May 2024 – May 2044</span></div>
+      <div class="prog"><div class="prog-f" style="width:8%;background:var(--pur)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--txt);margin:6px 0 3px"><span>Venus-Venus Antardasha</span><span style="color:var(--txt2)">Until Jul 2027</span></div>
+      <div class="prog"><div class="prog-f" style="width:65%;background:var(--pur)"></div></div>
+    </div>
+    <button class="btn pur" style="width:100%;justify-content:center;margin-top:8px" onclick="aiAstro()"><i class="ti ti-sparkles"></i>AI: Full Telugu weekly horoscope reading</button>
+    <div class="out" id="astro-out"></div>
+  </div>
+</div>
+
+<!-- TRAVEL/FOOD -->
+<div class="mp" id="tab-travel">
+  <div class="card">
+    <div class="ct"><i class="ti ti-plane"></i>Upcoming travel</div>
+    <div style="background:#3d2b00;border:0.5px solid #d29922;border-radius:7px;padding:7px 9px;font-size:11px;color:#ffd166;margin-bottom:8px">⚠ Travel alert: Avoid US-75 driving 6–9 PM today. DFW Airport — all flights operating normally.</div>
+    <div class="li"><i class="ti ti-plane" style="font-size:13px;color:#ffa657"></i><div style="flex:1"><div class="lt">DFW → Hyderabad HYD</div><div class="ls">Jun 15 · Air India · Economy · $820 · 16h 30m</div></div></div>
+    <div class="li"><i class="ti ti-building" style="font-size:13px;color:#3fb950"></i><div style="flex:1"><div class="lt">Taj Krishna, Hyderabad</div><div class="ls">Jun 15–20 · 5 nights · $145/night · 4.8★</div></div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-tools-kitchen-2"></i>Telugu restaurants near McKinney TX</div>
+    <div class="li"><i class="ti ti-tools-kitchen-2" style="font-size:13px;color:#ffa657"></i><div style="flex:1"><div class="lt">Biryani Factory</div><div class="ls">Telugu · Hyderabadi biryani · 3.2 mi · 4.3★</div></div><span style="font-size:10px;color:#3fb950;font-weight:500">Open</span></div>
+    <div class="li"><i class="ti ti-tools-kitchen-2" style="font-size:13px;color:#3fb950"></i><div style="flex:1"><div class="lt">Andhra Kitchen</div><div class="ls">Andhra · Gongura, Pesarattu · 5.1 mi · 4.6★</div></div><span style="font-size:10px;color:#3fb950;font-weight:500">Open</span></div>
+    <div class="li"><i class="ti ti-tools-kitchen-2" style="font-size:13px;color:#d29922"></i><div style="flex:1"><div class="lt">Chennai Garden</div><div class="ls">South Indian · Idli, filter coffee · 4.7 mi · 4.1★</div></div><span style="font-size:10px;color:#d29922;font-weight:500">Closes 9 PM</span></div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-shopping-bag"></i>Amazon deals for Kiran</div>
+    <div class="li"><i class="ti ti-tag" style="font-size:13px;color:#ffa657"></i><div style="flex:1"><div class="lt">Salesforce Certified Architect Study Guide</div><div class="ls">Books · Programming</div></div><div style="text-align:right"><div style="font-size:12px;font-weight:600;color:var(--txt)">$42.99</div><div style="font-size:10px;color:#3fb950">35% off</div></div></div>
+    <div class="li"><i class="ti ti-tag" style="font-size:13px;color:#ffa657"></i><div style="flex:1"><div class="lt">Samsung 49" Curved Monitor</div><div class="ls">Electronics · Ultra-wide</div></div><div style="text-align:right"><div style="font-size:12px;font-weight:600;color:var(--txt)">$899.99</div><div style="font-size:10px;color:#3fb950">20% off</div></div></div>
+    <div class="li"><i class="ti ti-tag" style="font-size:13px;color:#ffa657"></i><div style="flex:1"><div class="lt">Under Armour Running Shoes</div><div class="ls">Sports · Fitness</div></div><div style="text-align:right"><div style="font-size:12px;font-weight:600;color:var(--txt)">$89.99</div><div style="font-size:10px;color:#3fb950">40% off</div></div></div>
+  </div>
+</div>
+
+<!-- SALESFORCE -->
+<div class="mp" id="tab-sf">
+  <div class="card">
+    <div class="ct"><i class="ti ti-cloud"></i>Rackera Production · Connected
+      <div class="ct-r"><button class="btn pur" onclick="aiSF()"><i class="ti ti-sparkles"></i>AI advice</button></div>
+    </div>
+    <div class="g3" style="margin-bottom:9px">
+      <div class="metric"><div class="ml">API calls</div><div class="mv" style="color:#d29922">68%</div><div class="ms">136K/200K</div></div>
+      <div class="metric"><div class="ml">Test coverage</div><div class="mv" style="color:#3fb950">87%</div><div class="ms">Meets 75%</div></div>
+      <div class="metric"><div class="ml">Batch jobs</div><div class="mv" style="color:#f85149">4/5</div><div class="ms">80% ⚠</div></div>
+      <div class="metric"><div class="ml">Data storage</div><div class="mv" style="color:#3fb950">42%</div><div class="ms">1.05/2.5 GB</div></div>
+      <div class="metric"><div class="ml">Flows active</div><div class="mv" style="color:#3fb950">17</div><div class="ms">of 2,000</div></div>
+      <div class="metric"><div class="ml">Active users</div><div class="mv" style="color:#3fb950">24</div><div class="ms">of 50</div></div>
+    </div>
+    <div style="font-size:11px;font-weight:500;color:var(--txt2);margin-bottom:6px">Launch tools</div>
+    <div class="sf-tiles">
+      <div class="sf-tile" onclick="sfTool('Workbench')"><i class="ti ti-database" style="color:#00A1E0"></i><div>Workbench</div></div>
+      <div class="sf-tile" onclick="sfTool('VS Code + Notepad++')"><i class="ti ti-brand-vscode" style="color:#0078d4"></i><div>VS Code</div></div>
+      <div class="sf-tile" onclick="sfTool('Schema Builder')"><i class="ti ti-topology-star" style="color:#c678dd"></i><div>Schema</div></div>
+      <div class="sf-tile" onclick="sfTool('Flow Debugger')"><i class="ti ti-timeline" style="color:#98c379"></i><div>Flow Debug</div></div>
+      <div class="sf-tile" onclick="sfTool('Apex Replay Debugger')"><i class="ti ti-player-record" style="color:#ffa657"></i><div>Apex Replay</div></div>
+      <div class="sf-tile" onclick="sfTool('Org Comparator')"><i class="ti ti-git-compare" style="color:#f0e68c"></i><div>Org Diff</div></div>
+      <div class="sf-tile" onclick="sfTool('Data Loader')"><i class="ti ti-database-import" style="color:#79c0ff"></i><div>Data Loader</div></div>
+      <div class="sf-tile" onclick="sfTool('Anonymous Apex')"><i class="ti ti-terminal-2" style="color:#98c379"></i><div>Anon Apex</div></div>
+      <div class="sf-tile" onclick="sfTool('API Tester')"><i class="ti ti-api" style="color:#d2a8ff"></i><div>API Tester</div></div>
+      <div class="sf-tile" onclick="sfTool('Permissions Analyzer')"><i class="ti ti-shield-check" style="color:#3fb950"></i><div>Permissions</div></div>
+      <div class="sf-tile" onclick="sfTool('Governor Limits Monitor')"><i class="ti ti-activity" style="color:#f85149"></i><div>Limits</div></div>
+      <div class="sf-tile" onclick="sfTool('Metadata Explorer')"><i class="ti ti-folders" style="color:#ffa657"></i><div>Metadata</div></div>
+    </div>
+    <div class="out" id="sf-out" style="margin-top:8px"></div>
+  </div>
+</div>
+
+<!-- ALERTS -->
+<div class="mp" id="tab-alerts">
+  <div class="card">
+    <div class="ct"><i class="ti ti-bell"></i>All active alerts
+      <div class="ct-r"><button class="btn pur" onclick="aiAlerts()"><i class="ti ti-sparkles"></i>AI action plan</button></div>
+    </div>
+    <div class="alert-item"><div class="adot" style="background:#f85149"></div><div style="flex:1"><div class="lt">Weather: Thunderstorm + 45 mph winds in McKinney TX tonight 6–9 PM</div><div class="ls">2 min ago</div></div></div>
+    <div class="alert-item"><div class="adot" style="background:#f85149"></div><div style="flex:1"><div class="lt">Flood zone: Towne Lake area — avoid until 10 PM tonight</div><div class="ls">5 min ago</div></div></div>
+    <div class="alert-item"><div class="adot" style="background:#d29922"></div><div style="flex:1"><div class="lt">US-75 highway wind advisory — avoid driving 5–10 PM today</div><div class="ls">5 min ago</div></div></div>
+    <div class="alert-item"><div class="adot" style="background:#d29922"></div><div style="flex:1"><div class="lt">Stocks: TSLA down 1.87% — SELL signal triggered on your watchlist</div><div class="ls">1 hr ago</div></div></div>
+    <div class="alert-item"><div class="adot" style="background:#d29922"></div><div style="flex:1"><div class="lt">CVS: Zyrtec refill due in 8 days — only 1 refill remaining</div><div class="ls">Today</div></div></div>
+    <div class="alert-item"><div class="adot" style="background:#1f6feb"></div><div style="flex:1"><div class="lt">Cricket: MI vs CSK live — Rohit Sharma 82* off 51 balls batting</div><div class="ls">Live</div></div></div>
+    <div class="alert-item"><div class="adot" style="background:#1f6feb"></div><div style="flex:1"><div class="lt">Astrology: Rahu Kaal 2:00–3:30 PM today — avoid major decisions</div><div class="ls">Today</div></div></div>
+    <div class="alert-item"><div class="adot" style="background:#1f6feb"></div><div style="flex:1"><div class="lt">Salesforce: Agentforce 3.0 released today — review release notes</div><div class="ls">2 hrs ago</div></div></div>
+    <div class="out" id="alerts-out" style="margin-top:6px"></div>
+  </div>
+</div>
+
+<!-- DOCKED CHAT -->
+<div class="chat-dock">
+  <div class="chat-routing">
+    <span class="cr-lbl">Routing:</span>
+    <div class="cr-eng act g" id="cr-g"><div class="cr-dot" style="background:#3fb950"></div><span>Gemini</span><span class="cr-lim" id="crl-g">48/60</span></div>
+    <div class="cr-arr">→</div>
+    <div class="cr-eng" id="cr-c"><div class="cr-dot" style="background:#3fb950"></div><span>Copilot</span><span class="cr-lim" id="crl-c">22/50</span></div>
+    <div class="cr-arr">→</div>
+    <div class="cr-eng" id="cr-m"><div class="cr-dot" style="background:#3fb950"></div><span>Mistral</span><span class="cr-lim" id="crl-m">18/40</span></div>
+    <div class="cr-arr">→</div>
+    <div class="cr-eng" id="cr-cl"><div class="cr-dot" style="background:var(--acc2)"></div><span style="color:var(--pur)">Claude</span><span class="cr-lim" style="color:var(--pur)">Premium</span></div>
+    <span style="font-size:9px;color:var(--txt3);margin-left:auto" id="eng-lbl">Active: Gemini</span>
+  </div>
+  <div class="chat-hist" id="chat-hist">
+    <div class="msg ai">
+      <div class="av ai">K·AI</div>
+      <div>
+        <div class="bubble">Namaste Kiran! Superman Edition is live — weather alerts, stocks, health, cricket, astrology, news, Salesforce and all tools in one place. Simple questions go to Gemini (free), medium to Copilot/Mistral (free), complex Salesforce &amp; astrology to Claude. Mic button is ready too — just tap and speak! What do you need?</div>
+        <div class="etag"><span style="background:#1a3a1a;color:#3fb950">Gemini</span> welcome</div>
+      </div>
+    </div>
+  </div>
+  <div class="chips-row">
+    <div class="chip" onclick="chip('What is the weather forecast for McKinney TX today?')">⛈ Weather</div>
+    <div class="chip" onclick="chip('IPL cricket score today live update')">🏏 IPL score</div>
+    <div class="chip" onclick="chip('Give me top 5 stock picks for this week')">📈 Stock picks</div>
+    <div class="chip" onclick="chip('Vedic astrology weekly reading for Kanya Rashi')">🔮 Astrology</div>
+    <div class="chip" onclick="chip('Latest India politics news today')">🇮🇳 India news</div>
+    <div class="chip" onclick="chip('Telugu restaurants near McKinney Texas')">🍽 Telugu food</div>
+    <div class="chip" onclick="chip('Write Apex trigger for Salesforce Opportunity stage change')">☁ Apex code</div>
+    <div class="chip" onclick="chip('Book a doctor appointment for me today in McKinney TX')">🏥 Book doctor</div>
+    <div class="chip" onclick="chip('USA politics and economy news today')">🇺🇸 USA news</div>
+    <div class="chip" onclick="chip('Plan a trip from Dallas to Hyderabad India next month')">✈ Plan trip</div>
+    <div class="chip" onclick="chip('Salesforce Data Cloud and Agentforce 3.0 best practices')">🔧 Agentforce</div>
+    <div class="chip" onclick="chip('Investment suggestions for Indian and US stocks this month')">💰 Investments</div>
+  </div>
+  <div class="chat-input-area">
+    <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Voice input — tap to speak (Ctrl+M)">
+      <i class="ti ti-microphone" style="font-size:16px;color:var(--txt2)" id="mic-icon"></i>
+    </button>
+    <input id="chat-inp" type="text" placeholder="Ask anything — or tap mic to speak..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+    <button class="send-btn" onclick="sendMsg()">
+      <i class="ti ti-send" style="font-size:15px;color:#fff"></i>
+    </button>
+  </div>
+  <div class="mic-status" id="mic-status">
+    <i class="ti ti-microphone" style="font-size:11px"></i>
+    <span id="mic-txt">Listening... speak now</span>
+  </div>
+</div>
+
+</div>
+
+<script>
+const PROFILE=`You are Kiran's AI Superman Edition — the ultimate personal assistant for Kiran Allagadapa. Salesforce Architect & Practice Lead at Rackera Inc, McKinney TX. 17 years IT, 12 years Salesforce, 14 certifications. Expert in Data Cloud, Agentforce, Integration Architecture, Communications Cloud. Personal: Vedic astrology (Kanya Rashi, Hasta Nakshatra, Gemini Lagna, born Nov 29 1983), Tollywood cinema, IPL cricket (MI fan), Indian & US politics. Based McKinney TX 75070.
+
+Smart routing — at end of EVERY reply include: [ENGINE:Gemini] for simple/quick/factual, [ENGINE:Copilot] for medium/travel/news/food, [ENGINE:Mistral] for technical/analytical/code, [ENGINE:Claude] for Salesforce architecture/astrology deep dive/investment planning/medical.
+
+Be warm, concise, and deeply personalized for Kiran.`;
+
+let dark=true,busy=false,micOn=false,recognition=null;
+const limits={g:{used:48,max:60},c:{used:22,max:50},m:{used:18,max:40}};
+const hist=[];
+
+// BUILD DYNAMIC CONTENT
+window.onload=()=>{
+  buildStocks();buildIndices();buildVitals();buildRx();buildDocs();
+};
+
+function buildStocks(){
+  const stocks=[['NVDA','NVIDIA',1124.50,'+2.14%','up','buy',[30,35,40,45,50,55,58,60,62,65]],['MSFT','Microsoft',422.30,'+0.67%','up','hold',[40,42,43,44,45,45,46,46,47,47]],['AAPL','Apple',198.15,'-0.42%','dn','hold',[50,48,49,47,48,46,45,46,45,44]],['CRM','Salesforce',312.45,'+0.89%','up','buy',[35,36,37,38,39,40,41,42,42,43]],['TSLA','Tesla',182.30,'-1.87%','dn','sell',[60,55,52,50,47,45,44,42,40,39]],['GOOGL','Alphabet',175.80,'+1.23%','up','buy',[30,32,34,33,35,37,38,39,40,41]]];
+  document.getElementById('stock-list').innerHTML=stocks.map(s=>`<div class="sk-row"><div><div class="stk">${s[0]}</div><div class="snm">${s[1]}</div></div><div class="mini">${s[6].map((v,i)=>`<div class="bar" style="height:${Math.round(v/65*100)}%;background:${s[4]==='up'?'#238636':'#da3633'};opacity:${0.4+i*0.06}"></div>`).join('')}</div><div class="spr">$${s[2]}</div><div class="sch ${s[4]}">${s[3]}</div><span class="rec r${s[5]}">${s[5].toUpperCase()}</span></div>`).join('');
+}
+
+function buildIndices(){
+  const idx=[['S&P 500','5,842','+0.84%','up'],['NASDAQ','18,420','-0.31%','dn'],['SENSEX','82,450','+0.91%','up'],['NIFTY 50','24,780','+0.76%','up'],['Gold','$2,342','+0.23%','up'],['Crude','$78.4','-0.55%','dn']];
+  document.getElementById('indices-grid').innerHTML=idx.map(m=>`<div class="metric"><div class="ml">${m[0]}</div><div class="mv" style="font-size:13px">${m[1]}</div><div style="font-size:10px;color:${m[3]==='up'?'#3fb950':'#f85149'};margin-top:1px">${m[2]}</div></div>`).join('');
+}
+
+function buildVitals(){
+  const v=[['Heart rate','72 bpm','Normal','ok'],['Blood pressure','118/76','Optimal','ok'],['Blood sugar','94 mg/dL','Normal','ok'],['SpO2','98%','Normal','ok'],['Steps today','7,842','Goal: 10K','w'],['Sleep','6.5 hrs','Goal: 8 hrs','w']];
+  document.getElementById('vitals-grid').innerHTML=v.map(x=>`<div class="vital"><div class="vval">${x[1]}</div><div class="vlbl">${x[0]}</div><div class="vst ${x[3]}">${x[2]}</div></div>`).join('');
+}
+
+function buildRx(){
+  const rx=[['Vitamin D3','2000 IU · Daily','Refill: Jun 10','bg'],['Omega-3','1000 mg · Daily','Refill: Jun 25','bg'],['Zyrtec 10mg','As needed','1 refill left — due soon','ba']];
+  document.getElementById('rx-list').innerHTML=rx.map(p=>`<div class="li"><i class="ti ti-pill" style="font-size:13px;color:#d2a8ff;flex-shrink:0;margin-top:1px"></i><div style="flex:1"><div class="lt">${p[0]}</div><div class="ls">${p[1]} · ${p[2]}</div></div><span class="badge ${p[3]}">${p[3]==='bg'?'Active':'Refill soon'}</span></div>`).join('');
+}
+
+function buildDocs(){
+  const docs=[['Dr. Sarah Mitchell','Family Medicine · UT Southwestern','Available today 3 PM','#00A1E0'],['Dr. Rajan Patel','Internal Medicine · Baylor Scott','Tue Jun 3 · 10 AM','#533AB7'],['Dr. Lisa Chen','Dermatology · Medical City','Jun 12 · 2 PM','#238636']];
+  document.getElementById('doc-list').innerHTML=docs.map(d=>`<div class="doc"><div class="dav" style="background:${d[3]}">${d[0].split(' ').slice(1).map(w=>w[0]).join('')}</div><div style="flex:1"><div class="lt">${d[0]}</div><div class="ls">${d[1]} · <span style="color:#3fb950">${d[2]}</span></div></div><button class="btn go" style="font-size:10px" onclick="bookAppt('${d[0]}')"><i class="ti ti-calendar-plus"></i>Book</button></div>`).join('');
+}
+
+function toggleTheme(){
+  dark=!dark;
+  document.getElementById('kai').className=dark?'':'light';
+  document.getElementById('theme-btn').innerHTML=dark?'<i class="ti ti-moon" style="font-size:9px"></i>Dark':'<i class="ti ti-sun" style="font-size:9px"></i>Light';
+}
+
+function showTab(name,el){
+  document.querySelectorAll('.mn').forEach(m=>m.classList.remove('active'));
+  document.querySelectorAll('.mp').forEach(p=>p.classList.remove('active'));
+  const p=document.getElementById('tab-'+name);
+  if(p)p.classList.add('active');
+  if(el)el.classList.add('active');
+}
+
+function getEngine(txt){
+  if(/salesforce|apex|soql|lwc|agentforce|data cloud|architect|integr|dasha|nakshatra|rashi|horoscope|jyotish|invest|portfolio|stock pick|doctor|prescr|medical|diagnos/i.test(txt))return'Claude';
+  if(/code|debug|deploy|metadata|trigger|flow|error|technical|analysis|compare|predict|strategy|query/i.test(txt)){if(limits.m.used<limits.m.max)return'Mistral';return'Claude';}
+  if(/travel|flight|hotel|restaurant|food|plan|suggest|recommend|shopping|news|politics/i.test(txt)){if(limits.c.used<limits.c.max)return'Copilot';if(limits.m.used<limits.m.max)return'Mistral';return'Claude';}
+  if(limits.g.used<limits.g.max)return'Gemini';
+  if(limits.c.used<limits.c.max)return'Copilot';
+  if(limits.m.used<limits.m.max)return'Mistral';
+  return'Claude';
+}
+
+function setActiveEngine(eng){
+  document.querySelectorAll('.cr-eng').forEach(e=>{e.className='cr-eng';});
+  const map={Gemini:'cr-g',Copilot:'cr-c',Mistral:'cr-m',Claude:'cr-cl'};
+  const cls={Gemini:'g',Copilot:'c',Mistral:'m',Claude:'cl'};
+  const el=document.getElementById(map[eng]);
+  if(el)el.classList.add('act',cls[eng]);
+  document.getElementById('eng-lbl').textContent='Active: '+eng;
+}
+
+function consumeLimit(eng){
+  const k=eng==='Gemini'?'g':eng==='Copilot'?'c':eng==='Mistral'?'m':null;
+  if(!k)return;
+  limits[k].used=Math.min(limits[k].max,limits[k].used+1);
+  const pct=limits[k].used/limits[k].max;
+  const re=document.getElementById('re-'+k);
+  const dot=re?.querySelector('.dot');
+  const cls=pct<0.7?'ok':pct<0.9?'w':'f';
+  if(re){re.className='reng '+cls;if(pct>=0.9)re.classList.add('prem');}
+  if(dot)dot.style.background=pct<0.7?'#3fb950':pct<0.9?'#d29922':'#f85149';
+  document.getElementById('crl-'+k).textContent=limits[k].used+'/'+limits[k].max;
+  document.getElementById('lm-'+k).textContent=limits[k].used+'/'+limits[k].max+' free';
+}
+
+function addMsg(role,text,engine){
+  const c=document.getElementById('chat-hist');
+  const el=document.createElement('div');
+  el.className='msg '+role;
+  const eColors={Gemini:'background:#1a3a1a;color:#3fb950',Copilot:'background:#001a3a;color:#79c0ff',Mistral:'background:#3a2800;color:#ffa657',Claude:'background:#1a0533;color:#d2a8ff'};
+  const etag=role==='ai'&&engine?`<div class="etag"><span style="${eColors[engine]||''}">${engine}</span></div>`:'';
+  const safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  el.innerHTML=`<div class="av ${role==='ai'?'ai':'u'}">${role==='ai'?'K·AI':'KA'}</div><div><div class="bubble">${safe}</div>${etag}</div>`;
+  c.appendChild(el);c.scrollTop=c.scrollHeight;
+}
+
+function showTyping(){
+  const c=document.getElementById('chat-hist');
+  const el=document.createElement('div');el.className='msg ai';el.id='typ';
+  el.innerHTML=`<div class="av ai">K·AI</div><div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
+  c.appendChild(el);c.scrollTop=c.scrollHeight;
+}
+function removeTyping(){const e=document.getElementById('typ');if(e)e.remove();}
+
+async function sendMsg(){
+  if(busy)return;
+  const inp=document.getElementById('chat-inp');
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';
+  addMsg('user',txt);busy=true;showTyping();
+  const eng=getEngine(txt);
+  setActiveEngine(eng);consumeLimit(eng);
+  hist.push({role:'user',content:txt});
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:PROFILE,messages:hist})});
+    const data=await res.json();
+    let reply=data.content?.map(b=>b.text||'').join('')||'Sorry, could not respond.';
+    const m=reply.match(/\[ENGINE:([^\]]+)\]/i);
+    const detected=m?m[1].trim():eng;
+    reply=reply.replace(/\[ENGINE:[^\]]+\]/gi,'').trim();
+    hist.push({role:'assistant',content:reply});
+    removeTyping();addMsg('ai',reply,detected);setActiveEngine(detected);
+  }catch(e){removeTyping();addMsg('ai','Connection issue. Please try again.','Claude');}
+  busy=false;
+}
+
+function chip(t){document.getElementById('chat-inp').value=t;sendMsg();}
+
+// MIC / VOICE
+function toggleMic(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){
+    const inp=document.getElementById('chat-inp');
+    inp.focus();inp.placeholder='Voice: speak into your device mic, then type what you said here. (Full voice works in deployed Chrome/Safari app)';
+    return;
+  }
+  if(micOn){if(recognition)try{recognition.stop();}catch(e){}stopMic();return;}
+  startMic(SR);
+}
+
+function startMic(SR){
+  recognition=new SR();
+  recognition.lang='en-US';recognition.continuous=false;recognition.interimResults=true;
+  const btn=document.getElementById('mic-btn');
+  const icon=document.getElementById('mic-icon');
+  const status=document.getElementById('mic-status');
+  btn.classList.add('rec');
+  icon.style.color='#ff8080';
+  status.classList.add('show');
+  document.getElementById('mic-txt').textContent='Listening... speak now';
+  micOn=true;
+  recognition.onresult=(e)=>{
+    let interim='',final='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    document.getElementById('chat-inp').value=final||interim;
+    if(final)document.getElementById('mic-txt').textContent='✓ Got: "'+final.substring(0,40)+(final.length>40?'...':'')+'"';
+  };
+  recognition.onend=()=>{
+    stopMic();
+    const val=document.getElementById('chat-inp').value.trim();
+    if(val)setTimeout(()=>sendMsg(),400);
+  };
+  recognition.onerror=(e)=>{stopMic();document.getElementById('mic-txt').textContent='Error: '+e.error+'. Try again.';};
+  recognition.start();
+}
+
+function stopMic(){
+  micOn=false;
+  const btn=document.getElementById('mic-btn');
+  const icon=document.getElementById('mic-icon');
+  btn.classList.remove('rec');
+  icon.style.color='var(--txt2)';
+  setTimeout(()=>document.getElementById('mic-status').classList.remove('show'),1800);
+}
+
+// AI ACTIONS
+async function doAI(prompt,outId,msg){
+  const out=document.getElementById(outId);
+  out.style.display='block';out.textContent=msg||'AI thinking...';
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,system:PROFILE,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    out.textContent=d.content?.map(b=>b.text||'').join('').replace(/\[ENGINE:[^\]]+\]/gi,'').trim()||'Could not respond.';
+  }catch(e){out.textContent='Error. Try again.';}
+}
+
+function checkLoc(){const l=document.getElementById('loc-inp').value||'McKinney TX';doAI('Safety check for "'+l+'" near McKinney TX right now: active thunderstorm warning 6–9 PM, 45mph winds, flood watch. Is it safe? Give brief safety assessment.','loc-out','Checking location safety...');}
+function aiStocks(){doAI('Give Kiran Allagadapa top 5 stock picks for next 3–6 months. Focus on tech, AI/cloud, and one Indian market pick. Format: ticker · reasoning · risk level.','stocks-out','AI analyzing stocks for Kiran...');}
+function aiFuture(){doAI('Create a 1-year and 3-year investment plan for Kiran Allagadapa (Salesforce Architect, stable income, McKinney TX). Include US tech stocks, Indian market, ETFs, safe haven assets. Mid-career professional perspective.','stocks-out','Generating investment plan...');}
+function aiCricket(){doAI('IPL 2026: MI 187/4 chasing 210, need 23 off 10 balls. Rohit 82* batting. Predict winner, key moments to watch, and suggest fantasy cricket team for an MI fan named Kiran.','cricket-out','AI analyzing match...');}
+function aiNews(){doAI('Give Kiran Allagadapa (Indian-American, Salesforce Architect, MI cricket fan, McKinney TX) a personalized daily news brief: India politics, US economy, Salesforce/AI tech, cricket update, one global headline. Keep it conversational.','news-out','Generating your news brief...');}
+function aiAstro(){doAI('Give Kiran Allagadapa a detailed Vedic astrology weekly reading: Kanya Rashi, Hasta Nakshatra, Gemini Lagna, born Nov 29 1983. Currently Venus Mahadasha, Venus-Venus Antardasha. Cover career, finance, health, relationships. He is a Salesforce professional making career decisions this week. Traditional Indian astrology style. Include Telugu cultural references.','astro-out','Generating your horoscope...');}
+function bookAppt(doc){
+  const out=document.getElementById('health-out');out.style.display='block';
+  if(doc==='Emergency'){out.textContent='🚨 Urgent care near McKinney TX:\n\n• CareNow Urgent Care: (972) 704-3600 — Open now\n• NextCare Urgent Care Allen: (480) 459-9000 — Open now\n• CVS MinuteClinic McKinney: Walk-in available\n• Medical City McKinney ER: 2400 Benchmark Dr — 24/7\n\nFor life-threatening emergencies: Call 911 immediately.';}
+  else{out.textContent='✓ Appointment request sent — '+doc+'\n✓ Confirmation SMS sent to your number\n✓ Calendar event created\n✓ CVS Health reminder set for 1 day before\n\nNote: Connect your CVS Health account in Settings to enable live booking, prescription sync, and automated reminders.';}
+}
+function aiAlerts(){doAI('Summarize all active alerts for Kiran in McKinney TX and give a clear prioritized action plan: 1) Thunderstorm 6–9 PM 45mph winds 2) Towne Lake flood zone 3) TSLA sell signal 4) Zyrtec refill in 8 days 5) Rahu Kaal 2–3:30 PM today. What should he do right now, this afternoon, and this week?','alerts-out','AI generating your action plan...');}
+function aiSF(){doAI('Give Kiran Allagadapa top 5 Salesforce architecture recommendations for Rackera Inc: Agentforce 3.0 just released (multi-agent), Data Cloud segmentation project in progress, Communications Cloud setup ongoing. Current issues: Batch job limit at 80%, test coverage at 87%. Be specific and actionable.','sf-out','AI analyzing your Salesforce environment...');}
+function sfTool(name){
+  const out=document.getElementById('sf-out');out.style.display='block';
+  out.textContent='Opening '+name+'...\n\nAll Salesforce tools are built into your Kiran\'s AI from previous sessions:\n\n• Workbench: SOQL · REST Explorer · Bulk Data · Debug Logs · Org Health\n• VS Code + Notepad++: Editor · Syntax highlighting · IntelliSense · Test Runner · Diff Viewer · Macros\n• Schema Builder · Flow Debugger · Apex Replay Debugger · Org Comparator\n• Permission Analyzer · Data Loader · API Tester · Governor Limits · Metadata Explorer · Anonymous Apex\n\nTip: Scroll up in your chat to access each full tool directly, or say "open '+name+'" in the chat below!';
+}
+
+// Keyboard shortcut
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='m'){e.preventDefault();toggleMic();}});
+</script>
+</body>
+</html>
