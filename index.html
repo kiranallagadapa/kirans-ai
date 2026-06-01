@@ -516,7 +516,7 @@ a:hover{text-decoration:underline}
     <button class="tb-mob-menu" onclick="openMobSidebar()"><i class="ti ti-menu-2" style="font-size:20px"></i></button>
     <div>
       <div class="tb-title" id="tb-title">Chat with Kiran's AI</div>
-      <div class="tb-subtitle" id="tb-subtitle">Gemini → Copilot → Mistral → Claude · Smart routing</div>
+      <div class="tb-subtitle" id="tb-subtitle">Powered by Gemini AI · 100% FREE · 1,500 messages/day</div>
     </div>
     <div class="tb-actions">
       <button class="tb-btn" onclick="showPanel('weather',document.getElementById('ni-weather'))"><i class="ti ti-cloud"></i><span id="weather-pill">Weather</span></button>
@@ -533,8 +533,8 @@ a:hover{text-decoration:underline}
         <div class="first-run-banner" id="first-run-banner">
   <div class="frb-icon">🔑</div>
   <div class="frb-text">
-    <div class="frb-title">Claude API key required for chat</div>
-    <div class="frb-desc">Kiran's AI needs your free Claude API key to power conversations. Get it free from console.anthropic.com — takes 2 minutes.</div>
+    <div class="frb-title">Gemini AI is active — Chat is FREE!</div>
+    <div class="frb-desc">Chat is powered by Gemini 1.5 Flash — completely free, 1500 messages/day. No API key needed for basic chat!</div>
     <div class="frb-btns">
       <button class="cbtn" style="font-size:11.5px" onclick="openSettings()"><i class="ti ti-settings"></i>Add API key now</button>
       <button class="cbtn sec" style="font-size:11.5px" onclick="window.open('https://console.anthropic.com','_blank')"><i class="ti ti-external-link"></i>Get free key</button>
@@ -580,7 +580,7 @@ a:hover{text-decoration:underline}
             <button class="input-btn send" id="send-btn" onclick="sendMsg()"><i class="ti ti-arrow-up" style="font-size:17px;font-weight:700"></i></button>
           </div>
         </div>
-        <div class="input-footer" id="input-footer">Kiran's AI · Smart routing active · <span id="active-eng">Claude</span> responding</div>
+        <div class="input-footer" id="input-footer">Kiran's AI · <span style="color:var(--accent)">Powered by Gemini AI — 100% FREE</span> · <span id="active-eng">Gemini</span> responding</div>
       </div>
     </div>
 
@@ -824,10 +824,10 @@ LIMIT 10</textarea>
 
       <!-- Claude API Key -->
       <div class="setting-group">
-        <div class="setting-label"><i class="ti ti-sparkles"></i>Claude AI Key <span style="font-size:10px;background:#fee2e2;color:#b91c1c;padding:1px 6px;border-radius:4px;margin-left:4px">Required for chat</span></div>
-        <div class="setting-desc">Get your free key from <strong>console.anthropic.com</strong> → API Keys → Create Key<br>Format: <code style="font-size:11px;background:var(--bg-base);padding:1px 5px;border-radius:3px">sk-ant-api03-...</code></div>
+        <div class="setting-label"><i class="ti ti-sparkles"></i>Claude AI Key <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;margin-left:4px">Optional backup</span></div>
+        <div class="setting-desc">Optional — used as backup if Gemini is unavailable. Chat works without this key.<br>Get from <strong>console.anthropic.com</strong> if you want Claude as fallback.</div>
         <input class="setting-input" id="key-claude" type="password" placeholder="sk-ant-api03-..." autocomplete="off" oninput="checkKey('claude')"/>
-        <div class="key-status none" id="status-claude"><i class="ti ti-circle" style="font-size:12px"></i> Not set — chat will not work</div>
+        <div class="key-status none" id="status-claude"><i class="ti ti-circle" style="font-size:12px"></i> Not set — Gemini handles all chat (free)</div>
       </div>
 
       <!-- Gemini Key -->
@@ -876,6 +876,7 @@ const CFG = {
   CRICKET_KEY: _k('fa9e81cadfmsh6cd0b','fdff2d3c61p17a985','jsn239ed020c7a5'),
   CRICKET_HOST: 'cricbuzz-cricket.p.rapidapi.com',
   GEMINI_KEY: _k('AQ.Ab8RN6KebRzag1bI9SoDx3dLx9','AZF7tqN0kpHMQ7','Xbmf7cdU_g'),
+  GEMINI_MODEL: 'gemini-1.5-flash',  // FREE — 1500 calls/day, no cost
   CLAUDE_MODEL: 'claude-sonnet-4-20250514',
 };
 
@@ -893,10 +894,9 @@ const limits = { g: {used:0,max:60}, c: {used:0,max:50}, m: {used:0,max:40} };
 
 // ==================== INIT ====================
 window.onload = () => {
-  // Show/hide first-run banner based on saved key
-  const hasCKey = !!getClaudeKey();
+  // Gemini works out of the box — hide banner always
   const banner = document.getElementById('first-run-banner');
-  if(banner){ if(hasCKey) banner.classList.add('hidden'); }
+  if(banner) banner.classList.add('hidden');
   // Update Gemini key from localStorage if available
   const savedGemini = localStorage.getItem('kai_gemini_key');
   if(savedGemini) CFG.GEMINI_KEY = savedGemini;
@@ -1115,8 +1115,28 @@ async function callClaude(userMsg){
 
 // Quick AI call (no history tracking, for module panels)
 async function quickAI(prompt, sys){
+  // Use Gemini for module AI features (free)
+  try{
+    const gKey = getGeminiKey();
+    const gUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + gKey;
+    const gSys = sys || 'Salesforce expert and personal assistant for Kiran Allagadapa at Rackera Inc, McKinney TX. Be concise and helpful.';
+    const gRes = await fetch(gUrl, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        contents:[{parts:[{text: gSys + '\n\nUser: ' + prompt}]}],
+        generationConfig:{maxOutputTokens:500,temperature:0.7}
+      })
+    });
+    if(gRes.ok){
+      const gData = await gRes.json();
+      if(gData.candidates?.[0]?.content?.parts?.[0]?.text){
+        return gData.candidates[0].content.parts[0].text.trim();
+      }
+    }
+  } catch(e){ console.warn('quickAI Gemini failed:', e.message); }
+  // Fallback to Claude if user has key
   const apiKey = getClaudeKey();
-  if(!apiKey) return 'Please add your Claude API key in ⚙ Settings to enable AI features.';
+  if(!apiKey) return 'AI temporarily unavailable. Please try again.';
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -1197,25 +1217,29 @@ async function sendMsg(){
   addMsg('user', txt);
   busy = true;
   showTyping();
-  const eng = getEngine(txt);
-  setActiveEngine(eng);
-  consumeLimit(eng);
+  // All queries go through Gemini — 100% FREE (1500/day)
+  setActiveEngine('Gemini');
+  consumeLimit('g');
   try{
-    let reply='', engine='Claude';
-    // Use real Gemini for simple tasks to save Claude quota
-    if(eng === 'Gemini'){
-      const gResult = await callGemini(txt);
-      if(gResult){ reply = gResult.reply; engine = 'Gemini'; }
-      else { const c = await callClaude(txt); reply=c.reply; engine=c.engine; }
-    } else {
-      const c = await callClaude(txt); reply=c.reply; engine=c.engine;
-    }
+    const gResult = await callGemini(txt);
     removeTyping();
-    addMsg('ai', reply, engine);
-    setActiveEngine(engine);
+    if(gResult){
+      addMsg('ai', gResult.reply, 'Gemini');
+    } else {
+      // Gemini failed — check if user has Claude key as backup
+      const ck = getClaudeKey();
+      if(ck){
+        const c = await callClaude(txt);
+        removeTyping();
+        addMsg('ai', c.reply, c.engine);
+        setActiveEngine(c.engine);
+      } else {
+        addMsg('ai', '⚠️ Gemini AI is temporarily unavailable. Please try again in a moment, or add a Claude API key in ⚙ Settings as backup.', 'Gemini');
+      }
+    }
   } catch(e){
     removeTyping();
-    addMsg('ai', 'Connection error. Please try again.', 'Claude');
+    addMsg('ai', '⚠️ Connection issue. Please check your internet and try again.', 'Gemini');
   }
   busy = false;
 }
