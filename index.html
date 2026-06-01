@@ -516,11 +516,11 @@ a:hover{text-decoration:underline}
     <button class="tb-mob-menu" onclick="openMobSidebar()"><i class="ti ti-menu-2" style="font-size:20px"></i></button>
     <div>
       <div class="tb-title" id="tb-title">Chat with Kiran's AI</div>
-      <div class="tb-subtitle" id="tb-subtitle">Powered by Gemini AI · 100% FREE · 1,500 messages/day</div>
+      <div class="tb-subtitle" id="tb-subtitle">Simple tasks: Gemini FREE · Complex code/work: Claude.ai</div>
     </div>
     <div class="tb-actions">
       <button class="tb-btn" onclick="showPanel('weather',document.getElementById('ni-weather'))"><i class="ti ti-cloud"></i><span id="weather-pill">Weather</span></button>
-      <button class="tb-btn primary" onclick="showPanel('chat',document.getElementById('ni-chat'))"><i class="ti ti-sparkles"></i>New chat</button>
+      <button class="tb-btn" onclick="window.open('https://claude.ai/new','_blank')" title="Open Claude.ai for complex tasks"><i class="ti ti-brand-claude" style="font-size:14px"></i>Claude.ai</button><button class="tb-btn primary" onclick="showPanel('chat',document.getElementById('ni-chat'))"><i class="ti ti-sparkles"></i>New chat</button>
     </div>
   </div>
 
@@ -894,20 +894,28 @@ const limits = { g: {used:0,max:60}, c: {used:0,max:50}, m: {used:0,max:40} };
 
 // ==================== INIT ====================
 window.onload = () => {
-  // Gemini works out of the box — hide banner always
+  // Hide first-run banner — Gemini works without setup
   const banner = document.getElementById('first-run-banner');
   if(banner) banner.classList.add('hidden');
-  // Update Gemini key from localStorage if available
+
+  // Load saved keys
   const savedGemini = localStorage.getItem('kai_gemini_key');
   if(savedGemini) CFG.GEMINI_KEY = savedGemini;
 
-  loadLiveWeather();
-  loadLiveNews();
-  loadLiveCricket();
+  // Auto dark mode
+  if(window.matchMedia('(prefers-color-scheme: dark)').matches) toggleTheme();
+
+  // Build all static panels first (instant, no API needed)
   buildStocks();
   buildIndices();
-  // Check system dark mode preference
-  if(window.matchMedia('(prefers-color-scheme: dark)').matches) toggleTheme();
+  if(typeof buildVitals==='function') buildVitals();
+  if(typeof buildRx==='function') buildRx();
+  if(typeof buildDocs==='function') buildDocs();
+
+  // Load all live API data (async, non-blocking)
+  setTimeout(()=>{ loadLiveWeather(); }, 100);
+  setTimeout(()=>{ loadLiveNews(); }, 300);
+  setTimeout(()=>{ loadLiveCricket(); }, 600);
 };
 
 // ==================== THEME ====================
@@ -977,15 +985,32 @@ function setBN(id){
 }
 
 // ==================== AI ENGINE ROUTING ====================
+// ── Routing: what counts as COMPLEX (→ Claude.ai) ─────────
+const COMPLEX_PATTERNS = /(write.*code|write.*apex|write.*trigger|write.*class|write.*component|write.*lwc|write.*aura|build.*app|create.*flow|debug|error.*fix|fix.*bug|deploy|architecture|integration|agentforce|data cloud|soql|apex|lwc|visualforce|batch|queueable|future.*method|rest.*api|callout|connected.*app|metadata|scratch.*org|devops|ci\/cd|github.*action|jenkins|ant.*migration|workbench|schema|permission.*set|profile.*access|field.*level|record.*type|validation.*rule|process.*builder|workflow|approval|formula|rollup|custom.*object|report.*type|dashboard|einstein|mulesoft|heroku|salesforce|invest.*plan|portfolio.*strateg|stock.*analysis|medical.*diagnos|legal.*advice|financial.*plan)/i;
+
+// ── What counts as SIMPLE (→ Gemini free) ──────────────
+const SIMPLE_PATTERNS = /(weather|temperature|rain|storm|forecast|ipl|cricket|score|match|runs|wicket|batsman|bowler|news|headlines|today.*news|latest.*news|stock.*price|share.*price|market.*today|food|restaurant|recipe|cook|hotel|flight|travel|trip|astrology|horoscope|rashi|nakshatra|nakshtra|lucky|today.*forecast|health.*tip|vitamin|exercise|movie|film|tollywood|telugu|hindi|music|song|joke|poem|story|hello|hi|who are you|what can you do|help|explain|define|what is|how does|tell me about|show me)/i;
+
 function getEngine(txt){
+  if(COMPLEX_PATTERNS.test(txt)) return 'Claude';
+  return 'Gemini';
+}
+
+function isComplexTask(txt){ return COMPLEX_PATTERNS.test(txt); }
+
+// Dummy to prevent old code errors
+const limits = { g:{used:0,max:1500}, c:{used:0,max:50}, m:{used:0,max:40} };
+function consumeLimit(eng){
+  const k = eng==='Gemini'?'g':eng==='Copilot'?'c':'m';
+  if(limits[k]) limits[k].used = Math.min(limits[k].max, limits[k].used+1);
+  const el = document.getElementById('rl-'+k);
+  if(el) el.textContent=(limits[k].max-limits[k].used)+' left';
+}
+// Old getEngine stub
+function getEngine_old(txt){
   const t = txt.toLowerCase();
-  if(/salesforce|apex|soql|lwc|agentforce|data cloud|architect|integr|dasha|nakshatra|rashi|horoscope|jyotish|telugu astro|invest plan|portfolio strat|medical diagnos|book.*doctor/i.test(t)) return 'Claude';
-  if(/code|debug|deploy|metadata|trigger|flow|error|technical|analysis|predict|strategy|query|sql|python|javascript/i.test(t)){
-    if(limits.m.used < limits.m.max) return 'Mistral';
-    return 'Claude';
-  }
-  if(/travel|flight|hotel|restaurant|food|plan a trip|suggest|recommend|shopping|news|politic|economy/i.test(t)){
-    if(limits.c.used < limits.c.max) return 'Copilot';
+  if(COMPLEX_PATTERNS.test(t)) return 'Claude';
+  if(limits.c.used < limits.c.max) return 'Copilot';
     if(limits.m.used < limits.m.max) return 'Mistral';
     return 'Claude';
   }
@@ -1015,30 +1040,81 @@ function consumeLimit(eng){
   document.getElementById('rl-' + k).textContent = (limits[k].max - limits[k].used) + ' left';
 }
 
-// ==================== GEMINI API (real free routing) ====================
+// ==================== GEMINI AI — FREE PRIMARY ENGINE ====================
+const KIRAN_SYS = `You are Kiran's AI Superman Edition — personal AI assistant for Kiran Allagadapa.
+Profile: Salesforce Architect & Practice Lead at Rackera Inc, McKinney TX 75070 (Dallas area).
+17 years IT experience, 12 years Salesforce, 14 certifications.
+Expert in: Data Cloud, Agentforce 3.0, LWC, Apex, SOQL, Integration Architecture, Communications Cloud.
+Personal: Kanya Rashi (Virgo), Hasta Nakshatra, Gemini Lagna, born Nov 29 1983, Venus Mahadasha.
+Interests: IPL cricket (MI fan), Tollywood films, Vedic astrology, Indian & US politics, Telugu food.
+Location: McKinney TX — knows local restaurants, weather, Dallas area.
+Style: warm, concise, deeply personalized. Use bullet points for lists. Bold key info.`;
+
 async function callGemini(prompt){
   try{
     const key = getGeminiKey();
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+    if(!key){ return null; }
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + key;
+    const fullPrompt = KIRAN_SYS + '\n\nUser question: ' + prompt;
     const res = await fetch(url,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{parts:[{text: KIRAN_GEMINI + '\n\nUser: ' + prompt}]}],
-        generationConfig:{maxOutputTokens:600,temperature:0.7}
+      body: JSON.stringify({
+        contents:[{role:'user', parts:[{text: fullPrompt}]}],
+        generationConfig:{maxOutputTokens:700, temperature:0.7, topK:40, topP:0.95}
       })
     });
-    const d = await res.json();
-    if(d.candidates?.[0]?.content?.parts?.[0]?.text){
-      return { reply: d.candidates[0].content.parts[0].text.trim(), engine:'Gemini' };
+    if(!res.ok){
+      const err = await res.json().catch(()=>({}));
+      console.warn('Gemini error:', res.status, err?.error?.message);
+      return null;
     }
+    const d = await res.json();
+    const text = d.candidates?.[0]?.content?.parts?.[0]?.text;
+    if(text) return { reply: text.trim(), engine:'Gemini' };
     return null;
-  } catch(e){ return null; }
+  } catch(e){
+    console.warn('callGemini error:', e.message);
+    return null;
+  }
 }
 
-const KIRAN_GEMINI = `You are Kiran's AI — personal assistant for Kiran Allagadapa, Salesforce Architect at Rackera Inc, McKinney TX. IPL cricket fan (MI), Kanya Rashi, loves Telugu food. Be warm and concise. Max 3 sentences for simple questions.`;
-
 // ==================== CLAUDE API ====================
+// ── Claude.ai redirect for complex tasks ────────────────────
+function redirectToClaude(question){
+  // Copy question to clipboard + open claude.ai
+  const msg = '🔄 Complex task detected! Opening **Claude.ai** with your question...\n\n' +
+    'Your question has been copied to clipboard. Paste it in Claude.ai (Ctrl+V or Cmd+V).\n\n' +
+    '💡 This uses your existing Claude.ai account — no extra cost!';
+  addMsg('ai', msg, 'Claude');
+
+  // Copy to clipboard
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(question).catch(()=>{});
+  } else {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = question;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+
+  // Open claude.ai after short delay
+  setTimeout(()=>{ window.open('https://claude.ai/new', '_blank'); }, 800);
+
+  // Show inline button too
+  setTimeout(()=>{
+    const msgs = document.getElementById('chat-messages');
+    const btn = document.createElement('div');
+    btn.style.cssText = 'display:flex;gap:8px;justify-content:flex-end;padding:4px 0 8px;max-width:720px;margin:0 auto;width:100%';
+    btn.innerHTML = '<button onclick="window.open('https://claude.ai/new','_blank')" style="background:#d97706;color:#fff;border:none;border-radius:9px;padding:8px 16px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit"><i class='ti ti-external-link'></i> Open Claude.ai now</button><button onclick="navigator.clipboard?.writeText(''+question.replace(/'/g,"\'")+'')" style="background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border);border-radius:9px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit"><i class='ti ti-copy'></i> Copy question</button>';
+    msgs.appendChild(btn);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1200);
+}
+
 // ── API Key management ──────────────────────────────────────
 function getClaudeKey(){ return localStorage.getItem('kai_claude_key') || ''; }
 function getGeminiKey(){ return localStorage.getItem('kai_gemini_key') || CFG.GEMINI_KEY; }
@@ -1115,28 +1191,28 @@ async function callClaude(userMsg){
 
 // Quick AI call (no history tracking, for module panels)
 async function quickAI(prompt, sys){
-  // Use Gemini for module AI features (free)
+  // Use Gemini first (free), Claude as backup
   try{
     const gKey = getGeminiKey();
-    const gUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + gKey;
-    const gSys = sys || 'Salesforce expert and personal assistant for Kiran Allagadapa at Rackera Inc, McKinney TX. Be concise and helpful.';
-    const gRes = await fetch(gUrl, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        contents:[{parts:[{text: gSys + '\n\nUser: ' + prompt}]}],
-        generationConfig:{maxOutputTokens:500,temperature:0.7}
-      })
-    });
-    if(gRes.ok){
-      const gData = await gRes.json();
-      if(gData.candidates?.[0]?.content?.parts?.[0]?.text){
-        return gData.candidates[0].content.parts[0].text.trim();
+    if(gKey && gKey.length > 10){
+      const gSys = sys || 'You are a helpful AI assistant for Kiran Allagadapa, Salesforce Architect McKinney TX. Be concise.';
+      const gUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + gKey;
+      const gRes = await fetch(gUrl, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          contents:[{role:'user', parts:[{text: gSys + '\n\n' + prompt}]}],
+          generationConfig:{maxOutputTokens:500, temperature:0.7}
+        })
+      });
+      if(gRes.ok){
+        const gData = await gRes.json();
+        const txt = gData.candidates?.[0]?.content?.parts?.[0]?.text;
+        if(txt) return txt.trim();
       }
     }
   } catch(e){ console.warn('quickAI Gemini failed:', e.message); }
-  // Fallback to Claude if user has key
   const apiKey = getClaudeKey();
-  if(!apiKey) return 'AI temporarily unavailable. Please try again.';
+  if(!apiKey) return 'AI temporarily unavailable. Check internet connection.';
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -1217,7 +1293,18 @@ async function sendMsg(){
   addMsg('user', txt);
   busy = true;
   showTyping();
-  // All queries go through Gemini — 100% FREE (1500/day)
+  // Smart routing: Complex tasks → Claude.ai | Simple tasks → Gemini (free)
+  const isComplex = isComplexTask(txt);
+
+  if(isComplex){
+    // Complex task: redirect to Claude.ai (user's existing subscription)
+    setActiveEngine('Claude');
+    removeTyping();
+    redirectToClaude(txt);
+    return;
+  }
+
+  // Simple task → Gemini FREE
   setActiveEngine('Gemini');
   consumeLimit('g');
   try{
@@ -1226,19 +1313,20 @@ async function sendMsg(){
     if(gResult){
       addMsg('ai', gResult.reply, 'Gemini');
     } else {
-      // Gemini failed — check if user has Claude key as backup
+      // Gemini API key issue — try Claude as backup
       const ck = getClaudeKey();
       if(ck){
         const c = await callClaude(txt);
         removeTyping();
-        addMsg('ai', c.reply, c.engine);
-        setActiveEngine(c.engine);
+        addMsg('ai', c.reply, 'Claude');
+        setActiveEngine('Claude');
       } else {
-        addMsg('ai', '⚠️ Gemini AI is temporarily unavailable. Please try again in a moment, or add a Claude API key in ⚙ Settings as backup.', 'Gemini');
+        addMsg('ai', '⚠️ Gemini is temporarily unavailable. Check your internet connection and try again. For complex tasks, click the Claude button to open Claude.ai.', 'Gemini');
       }
     }
   } catch(e){
     removeTyping();
+    console.error('sendMsg error:', e);
     addMsg('ai', '⚠️ Connection issue. Please check your internet and try again.', 'Gemini');
   }
   busy = false;
