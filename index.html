@@ -408,6 +408,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 @keyframes livepulse{0%,100%{opacity:1}50%{opacity:.3}}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
+
+/* ===== SETTINGS MODAL ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.hidden{display:none}
+.modal-box{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.3);overflow:hidden}
+.modal-head{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.modal-head h2{font-size:17px;font-weight:600;color:var(--text-primary);flex:1}
+.modal-close{background:none;border:none;font-size:20px;color:var(--text-tertiary);cursor:pointer;padding:4px;border-radius:6px;line-height:1}
+.modal-close:hover{color:var(--text-primary);background:var(--bg-hover)}
+.modal-body{padding:20px 24px}
+.modal-foot{padding:14px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.setting-group{margin-bottom:20px}
+.setting-label{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.setting-label i{font-size:14px;color:var(--accent)}
+.setting-desc{font-size:11.5px;color:var(--text-secondary);margin-bottom:8px;line-height:1.5}
+.setting-input{width:100%;background:var(--bg-base);border:1px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--text-primary);outline:none;font-family:var(--mono);transition:border-color .15s}
+.setting-input:focus{border-color:var(--accent)}
+.key-status{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:6px}
+.key-status.ok{color:#16a34a}
+.key-status.bad{color:#dc2626}
+.key-status.none{color:var(--text-tertiary)}
+.setup-banner{background:linear-gradient(135deg,rgba(217,119,6,0.1),rgba(124,58,237,0.1));border:1px solid var(--accent);border-radius:12px;padding:16px;margin-bottom:20px;text-align:center}
+.setup-banner h3{font-size:15px;font-weight:600;color:var(--text-primary);margin-bottom:6px}
+.setup-banner p{font-size:12.5px;color:var(--text-secondary);line-height:1.55}
+/* First run prompt */
+.first-run-banner{background:var(--bg-card);border:1px solid var(--accent);border-radius:12px;padding:14px 16px;margin:0 16px 14px;display:flex;align-items:flex-start;gap:10px}
+.first-run-banner.hidden{display:none}
+.frb-icon{font-size:22px;flex-shrink:0}
+.frb-text{flex:1}
+.frb-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:3px}
+.frb-desc{font-size:11.5px;color:var(--text-secondary);line-height:1.5}
+.frb-btns{display:flex;gap:6px;margin-top:8px}
 </style>
 </head>
 <body>
@@ -473,6 +505,7 @@ a:hover{text-decoration:underline}
       <div class="sf-role">Salesforce Architect · Rackera</div>
     </div>
     <button class="sf-theme" onclick="toggleTheme()" title="Toggle theme"><i class="ti ti-moon" id="theme-icon" style="font-size:17px"></i></button>
+    <button class="sf-theme" onclick="openSettings()" title="API Keys & Settings"><i class="ti ti-settings" style="font-size:17px"></i></button>
   </div>
 </div>
 
@@ -497,7 +530,19 @@ a:hover{text-decoration:underline}
     <!-- CHAT PANEL -->
     <div id="panel-chat" class="active" style="display:flex;flex-direction:column;height:100%">
       <div id="chat-messages">
-        <div id="welcome">
+        <div class="first-run-banner" id="first-run-banner">
+  <div class="frb-icon">🔑</div>
+  <div class="frb-text">
+    <div class="frb-title">Claude API key required for chat</div>
+    <div class="frb-desc">Kiran's AI needs your free Claude API key to power conversations. Get it free from console.anthropic.com — takes 2 minutes.</div>
+    <div class="frb-btns">
+      <button class="cbtn" style="font-size:11.5px" onclick="openSettings()"><i class="ti ti-settings"></i>Add API key now</button>
+      <button class="cbtn sec" style="font-size:11.5px" onclick="window.open('https://console.anthropic.com','_blank')"><i class="ti ti-external-link"></i>Get free key</button>
+      <button class="cbtn sec" style="font-size:11.5px" onclick="document.getElementById('first-run-banner').classList.add('hidden')">Dismiss</button>
+    </div>
+  </div>
+</div>
+<div id="welcome">
           <div class="wl-logo">K</div>
           <div class="wl-title">Good day, Kiran!</div>
           <div class="wl-sub">Your personal Superman AI — weather alerts, live stocks, cricket scores, news, astrology, health, travel, and full Salesforce toolkit. All in one place.</div>
@@ -763,6 +808,49 @@ LIMIT 10</textarea>
   </div><!-- end content -->
 </div><!-- end main -->
 
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay hidden" id="settings-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="wl-logo" style="width:32px;height:32px;font-size:12px;margin:0">K</div>
+      <h2>Kiran's AI — API Keys Setup</h2>
+      <button class="modal-close" onclick="closeSettings()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="setup-banner">
+        <h3>🔑 One-time setup required</h3>
+        <p>Enter your free API keys below. They are saved only on <strong>your device</strong> in localStorage — never sent anywhere else.</p>
+      </div>
+
+      <!-- Claude API Key -->
+      <div class="setting-group">
+        <div class="setting-label"><i class="ti ti-sparkles"></i>Claude AI Key <span style="font-size:10px;background:#fee2e2;color:#b91c1c;padding:1px 6px;border-radius:4px;margin-left:4px">Required for chat</span></div>
+        <div class="setting-desc">Get your free key from <strong>console.anthropic.com</strong> → API Keys → Create Key<br>Format: <code style="font-size:11px;background:var(--bg-base);padding:1px 5px;border-radius:3px">sk-ant-api03-...</code></div>
+        <input class="setting-input" id="key-claude" type="password" placeholder="sk-ant-api03-..." autocomplete="off" oninput="checkKey('claude')"/>
+        <div class="key-status none" id="status-claude"><i class="ti ti-circle" style="font-size:12px"></i> Not set — chat will not work</div>
+      </div>
+
+      <!-- Gemini Key -->
+      <div class="setting-group">
+        <div class="setting-label"><i class="ti ti-brand-google"></i>Gemini AI Key <span style="font-size:10px;background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:4px;margin-left:4px">Already set</span></div>
+        <div class="setting-desc">Used for free AI routing (simple queries). Get from <strong>aistudio.google.com</strong> if needed.</div>
+        <input class="setting-input" id="key-gemini" type="password" placeholder="AQ.Ab8RN6Keb..." autocomplete="off" oninput="checkKey('gemini')"/>
+        <div class="key-status ok" id="status-gemini"><i class="ti ti-circle-check" style="font-size:12px"></i> Set — Gemini routing active</div>
+      </div>
+
+      <div style="background:var(--bg-base);border-radius:9px;padding:12px;font-size:12px;color:var(--text-secondary);line-height:1.6;border:1px solid var(--border)">
+        🔒 <strong>Privacy:</strong> Keys saved in your browser's localStorage only.<br>
+        🆓 <strong>Cost:</strong> Claude free tier at console.anthropic.com — $5 free credits to start.<br>
+        📱 <strong>Works on:</strong> Any device where you open the app — set once per browser.
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="cbtn sec" onclick="closeSettings()">Cancel</button>
+      <button class="cbtn" onclick="saveKeys()"><i class="ti ti-device-floppy"></i>Save API keys</button>
+    </div>
+  </div>
+</div>
+
 <!-- MOBILE BOTTOM NAV -->
 <nav id="bottom-nav">
   <div class="bn-items">
@@ -783,7 +871,7 @@ const _k = (a,b,c) => a+b+c;
 const CFG = {
   WEATHER_KEY: _k('026638af04d1','47d59ff12102','6260106'),
   WEATHER_CITY: 'McKinney,TX',
-  STOCKS_KEY: _k('M4VLNS','HEAX','SNXMIP'),
+  STOCKS_KEY: _k('M4VLN','SHEAX','SNXMIP'),
   NEWS_KEY: _k('4ff11fc4e11c','4f4396da547a','b1209615'),
   CRICKET_KEY: _k('fa9e81cadfmsh6cd0b','fdff2d3c61p17a985','jsn239ed020c7a5'),
   CRICKET_HOST: 'cricbuzz-cricket.p.rapidapi.com',
@@ -805,6 +893,14 @@ const limits = { g: {used:0,max:60}, c: {used:0,max:50}, m: {used:0,max:40} };
 
 // ==================== INIT ====================
 window.onload = () => {
+  // Show/hide first-run banner based on saved key
+  const hasCKey = !!getClaudeKey();
+  const banner = document.getElementById('first-run-banner');
+  if(banner){ if(hasCKey) banner.classList.add('hidden'); }
+  // Update Gemini key from localStorage if available
+  const savedGemini = localStorage.getItem('kai_gemini_key');
+  if(savedGemini) CFG.GEMINI_KEY = savedGemini;
+
   loadLiveWeather();
   loadLiveNews();
   loadLiveCricket();
@@ -922,7 +1018,7 @@ function consumeLimit(eng){
 // ==================== GEMINI API (real free routing) ====================
 async function callGemini(prompt){
   try{
-    const key = CFG.GEMINI_KEY;
+    const key = getGeminiKey();
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
     const res = await fetch(url,{
       method:'POST',
@@ -943,13 +1039,71 @@ async function callGemini(prompt){
 const KIRAN_GEMINI = `You are Kiran's AI — personal assistant for Kiran Allagadapa, Salesforce Architect at Rackera Inc, McKinney TX. IPL cricket fan (MI), Kanya Rashi, loves Telugu food. Be warm and concise. Max 3 sentences for simple questions.`;
 
 // ==================== CLAUDE API ====================
+// ── API Key management ──────────────────────────────────────
+function getClaudeKey(){ return localStorage.getItem('kai_claude_key') || ''; }
+function getGeminiKey(){ return localStorage.getItem('kai_gemini_key') || CFG.GEMINI_KEY; }
+function saveKeys(){
+  const ck = document.getElementById('key-claude').value.trim();
+  const gk = document.getElementById('key-gemini').value.trim();
+  if(ck) localStorage.setItem('kai_claude_key', ck);
+  if(gk) localStorage.setItem('kai_gemini_key', gk);
+  closeSettings();
+  // Update CFG with saved gemini key
+  if(gk) CFG.GEMINI_KEY = gk;
+  // Hide first-run banner if key set
+  if(ck){ document.getElementById('first-run-banner')?.classList.add('hidden'); }
+  // Show success
+  addMsg('ai', '✅ API keys saved! Claude chat is now fully enabled. Try asking me anything.', 'Claude');
+}
+function openSettings(){
+  const modal = document.getElementById('settings-modal');
+  modal.classList.remove('hidden');
+  // Pre-fill saved keys (masked)
+  const ck = getClaudeKey();
+  const gk = localStorage.getItem('kai_gemini_key') || CFG.GEMINI_KEY;
+  if(ck){ document.getElementById('key-claude').value = ck; checkKey('claude'); }
+  document.getElementById('key-gemini').value = gk;
+  checkKey('gemini');
+}
+function closeSettings(){ document.getElementById('settings-modal').classList.add('hidden'); }
+function checkKey(type){
+  const val = document.getElementById('key-'+type).value.trim();
+  const el = document.getElementById('status-'+type);
+  if(type === 'claude'){
+    if(val.startsWith('sk-ant-')){ el.className='key-status ok'; el.innerHTML='<i class="ti ti-circle-check" style="font-size:12px"></i> Valid format — Claude chat enabled'; }
+    else if(val.length > 10){ el.className='key-status bad'; el.innerHTML='<i class="ti ti-alert-circle" style="font-size:12px"></i> Should start with sk-ant-...'; }
+    else{ el.className='key-status none'; el.innerHTML='<i class="ti ti-circle" style="font-size:12px"></i> Not set — chat will not work'; }
+  }
+  if(type === 'gemini'){
+    if(val.length > 20){ el.className='key-status ok'; el.innerHTML='<i class="ti ti-circle-check" style="font-size:12px"></i> Set — Gemini routing active'; }
+    else{ el.className='key-status none'; el.innerHTML='<i class="ti ti-circle" style="font-size:12px"></i> Not set'; }
+  }
+}
+// Close modal on overlay click
+document.addEventListener('click', e => { if(e.target.id === 'settings-modal') closeSettings(); });
+
 async function callClaude(userMsg){
+  const apiKey = getClaudeKey();
+  if(!apiKey){
+    return { reply: "⚠️ Claude API key not set. Please click the ⚙ Settings icon in the sidebar to add your free key from console.anthropic.com — it only takes 2 minutes!", engine:'Claude' };
+  }
   chatHistory.push({ role: 'user', content: userMsg });
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
     body: JSON.stringify({ model: CFG.CLAUDE_MODEL, max_tokens: 800, system: KIRAN, messages: chatHistory })
   });
+  if(!res.ok){
+    const err = await res.json().catch(()=>({}));
+    const msg = err?.error?.message || '';
+    if(res.status === 401) return { reply: '❌ Invalid Claude API key. Please check your key in ⚙ Settings — get a valid key from console.anthropic.com', engine:'Claude' };
+    throw new Error(msg || `HTTP ${res.status}`);
+  }
   const data = await res.json();
   let reply = data.content?.map(b => b.text || '').join('') || 'Sorry, could not respond.';
   const m = reply.match(/\[ENGINE:([^\]]+)\]/i);
@@ -961,9 +1115,16 @@ async function callClaude(userMsg){
 
 // Quick AI call (no history tracking, for module panels)
 async function quickAI(prompt, sys){
+  const apiKey = getClaudeKey();
+  if(!apiKey) return 'Please add your Claude API key in ⚙ Settings to enable AI features.';
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
     body: JSON.stringify({ model: CFG.CLAUDE_MODEL, max_tokens: 500,
       system: sys || 'Salesforce expert and personal assistant for Kiran Allagadapa at Rackera Inc, McKinney TX. Be concise.',
       messages: [{ role: 'user', content: prompt }] })
