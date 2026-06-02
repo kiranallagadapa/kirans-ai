@@ -409,6 +409,50 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 
+
+/* ── AI Selector (like Claude model picker) ──────────── */
+.ai-selector-btn{
+  display:flex;align-items:center;gap:5px;
+  background:var(--bg-base);border:1px solid var(--border);
+  border-radius:20px;padding:5px 10px;
+  font-size:12px;font-weight:500;color:var(--text-secondary);
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+  font-family:inherit;transition:all .15s;
+}
+.ai-selector-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(217,119,6,0.05)}
+.ai-selector-btn .ai-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ai-selector-btn i{font-size:12px}
+
+/* Dropdown popup */
+.ai-dropdown{
+  position:absolute;bottom:calc(100% + 8px);left:0;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:12px;padding:6px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.15);
+  z-index:500;min-width:240px;
+  display:none;
+}
+[data-theme="dark"] .ai-dropdown{box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.ai-dropdown.open{display:block}
+.ai-dropdown-header{font-size:10.5px;font-weight:600;color:var(--text-tertiary);
+  text-transform:uppercase;letter-spacing:.06em;padding:4px 8px 6px;}
+.ai-option{display:flex;align-items:center;gap:9px;padding:8px 10px;
+  border-radius:8px;cursor:pointer;transition:background .12s;}
+.ai-option:hover{background:var(--bg-hover)}
+.ai-option.selected{background:rgba(217,119,6,0.08);border:1px solid rgba(217,119,6,0.2)}
+.ai-option.selected .ao-name{color:var(--accent)}
+.ao-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ao-info{flex:1}
+.ao-name{font-size:12.5px;font-weight:500;color:var(--text-primary)}
+.ao-label{font-size:10.5px;color:var(--text-secondary);margin-top:1px}
+.ao-badge{font-size:9.5px;padding:2px 7px;border-radius:10px;flex-shrink:0}
+.ao-badge.free{background:#dcfce7;color:#15803d}
+.ao-badge.fallback{background:#fef3c7;color:#92400e}
+.ao-badge.nokey{background:var(--bg-base);color:var(--text-tertiary);border:1px solid var(--border)}
+[data-theme="dark"] .ao-badge.free{background:rgba(21,128,61,0.2);color:#4ade80}
+[data-theme="dark"] .ao-badge.fallback{background:rgba(146,64,14,0.2);color:#fbbf24}
+.ai-dropdown-footer{padding:6px 8px 2px;border-top:1px solid var(--border);margin-top:4px;font-size:10.5px;color:var(--text-tertiary);display:flex;align-items:center;gap:4px}
+.ai-selector-wrap{position:relative}
 /* ===== SETTINGS MODAL ===== */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
 .modal-overlay.hidden{display:none}
@@ -575,6 +619,43 @@ a:hover{text-decoration:underline}
           </div>
           <div id="mic-status"><i class="ti ti-microphone" style="font-size:12px"></i><span id="mic-txt">Listening... speak now</span></div>
           <div class="input-row">
+            <!-- AI Selector — like Claude model picker -->
+            <div class="ai-selector-wrap">
+              <button class="ai-selector-btn" id="ai-selector-btn" onclick="toggleAIDropdown(event)" title="Select AI engine">
+                <div class="ai-dot" id="selector-dot" style="background:#22c55e"></div>
+                <span id="selector-label">Gemini</span>
+                <i class="ti ti-chevron-up" id="selector-chevron" style="font-size:11px"></i>
+              </button>
+              <div class="ai-dropdown" id="ai-dropdown">
+                <div class="ai-dropdown-header">Select AI Engine</div>
+                <div class="ai-option selected" id="opt-gemini" onclick="selectAI('gemini')">
+                  <div class="ao-dot" style="background:#22c55e"></div>
+                  <div class="ao-info"><div class="ao-name">Gemini</div><div class="ao-label">Google · 1.5 Flash · Built-in</div></div>
+                  <span class="ao-badge free" id="badge-gemini">0/1500</span>
+                </div>
+                <div class="ai-option" id="opt-groq" onclick="selectAI('groq')">
+                  <div class="ao-dot" style="background:#555" id="odot-groq"></div>
+                  <div class="ao-info"><div class="ao-name">Groq</div><div class="ao-label">Llama 3.3 70B · console.groq.com</div></div>
+                  <span class="ao-badge nokey" id="badge-groq">No key</span>
+                </div>
+                <div class="ai-option" id="opt-mistral" onclick="selectAI('mistral')">
+                  <div class="ao-dot" style="background:#555" id="odot-mistral"></div>
+                  <div class="ao-info"><div class="ao-name">Mistral</div><div class="ao-label">Small Latest · console.mistral.ai</div></div>
+                  <span class="ao-badge nokey" id="badge-mistral">No key</span>
+                </div>
+                <div class="ai-option" id="opt-cohere" onclick="selectAI('cohere')">
+                  <div class="ao-dot" style="background:#555" id="odot-cohere"></div>
+                  <div class="ao-info"><div class="ao-name">Cohere</div><div class="ao-label">Command-R · dashboard.cohere.com</div></div>
+                  <span class="ao-badge nokey" id="badge-cohere">No key</span>
+                </div>
+                <div class="ai-option" id="opt-claude" onclick="selectAI('claude')">
+                  <div class="ao-dot" style="background:#d97706" id="odot-claude"></div>
+                  <div class="ao-info"><div class="ao-name">Claude</div><div class="ao-label">Opens claude.ai · Your account</div></div>
+                  <span class="ao-badge fallback">Fallback</span>
+                </div>
+                <div class="ai-dropdown-footer"><i class="ti ti-settings" style="font-size:12px"></i><span>Add API keys in</span><span style="color:var(--accent);cursor:pointer" onclick="closeAIDropdown();openSettings()">⚙ Settings</span></div>
+              </div>
+            </div>
             <textarea id="chat-input" rows="1" placeholder="Message Kiran's AI..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
             <button class="input-btn mic" id="mic-btn" onclick="toggleMic()" title="Voice input (Ctrl+M)"><i class="ti ti-microphone" id="mic-icon" style="font-size:17px"></i></button>
             <button class="input-btn send" id="send-btn" onclick="sendMsg()"><i class="ti ti-arrow-up" style="font-size:17px;font-weight:700"></i></button>
@@ -890,53 +971,52 @@ LIMIT 10</textarea>
 
 <script>
 // ═══════════════════════════════════════════════════════════════
-// KIRAN'S AI SUPERMAN EDITION — Complete JS
-// Smart AI Routing: Gemini → Groq → Mistral → Cohere → Claude
+// KIRAN'S AI — FINAL COMPLETE JS
+// Smart routing: Gemini → Groq → Mistral → Cohere → Claude
+// AI selector in input bar + manual override in chat
 // ═══════════════════════════════════════════════════════════════
 
-// ── CONFIG ───────────────────────────────────────────────────
-const _k = (a,b,c) => a+b+c;
-const CFG = {
-  WEATHER_KEY:  _k('026638af04d1','47d59ff12102','6260106'),
-  WEATHER_CITY: 'McKinney,TX',
-  STOCKS_KEY:   _k('M4VLN','SHEAX','SNXMIP'),
-  CRICKET_KEY:  _k('fa9e81cadfmsh6cd0b','fdff2d3c61p17a985','jsn239ed020c7a5'),
-  CRICKET_HOST: 'cricbuzz-cricket.p.rapidapi.com',
-  GEMINI_KEY:   _k('AQ.Ab8RN6KebRzag1bI9SoDx3dLx9','AZF7tqN0kpHMQ7','Xbmf7cdU_g'),
-  CLAUDE_MODEL: 'claude-sonnet-4-20250514',
+const _k=(a,b,c)=>a+b+c;
+const CFG={
+  WEATHER_KEY: _k('026638af04d1','47d59ff12102','6260106'),
+  WEATHER_CITY:'McKinney,TX',
+  STOCKS_KEY:  _k('M4VLN','SHEAX','SNXMIP'),
+  CRICKET_KEY: _k('fa9e81cadfmsh6cd0b','fdff2d3c61p17a985','jsn239ed020c7a5'),
+  CRICKET_HOST:'cricbuzz-cricket.p.rapidapi.com',
+  GEMINI_KEY:  _k('AQ.Ab8RN6KebRzag1bI9SoDx3dLx9','AZF7tqN0kpHMQ7','Xbmf7cdU_g'),
+  CLAUDE_MODEL:'claude-sonnet-4-20250514',
 };
 
-// ── KIRAN'S AI SYSTEM PROMPT ─────────────────────────────────
-const KIRAN_SYS = `You are Kiran's AI Superman Edition — personal AI for Kiran Allagadapa.
+const KIRAN_SYS=`You are Kiran's AI Superman Edition — personal AI for Kiran Allagadapa.
 Salesforce Architect & Practice Lead at Rackera Inc, McKinney TX 75070 (Dallas area).
 17 years IT experience, 12 years Salesforce, 14 certifications.
-Expert in: Data Cloud, Agentforce 3.0, LWC, Apex, SOQL, Integration Architecture, Communications Cloud.
+Expert: Data Cloud, Agentforce 3.0, LWC, Apex, SOQL, Integration Architecture, Communications Cloud.
 Personal: Kanya Rashi, Hasta Nakshatra, Gemini Lagna, born Nov 29 1983, Venus Mahadasha.
-Interests: IPL cricket (Mumbai Indians fan), Tollywood films, Vedic astrology, Indian & US politics, Telugu food.
-Location: McKinney TX — knows local weather, restaurants, Dallas area, DFW airport.
-Style: warm, concise, deeply personalized. Use **bold** for key points. Bullet points for lists.`;
+Interests: IPL cricket (MI fan), Tollywood films, Vedic astrology, Indian & US politics, Telugu food.
+Location: McKinney TX — knows local weather, restaurants, Dallas area.
+Style: warm, concise, personalized. Use **bold** for key points. Bullet points for lists.`;
 
-// ── AI ENGINE DEFINITIONS ─────────────────────────────────────
-const ENGINES = {
-  gemini:  { name:'Gemini',  label:'Google Gemini 1.5 Flash', limit:1500, color:'#22c55e', free:true  },
-  groq:    { name:'Groq',    label:'Groq · Llama 3.3 70B',    limit:500,  color:'#a855f7', free:true  },
-  mistral: { name:'Mistral', label:'Mistral Small Latest',     limit:100,  color:'#f59e0b', free:true  },
-  cohere:  { name:'Cohere',  label:'Cohere Command-R',         limit:1000, color:'#06b6d4', free:true  },
-  claude:  { name:'Claude',  label:'Claude AI (fallback)',     limit:9999, color:'#d97706', free:false },
+// ── Engine definitions ────────────────────────────────────────
+const ENGINES={
+  gemini: {name:'Gemini', label:'Google Gemini 1.5 Flash',limit:1500,color:'#22c55e',free:true},
+  groq:   {name:'Groq',   label:'Groq · Llama 3.3 70B',  limit:500, color:'#a855f7',free:true},
+  mistral:{name:'Mistral',label:'Mistral Small Latest',   limit:100, color:'#f59e0b',free:true},
+  cohere: {name:'Cohere', label:'Cohere Command-R',       limit:1000,color:'#06b6d4',free:true},
+  claude: {name:'Claude', label:'Claude AI',              limit:9999,color:'#d97706',free:false},
 };
 
-// ── DAILY USAGE (localStorage per day) ───────────────────────
-const TODAY_KEY = new Date().toDateString();
+// ── Daily usage tracking ──────────────────────────────────────
+const TODAY_KEY=new Date().toDateString();
 function getUsage(){
   try{
-    const s = JSON.parse(localStorage.getItem('kai_usage')||'{}');
-    if(s.date !== TODAY_KEY) return {date:TODAY_KEY,gemini:0,groq:0,mistral:0,cohere:0,claude:0};
+    const s=JSON.parse(localStorage.getItem('kai_usage')||'{}');
+    if(s.date!==TODAY_KEY) return{date:TODAY_KEY,gemini:0,groq:0,mistral:0,cohere:0,claude:0};
     return s;
-  }catch(e){ return {date:TODAY_KEY,gemini:0,groq:0,mistral:0,cohere:0,claude:0}; }
+  }catch(e){return{date:TODAY_KEY,gemini:0,groq:0,mistral:0,cohere:0,claude:0};}
 }
-function bumpUsage(id){ const u=getUsage(); u[id]=(u[id]||0)+1; localStorage.setItem('kai_usage',JSON.stringify(u)); }
+function bumpUsage(id){const u=getUsage();u[id]=(u[id]||0)+1;localStorage.setItem('kai_usage',JSON.stringify(u));}
 
-// ── API KEYS (localStorage + built-in) ───────────────────────
+// ── API key management ────────────────────────────────────────
 function getEngineKey(id){
   if(id==='gemini')  return localStorage.getItem('kai_gemini_key')  || CFG.GEMINI_KEY;
   if(id==='groq')    return localStorage.getItem('kai_groq_key')    || '';
@@ -945,122 +1025,192 @@ function getEngineKey(id){
   if(id==='claude')  return localStorage.getItem('kai_claude_key')  || '';
   return '';
 }
-const getClaudeKey = () => getEngineKey('claude');
-const getGeminiKey = () => getEngineKey('gemini');
+const getClaudeKey=()=>getEngineKey('claude');
+const getGeminiKey=()=>getEngineKey('gemini');
 
-// ── AUTO ENGINE PICKER ────────────────────────────────────────
-function getAutoEngine(){
-  const u = getUsage();
-  for(const id of ['gemini','groq','mistral','cohere']){
-    const key = getEngineKey(id);
-    if(key && (u[id]||0) < ENGINES[id].limit) return id;
-  }
-  return 'claude'; // final fallback
+// ── Current selected AI ───────────────────────────────────────
+let selectedEngine='auto'; // 'auto' or engine id
+
+function getActiveEngine(){
+  if(selectedEngine!=='auto') return selectedEngine;
+  return getAutoEngine();
 }
 
-// ── MANUAL ENGINE STATE ───────────────────────────────────────
-let manualEngine = null;
+function getAutoEngine(){
+  const u=getUsage();
+  for(const id of ['gemini','groq','mistral','cohere']){
+    const key=getEngineKey(id);
+    if(key&&key.length>5&&(u[id]||0)<ENGINES[id].limit) return id;
+  }
+  return 'claude';
+}
+
+// ── AI Selector dropdown ──────────────────────────────────────
+let dropdownOpen=false;
+
+function toggleAIDropdown(e){
+  e.stopPropagation();
+  dropdownOpen=!dropdownOpen;
+  const dd=document.getElementById('ai-dropdown');
+  const ch=document.getElementById('selector-chevron');
+  if(dd) dd.classList.toggle('open',dropdownOpen);
+  if(ch) ch.className=dropdownOpen?'ti ti-chevron-down':'ti ti-chevron-up';
+  if(dropdownOpen) refreshDropdown();
+}
+
+function closeAIDropdown(){
+  dropdownOpen=false;
+  document.getElementById('ai-dropdown')?.classList.remove('open');
+  const ch=document.getElementById('selector-chevron');
+  if(ch) ch.className='ti ti-chevron-up';
+}
+
+document.addEventListener('click',e=>{
+  if(dropdownOpen&&!e.target.closest('.ai-selector-wrap')) closeAIDropdown();
+  if(e.target.id==='settings-modal') closeSettings();
+});
+
+function selectAI(id){
+  selectedEngine=id;
+  closeAIDropdown();
+  updateSelectorBtn();
+  refreshDropdown();
+  // Show confirmation in chat
+  const label=id==='auto'?'Auto routing':'Using '+ENGINES[id]?.name;
+  const sub=id==='auto'?'Gemini → Groq → Mistral → Cohere → Claude':ENGINES[id]?.label;
+  addMsg('ai','✅ **'+label+'** selected.
+'+sub,'System');
+}
+
+function updateSelectorBtn(){
+  const active=getActiveEngine();
+  const eng=ENGINES[active]||ENGINES.gemini;
+  const key=getEngineKey(active);
+  const dot=document.getElementById('selector-dot');
+  const lbl=document.getElementById('selector-label');
+  if(dot) dot.style.background=eng.color;
+  if(lbl) lbl.textContent=selectedEngine==='auto'?'Auto · '+eng.name:eng.name;
+}
+
+function refreshDropdown(){
+  const u=getUsage();
+  const active=getActiveEngine();
+  Object.keys(ENGINES).forEach(id=>{
+    const opt=document.getElementById('opt-'+id);
+    const badge=document.getElementById('badge-'+id);
+    const odot=document.getElementById('odot-'+id);
+    const key=getEngineKey(id);
+    const used=u[id]||0;
+    const hasKey=key&&key.length>5;
+    const full=used>=ENGINES[id].limit;
+    if(opt){
+      opt.classList.toggle('selected',
+        selectedEngine===id||(selectedEngine==='auto'&&id===active));
+    }
+    if(badge){
+      if(id==='claude'){
+        badge.textContent=hasKey?'API key':'Opens claude.ai';
+        badge.className='ao-badge '+(hasKey?'free':'fallback');
+      } else if(!hasKey){
+        badge.textContent='No key';
+        badge.className='ao-badge nokey';
+      } else if(full){
+        badge.textContent='Quota full';
+        badge.className='ao-badge fallback';
+      } else {
+        badge.textContent=used+'/'+ENGINES[id].limit;
+        badge.className='ao-badge free';
+      }
+    }
+    if(odot) odot.style.background=!hasKey&&id!=='claude'?'#555':full?'#ef4444':ENGINES[id].color;
+  });
+}
+
+// ── Sidebar routing UI ────────────────────────────────────────
+function updateRoutingUI(){
+  const u=getUsage();
+  const active=getActiveEngine();
+  Object.keys(ENGINES).forEach(id=>{
+    const used=u[id]||0;
+    const key=getEngineKey(id);
+    const pct=used/ENGINES[id].limit;
+    const dot=document.getElementById('dot-'+id);
+    const cnt=document.getElementById('cnt-'+id);
+    const row=document.getElementById('row-'+id);
+    if(dot){
+      dot.style.background=
+        !key&&id!=='claude'?'#555':
+        pct>=1?'#ef4444':pct>=0.8?'#f59e0b':ENGINES[id].color;
+    }
+    if(cnt) cnt.textContent=id==='claude'?'∞':used+'/'+ENGINES[id].limit;
+    if(row) row.style.background=active===id?'rgba(217,119,6,0.12)':'';
+  });
+  const sl=document.getElementById('eng-status');
+  if(sl) sl.textContent=(selectedEngine==='auto'?'Auto: ':'Manual: ')+ENGINES[active]?.name+' active';
+  updateSelectorBtn();
+  refreshDropdown();
+}
 
 function setManualMode(id){
-  manualEngine = id;
+  selectedEngine=id||'auto';
   updateRoutingUI();
-  const sl = document.getElementById('eng-status');
-  const ml = document.getElementById('routing-mode-lbl');
+  const modeEl=document.getElementById('routing-mode-lbl');
+  if(modeEl){
+    if(id){ modeEl.textContent='Manual ✕'; modeEl.style.color='#ef4444'; }
+    else   { modeEl.textContent='Auto ↺';  modeEl.style.color='#d97706'; }
+  }
+  document.getElementById('manual-chip')?.remove();
   if(id){
-    if(sl) sl.textContent = 'Manual: ' + ENGINES[id]?.name + ' locked';
-    if(ml){ ml.textContent='Manual ✕'; ml.style.color='#ef4444'; }
-    // chip in input area
-    document.getElementById('manual-chip')?.remove();
-    const ia = document.getElementById('input-area');
+    const ia=document.getElementById('input-area');
     if(ia){
-      const chip = document.createElement('div');
+      const chip=document.createElement('div');
       chip.id='manual-chip';
-      chip.style.cssText='display:inline-flex;align-items:center;gap:5px;background:rgba(217,119,6,0.15);border:1px solid #d97706;border-radius:20px;padding:3px 10px;font-size:11px;color:#d97706;margin:5px 10px 0;cursor:pointer';
-      chip.innerHTML='<i class="ti ti-robot" style="font-size:12px"></i> Using '+ENGINES[id]?.name+' <span style="opacity:.6;font-size:9px">· tap to reset</span>';
-      chip.onclick = ()=> setManualMode(null);
-      ia.insertBefore(chip, ia.firstChild);
+      chip.style.cssText='display:inline-flex;align-items:center;gap:5px;background:rgba(217,119,6,0.12);border:1px solid #d97706;border-radius:20px;padding:3px 10px;font-size:11px;color:#d97706;margin:4px 10px 0;cursor:pointer;width:fit-content';
+      chip.innerHTML='<i class="ti ti-robot" style="font-size:12px"></i>'+ENGINES[id]?.name+' locked · <span style="opacity:.6;font-size:9px">tap to reset</span>';
+      chip.onclick=()=>{ selectedEngine='auto'; document.getElementById('manual-chip')?.remove(); updateRoutingUI(); };
+      ia.insertBefore(chip,ia.firstChild);
     }
-  } else {
-    document.getElementById('manual-chip')?.remove();
-    if(sl) sl.textContent='Auto routing active';
-    if(ml){ ml.textContent='Auto ↺'; ml.style.color='#d97706'; }
   }
 }
 
-// ── ROUTING UI UPDATE ─────────────────────────────────────────
-function updateRoutingUI(){
-  const u = getUsage();
-  const active = manualEngine || getAutoEngine();
-  Object.keys(ENGINES).forEach(id => {
-    const used = u[id]||0;
-    const key  = getEngineKey(id);
-    const pct  = used / ENGINES[id].limit;
-    const dot  = document.getElementById('dot-'+id);
-    const cnt  = document.getElementById('cnt-'+id);
-    const row  = document.getElementById('row-'+id);
-    if(dot){
-      let cls = manualEngine===id ? 'manual' :
-                !key && id!=='claude' ? 'nokey' :
-                pct>=1 ? 'full' : pct>=0.8 ? 'warn' : 'ok';
-      dot.className = 'r-eng-dot '+cls;
-      dot.style.background = cls==='manual' ? '#d97706' :
-                             cls==='full'   ? '#ef4444' :
-                             cls==='warn'   ? '#f59e0b' :
-                             cls==='ok'     ? ENGINES[id].color :
-                             '#555';
-    }
-    if(cnt) cnt.textContent = id==='claude' ? '∞' : used+'/'+ENGINES[id].limit;
-    if(row) row.style.background = active===id ? 'rgba(217,119,6,0.12)' : '';
-  });
-  // Footer
-  const el = document.getElementById('active-eng');
-  if(el) el.textContent = (manualEngine?'Manual: ':'') + (ENGINES[active]?.name||active);
-  const sl = document.getElementById('eng-status');
-  if(sl) sl.textContent = (manualEngine?'Manual: ':'Auto: ') + (ENGINES[active]?.name||active) + ' active';
-}
-
-// ── DETECT MANUAL OVERRIDE IN CHAT ───────────────────────────
+// ── Detect override in chat ───────────────────────────────────
 function detectOverride(txt){
-  const t = txt.trim().toLowerCase();
-  const patterns = [
-    [/^(@|use |switch to |ask |with |#)?\s*gemini/i, 'gemini'],
-    [/^(@|use |switch to |ask |with |#)?\s*groq/i,   'groq'],
-    [/^(@|use |switch to |ask |with |#)?\s*llama/i,  'groq'],
-    [/^(@|use |switch to |ask |with |#)?\s*mistral/i,'mistral'],
-    [/^(@|use |switch to |ask |with |#)?\s*cohere/i, 'cohere'],
-    [/^(@|use |switch to |ask |with |#)?\s*claude/i, 'claude'],
-    [/^(@|use |switch to |ask |with |#)?\s*auto/i,   null],
-  ];
-  for(const [re,id] of patterns){
-    if(re.test(t)) return id === undefined ? 'reset' : id;
-  }
+  const t=txt.trim().toLowerCase();
+  if(/^(@|use |switch to |ask |#|route to |\/)?\s*(gemini|google)/i.test(t)) return 'gemini';
+  if(/^(@|use |switch to |ask |#|route to |\/)?\s*(groq|llama)/i.test(t))    return 'groq';
+  if(/^(@|use |switch to |ask |#|route to |\/)?\s*(mistral)/i.test(t))       return 'mistral';
+  if(/^(@|use |switch to |ask |#|route to |\/)?\s*(cohere)/i.test(t))        return 'cohere';
+  if(/^(@|use |switch to |ask |#|route to |\/)?\s*(claude|anthropic)/i.test(t)) return 'claude';
+  if(/^(auto|reset|automatic)/i.test(t)) return 'reset';
   return null;
 }
-
-// ── COMPLEX TASK DETECTION (→ auto escalate to Claude) ────────
-const COMPLEX = /\b(write\s+(an?\s+)?(apex\s+(trigger|class|batch|queueable)|lwc\s+component|aura\s+component|rest\s+api|integration)|debug\s+(this|my|the)\s*(code|class|trigger|flow)|fix\s+(this|my|the)\s*(bug|error|issue)|build\s+(an?\s+)?(integration|connector|app\s+with\s+code)|soql\s+(query\s+for|optimization|tuning)|deployment\s+(strategy|plan|pipeline)|ci\/cd\s+pipeline|scratch\s+org\s+setup|connected\s+app\s+(setup|config)|oauth\s+(implementation|setup)|metadata\s+(api|deployment)|investment\s+(portfolio|strategy|plan)|financial\s+(planning|advice))\b/i;
 
 // ═══════════════════════════════════════════════════════════════
 // AI CALLERS
 // ═══════════════════════════════════════════════════════════════
-
 async function callGemini(prompt){
-  const key = getEngineKey('gemini');
-  if(!key) return null;
+  const key=getEngineKey('gemini');
+  if(!key||key.length<10) return null;
   try{
     const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+key;
-    const res = await fetch(url,{
-      method:'POST', headers:{'Content-Type':'application/json'},
+    const res=await fetch(url,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         contents:[{role:'user',parts:[{text:KIRAN_SYS+'\n\nUser: '+prompt}]}],
         generationConfig:{maxOutputTokens:700,temperature:0.7}
       })
     });
-    if(!res.ok){ const e=await res.json().catch(()=>({})); console.warn('Gemini',res.status,e?.error?.message); return null; }
+    if(!res.ok){
+      const e=await res.json().catch(()=>({}));
+      console.warn('Gemini error',res.status,e?.error?.message||'');
+      return null;
+    }
     const d=await res.json();
     const t=d.candidates?.[0]?.content?.parts?.[0]?.text;
-    return t?{reply:t.trim(),engine:'Gemini'}:null;
-  }catch(e){ console.warn('Gemini:',e.message); return null; }
+    if(!t) return null;
+    return{reply:t.trim(),engine:'Gemini'};
+  }catch(e){console.warn('callGemini:',e.message);return null;}
 }
 
 async function callGroq(prompt){
@@ -1072,11 +1222,11 @@ async function callGroq(prompt){
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
       body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'system',content:KIRAN_SYS},{role:'user',content:prompt}],max_tokens:700,temperature:0.7})
     });
-    if(!res.ok){ const e=await res.json().catch(()=>({})); console.warn('Groq',res.status,e?.error?.message); return null; }
+    if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('Groq',res.status,e?.error?.message||'');return null;}
     const d=await res.json();
     const t=d.choices?.[0]?.message?.content;
     return t?{reply:t.trim(),engine:'Groq'}:null;
-  }catch(e){ console.warn('Groq:',e.message); return null; }
+  }catch(e){console.warn('callGroq:',e.message);return null;}
 }
 
 async function callMistral(prompt){
@@ -1088,11 +1238,11 @@ async function callMistral(prompt){
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
       body:JSON.stringify({model:'mistral-small-latest',messages:[{role:'system',content:KIRAN_SYS},{role:'user',content:prompt}],max_tokens:700,temperature:0.7})
     });
-    if(!res.ok){ const e=await res.json().catch(()=>({})); console.warn('Mistral',res.status,e?.error?.message); return null; }
+    if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('Mistral',res.status,e?.error?.message||'');return null;}
     const d=await res.json();
     const t=d.choices?.[0]?.message?.content;
     return t?{reply:t.trim(),engine:'Mistral'}:null;
-  }catch(e){ console.warn('Mistral:',e.message); return null; }
+  }catch(e){console.warn('callMistral:',e.message);return null;}
 }
 
 async function callCohere(prompt){
@@ -1104,16 +1254,16 @@ async function callCohere(prompt){
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'accept':'application/json'},
       body:JSON.stringify({model:'command-r',preamble:KIRAN_SYS,message:prompt,max_tokens:700,temperature:0.7})
     });
-    if(!res.ok){ const e=await res.json().catch(()=>({})); console.warn('Cohere',res.status,e?.message); return null; }
+    if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('Cohere',res.status,e?.message||'');return null;}
     const d=await res.json();
     const t=d.text;
     return t?{reply:t.trim(),engine:'Cohere'}:null;
-  }catch(e){ console.warn('Cohere:',e.message); return null; }
+  }catch(e){console.warn('callCohere:',e.message);return null;}
 }
 
 async function callClaude(prompt){
   const key=getClaudeKey();
-  if(!key) return {reply:null,engine:'Claude',redirect:true};
+  if(!key) return{reply:null,engine:'Claude',redirect:true};
   try{
     chatHistory.push({role:'user',content:prompt});
     const res=await fetch('https://api.anthropic.com/v1/messages',{
@@ -1123,115 +1273,113 @@ async function callClaude(prompt){
     });
     if(!res.ok){
       const e=await res.json().catch(()=>({}));
-      if(res.status===401) return {reply:'❌ Invalid Claude API key. Update in ⚙ Settings.',engine:'Claude'};
+      if(res.status===401) return{reply:'❌ Invalid Claude API key. Update in ⚙ Settings.',engine:'Claude'};
       throw new Error(e?.error?.message||'HTTP '+res.status);
     }
     const d=await res.json();
     let reply=d.content?.map(b=>b.text||'').join('')||'No response.';
     reply=reply.replace(/\[ENGINE:[^\]]+\]/gi,'').trim();
     chatHistory.push({role:'assistant',content:reply});
-    return {reply,engine:'Claude'};
-  }catch(e){ console.warn('Claude:',e.message); return {reply:null,engine:'Claude',redirect:true}; }
-}
-
-// ── Call single engine + track usage ─────────────────────────
-async function callEngine(id, prompt){
-  bumpUsage(id);
-  updateRoutingUI();
-  switch(id){
-    case 'gemini':  return await callGemini(prompt);
-    case 'groq':    return await callGroq(prompt);
-    case 'mistral': return await callMistral(prompt);
-    case 'cohere':  return await callCohere(prompt);
-    case 'claude':  return await callClaude(prompt);
-    default:        return await callGemini(prompt);
+    return{reply,engine:'Claude'};
+  }catch(e){
+    console.warn('Claude:',e.message);
+    return{reply:null,engine:'Claude',redirect:true};
   }
 }
 
-// ── Try engines in fallback order ─────────────────────────────
-async function callWithFallback(prompt, startId){
-  const order = ['gemini','groq','mistral','cohere','claude'];
-  const start = order.indexOf(startId);
-  for(let i = start; i < order.length; i++){
-    const id = order[i];
+// ── Try engines in order until one works ─────────────────────
+async function tryEnginesFrom(startId, prompt){
+  const order=['gemini','groq','mistral','cohere','claude'];
+  const si=Math.max(0,order.indexOf(startId));
+  for(let i=si;i<order.length;i++){
+    const id=order[i];
+    const key=getEngineKey(id);
+    const u=getUsage();
+    if(id!=='claude'&&(!key||key.length<5||(u[id]||0)>=ENGINES[id].limit)) continue;
     if(id==='claude'){
-      const r = await callEngine('claude', prompt);
-      return r || {reply:null, engine:'Claude', redirect:true};
+      const r=await callClaude(prompt);
+      return r;
     }
-    const key = getEngineKey(id);
-    const u   = getUsage();
-    if(!key || (u[id]||0) >= ENGINES[id].limit) continue;
-    const r = await callEngine(id, prompt);
-    if(r?.reply) return r;
-    console.log(ENGINES[id].name+' failed, trying next...');
+    bumpUsage(id);
+    let r=null;
+    switch(id){
+      case 'gemini':  r=await callGemini(prompt); break;
+      case 'groq':    r=await callGroq(prompt);   break;
+      case 'mistral': r=await callMistral(prompt);break;
+      case 'cohere':  r=await callCohere(prompt); break;
+    }
+    if(r?.reply){
+      if(id!==startId) r.reply='_('+ENGINES[startId]?.name+' unavailable → '+ENGINES[id]?.name+')_\n\n'+r.reply;
+      return r;
+    }
+    console.log(ENGINES[id]?.name+' failed, trying next...');
   }
-  return {reply:null, engine:'Claude', redirect:true};
+  return{reply:null,engine:'Claude',redirect:true};
 }
 
 // ── Claude.ai redirect ────────────────────────────────────────
 function redirectToClaude(question){
-  const escapedQ = question.replace(/'/g,"\\'").replace(/`/g,"'");
-  const msg='🔄 **Redirecting to Claude.ai** — your question is copied to clipboard.\n\nPaste it in Claude.ai (Ctrl+V). No extra cost — uses your existing Claude account!';
-  addMsg('ai', msg, 'Claude');
+  const q=question.replace(/'/g,"\'");
+  const msg='🔄 **Opening Claude.ai** — question copied to clipboard.\n\nPaste (Ctrl+V) into Claude.ai. Uses your existing account, no extra cost!';
+  addMsg('ai',msg,'Claude');
   if(navigator.clipboard) navigator.clipboard.writeText(question).catch(()=>{});
   setTimeout(()=>{
     const div=document.createElement('div');
     div.style.cssText='display:flex;gap:8px;max-width:720px;margin:4px auto 8px;padding:0';
-    div.innerHTML='<button onclick="window.open(\'https://claude.ai/new\',\'_blank\')" style="background:#d97706;color:#fff;border:none;border-radius:9px;padding:8px 14px;font-size:12.5px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px"><i class=\'ti ti-external-link\'></i> Open Claude.ai</button><button onclick="navigator.clipboard?.writeText(`'+escapedQ+'`)" style="background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border);border-radius:9px;padding:8px 12px;font-size:12.5px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px"><i class=\'ti ti-copy\'></i> Copy question</button>';
+    div.innerHTML='<button onclick="window.open('https://claude.ai/new','_blank')" style="background:#d97706;color:#fff;border:none;border-radius:9px;padding:8px 14px;font-size:12.5px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px"><i class='ti ti-external-link'></i> Open Claude.ai</button><button onclick="navigator.clipboard?.writeText(''+q+'')" style="background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border);border-radius:9px;padding:8px 12px;font-size:12.5px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px"><i class='ti ti-copy'></i> Copy question</button>';
     document.getElementById('chat-messages')?.appendChild(div);
     document.getElementById('chat-messages').scrollTop=9999;
   },600);
 }
 
-// ═══════════════════════════════════════════════════════════════
-// quickAI — for module AI buttons (weather, cricket, news etc)
-// ═══════════════════════════════════════════════════════════════
-async function quickAI(prompt, sys){
-  const p = sys ? sys+'\n\n'+prompt : KIRAN_SYS+'\n\n'+prompt;
-  // Try free engines first
+// ══════════════════════════════════════════════════════════════
+// quickAI — for module AI buttons
+// ══════════════════════════════════════════════════════════════
+async function quickAI(prompt,sys){
+  const p=sys?sys+'\n\n'+prompt:KIRAN_SYS+'\n\n'+prompt;
   for(const id of ['gemini','groq','mistral','cohere']){
     const key=getEngineKey(id);
-    if(!key) continue;
+    if(!key||key.length<5) continue;
     const u=getUsage();
     if((u[id]||0)>=ENGINES[id].limit) continue;
-    const r=await callEngine(id,p);
-    if(r?.reply) return r.reply;
+    bumpUsage(id);
+    let r=null;
+    switch(id){
+      case 'gemini':  r=await callGemini(p); break;
+      case 'groq':    r=await callGroq(p);   break;
+      case 'mistral': r=await callMistral(p);break;
+      case 'cohere':  r=await callCohere(p); break;
+    }
+    if(r?.reply){updateRoutingUI();return r.reply;}
   }
-  // Claude fallback
   const ck=getClaudeKey();
   if(ck){
     const r=await callClaude(p);
     if(r?.reply) return r.reply;
   }
-  return '⚠️ All AI engines currently unavailable. Check your internet or add API keys in ⚙ Settings.';
+  return '⚠️ All AI engines unavailable. Add free API keys in ⚙ Settings (Groq/Mistral/Cohere).';
 }
 
-// ── setOut helper (for module AI output boxes) ────────────────
-async function setOut(id, prompt, loading, sys){
+async function setOut(id,prompt,loading,sys){
   const out=document.getElementById(id);
   if(!out) return;
-  out.style.display='block'; out.textContent=loading||'AI thinking...';
+  out.style.display='block';out.textContent=loading||'AI thinking...';
   out.textContent=await quickAI(prompt,sys);
 }
 
-// ═══════════════════════════════════════════════════════════════
-// SETTINGS MANAGEMENT
-// ═══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════════════════
 function saveKeys(){
   const ids=['gemini','groq','mistral','cohere','claude'];
   const saved=[];
   ids.forEach(id=>{
     const val=document.getElementById('key-'+id)?.value.trim()||'';
-    if(val){ localStorage.setItem('kai_'+id+'_key',val); if(id==='gemini') CFG.GEMINI_KEY=val; saved.push(ENGINES[id].name); }
+    if(val){localStorage.setItem('kai_'+id+'_key',val);if(id==='gemini')CFG.GEMINI_KEY=val;saved.push(ENGINES[id].name);}
   });
-  closeSettings();
-  updateRoutingUI();
-  const msg=saved.length
-    ?'✅ Keys saved: **'+saved.join(', ')+'**\n\nRouting chain ready! Free AIs → Claude fallback. Try asking anything!'
-    :'Gemini (built-in) stays active. Add more free keys to expand the chain!';
-  addMsg('ai',msg,'System');
+  closeSettings();updateRoutingUI();
+  addMsg('ai',saved.length?'✅ Keys saved: **'+saved.join(', ')+'**\n\nRouting chain active! Try asking anything.':'Gemini (built-in) is active as primary AI.','System');
 }
-
 function openSettings(){
   document.getElementById('settings-modal').classList.remove('hidden');
   ['gemini','groq','mistral','cohere','claude'].forEach(id=>{
@@ -1243,108 +1391,89 @@ function openSettings(){
   });
   updateRoutingUI();
 }
-
-function closeSettings(){ document.getElementById('settings-modal').classList.add('hidden'); }
-
+function closeSettings(){document.getElementById('settings-modal').classList.add('hidden');}
 function checkKeyInput(id){
   const val=document.getElementById('key-'+id)?.value.trim()||'';
   const el=document.getElementById('status-'+id);
   if(!el) return;
-  const prefixes={claude:'sk-ant-',groq:'gsk_'};
-  const names={gemini:'Gemini',groq:'Groq',mistral:'Mistral',cohere:'Cohere',claude:'Claude'};
-  const prefix=prefixes[id];
-  if(!val){ el.className='key-status none'; el.innerHTML='<i class="ti ti-circle" style="font-size:11px"></i> Not set'; }
-  else if(prefix&&!val.startsWith(prefix)){ el.className='key-status bad'; el.innerHTML='<i class="ti ti-alert-circle" style="font-size:11px"></i> Should start with '+prefix+'...'; }
-  else{ el.className='key-status ok'; el.innerHTML='<i class="ti ti-circle-check" style="font-size:11px"></i> '+names[id]+' key valid'; }
+  const pfx={claude:'sk-ant-',groq:'gsk_'};
+  const nm={gemini:'Gemini',groq:'Groq',mistral:'Mistral',cohere:'Cohere',claude:'Claude'};
+  if(!val){el.className='key-status none';el.innerHTML='<i class="ti ti-circle" style="font-size:11px"></i> Not set';}
+  else if(pfx[id]&&!val.startsWith(pfx[id])){el.className='key-status bad';el.innerHTML='<i class="ti ti-alert-circle" style="font-size:11px"></i> Should start with '+pfx[id]+'...';}
+  else{el.className='key-status ok';el.innerHTML='<i class="ti ti-circle-check" style="font-size:11px"></i> '+nm[id]+' key valid';}
 }
-function checkKey(id){ checkKeyInput(id); }
-document.addEventListener('click',e=>{ if(e.target.id==='settings-modal') closeSettings(); });
+function checkKey(id){checkKeyInput(id);}
 
-// ═══════════════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════════════
-let darkMode=false, sidebarCollapsed=false, busy=false, micOn=false;
-let recognition=null, chatHistory=[];
-const stockCache={};
-const limits={g:{used:0,max:1500},c:{used:0,max:500},m:{used:0,max:100},co:{used:0,max:1000}};
+// ══════════════════════════════════════════════════════════════
+// STATE & INIT
+// ══════════════════════════════════════════════════════════════
+let darkMode=false,sidebarCollapsed=false,busy=false,micOn=false;
+let recognition=null,chatHistory=[],stockCache={};
 
-// ═══════════════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════════════
 window.onload=()=>{
-  // Auto dark mode
-  if(window.matchMedia('(prefers-color-scheme: dark)').matches) toggleTheme();
-  // Load saved Gemini key
+  if(window.matchMedia('(prefers-color-scheme:dark)').matches) toggleTheme();
   const gk=localStorage.getItem('kai_gemini_key');
   if(gk) CFG.GEMINI_KEY=gk;
-  // Hide first-run banner
   document.getElementById('first-run-banner')?.classList.add('hidden');
-  // Build static panels
-  buildStocks(); buildIndices();
+  buildStocks();buildIndices();
   if(typeof buildVitals==='function') buildVitals();
   if(typeof buildRx==='function') buildRx();
   if(typeof buildDocs==='function') buildDocs();
-  // Init routing UI
-  setTimeout(()=>updateRoutingUI(),100);
-  // Load live data (staggered)
-  setTimeout(()=>loadLiveWeather(),200);
-  setTimeout(()=>loadLiveNews(),500);
-  setTimeout(()=>loadLiveCricket(),800);
+  setTimeout(()=>{updateRoutingUI();updateSelectorBtn();refreshDropdown();},200);
+  setTimeout(()=>loadLiveWeather(),300);
+  setTimeout(()=>loadLiveNews(),600);
+  setTimeout(()=>loadLiveCricket(),900);
 };
 
-// ═══════════════════════════════════════════════════════════════
-// THEME & SIDEBAR
-// ═══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// THEME & NAV
+// ══════════════════════════════════════════════════════════════
 function toggleTheme(){
   darkMode=!darkMode;
   document.body.setAttribute('data-theme',darkMode?'dark':'');
   document.getElementById('theme-icon').className=darkMode?'ti ti-sun':'ti ti-moon';
 }
-function toggleSidebar(){ sidebarCollapsed=!sidebarCollapsed; document.getElementById('sidebar').classList.toggle('collapsed',sidebarCollapsed); }
-function openMobSidebar(){ document.getElementById('sidebar').classList.add('mob-open'); document.getElementById('sidebar-overlay').classList.add('show'); }
-function closeMobSidebar(){ document.getElementById('sidebar').classList.remove('mob-open'); document.getElementById('sidebar-overlay').classList.remove('show'); }
+function toggleSidebar(){sidebarCollapsed=!sidebarCollapsed;document.getElementById('sidebar').classList.toggle('collapsed',sidebarCollapsed);}
+function openMobSidebar(){document.getElementById('sidebar').classList.add('mob-open');document.getElementById('sidebar-overlay').classList.add('show');}
+function closeMobSidebar(){document.getElementById('sidebar').classList.remove('mob-open');document.getElementById('sidebar-overlay').classList.remove('show');}
 
-// ═══════════════════════════════════════════════════════════════
-// PANEL NAVIGATION
-// ═══════════════════════════════════════════════════════════════
 function showPanel(name,el){
   document.querySelectorAll('.module-panel').forEach(p=>p.classList.remove('active'));
-  const cp=document.getElementById('panel-chat');
-  if(cp) cp.style.display='none';
+  const cp=document.getElementById('panel-chat');if(cp)cp.style.display='none';
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  if(el) el.classList.add('active');
+  if(el)el.classList.add('active');
   const titles={chat:"Chat with Kiran's AI",weather:'Weather & Alerts',stocks:'Stocks & Investment',health:'Health + CVS',cricket:'Cricket · IPL 2026',news:'Global News',astro:'Vedic Astrology',travel:'Travel · Food · Shop',sf:'Salesforce Command Center'};
-  const subs={chat:'Smart routing: Gemini → Groq → Mistral → Cohere → Claude',weather:'Live WeatherAPI.com · McKinney TX',stocks:'Live Alpha Vantage · NVDA MSFT AAPL CRM TSLA GOOGL',health:'CVS integration · Prescriptions · Doctor booking',cricket:'Live Cricbuzz via RapidAPI · IPL 2026',news:'Live Google News RSS · India · USA · Global · Tech',astro:'Kanya Rashi · Hasta Nakshatra · Gemini Lagna',travel:'DFW · McKinney TX · Hyderabad · Telugu cuisine',sf:'Rackera Production · API v62.0 · 12 dev tools'};
+  const subs={chat:'Smart routing: Gemini → Groq → Mistral → Cohere → Claude',weather:'Live WeatherAPI · McKinney TX',stocks:'Live Alpha Vantage · NVDA MSFT AAPL CRM TSLA',health:'CVS · Prescriptions · Doctor booking',cricket:'Live Cricbuzz RapidAPI · IPL 2026',news:'Live Google News RSS · India · USA · Tech',astro:'Kanya Rashi · Hasta Nakshatra · Gemini Lagna',travel:'DFW · McKinney TX · Hyderabad · Telugu food',sf:'Rackera Production · 12 dev tools'};
   document.getElementById('tb-title').textContent=titles[name]||"Kiran's AI";
   document.getElementById('tb-subtitle').textContent=subs[name]||'';
-  if(name==='chat'){ if(cp) cp.style.display='flex'; }
-  else{ const p=document.getElementById('panel-'+name); if(p) p.classList.add('active'); }
+  if(name==='chat'){if(cp)cp.style.display='flex';}
+  else{const p=document.getElementById('panel-'+name);if(p)p.classList.add('active');}
   closeMobSidebar();
 }
-function setBN(id){ document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active')); document.getElementById(id)?.classList.add('active'); }
+function setBN(id){document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));document.getElementById(id)?.classList.add('active');}
 
-// ═══════════════════════════════════════════════════════════════
-// CHAT ENGINE
-// ═══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// CHAT
+// ══════════════════════════════════════════════════════════════
 function addMsg(role,text,engine){
   const msgs=document.getElementById('chat-messages');
   document.getElementById('welcome')?.remove();
   const block=document.createElement('div');
   block.className='msg-block';
-  const isAI=role==='ai'||role==='System';
+  const isAI=role!=='user';
   const safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const fmt=safe
     .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
     .replace(/`([^`]+)`/g,'<code style="font-family:var(--mono);background:var(--bg-base);padding:1px 5px;border-radius:4px;font-size:12px">$1</code>')
     .replace(/\n/g,'<br>');
-  const eColors={Gemini:'background:#dcfce7;color:#15803d',Groq:'background:#ede9fe;color:#5b21b6',Mistral:'background:#fef3c7;color:#92400e',Cohere:'background:#e0f2fe;color:#0369a1',Claude:'background:#fef3c7;color:#92400e',System:'background:var(--bg-base);color:var(--text-tertiary)'};
-  const eTag=isAI&&engine?`<span style="${eColors[engine]||''};padding:2px 7px;border-radius:6px;font-size:10px;font-weight:500">${engine}</span>`:''  ;
-  block.innerHTML=`<div class="msg-row ${role==='user'?'user':'ai'}">
-    <div class="msg-av ${role==='user'?'user':'ai'}">${role==='user'?'KA':'K'}</div>
+  const ec={Gemini:'background:#dcfce7;color:#15803d',Groq:'background:#ede9fe;color:#5b21b6',Mistral:'background:#fef3c7;color:#92400e',Cohere:'background:#e0f2fe;color:#0369a1',Claude:'background:#fef3c7;color:#d97706',System:'background:var(--bg-base);color:var(--text-tertiary)'};
+  const etag=isAI&&engine?`<span style="${ec[engine]||ec.System};padding:2px 7px;border-radius:6px;font-size:10px;font-weight:500">${engine}</span>`:'';
+  block.innerHTML=`<div class="msg-row ${isAI?'ai':'user'}">
+    <div class="msg-av ${isAI?'ai':'user'}">${isAI?'K':'KA'}</div>
     <div class="msg-content">
-      <div class="msg-name">${role==='user'?'Kiran':"Kiran's AI"}</div>
+      <div class="msg-name">${isAI?"Kiran's AI":'Kiran'}</div>
       <div class="msg-bubble">${fmt}</div>
-      <div class="msg-meta">${eTag}<span>${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>
+      <div class="msg-meta">${etag}<span>${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>
     </div>
   </div>`;
   msgs.appendChild(block);
@@ -1354,105 +1483,146 @@ function addMsg(role,text,engine){
 function showTyping(){
   const msgs=document.getElementById('chat-messages');
   const el=document.createElement('div');
-  el.id='typing-indicator'; el.className='msg-block';
-  el.innerHTML='<div class="msg-row ai typing-msg"><div class="msg-av ai">K</div><div class="msg-content"><div class="msg-name">Kiran\'s AI</div><div class="msg-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>';
-  msgs.appendChild(el); msgs.scrollTop=msgs.scrollHeight;
+  el.id='typing-indicator';el.className='msg-block';
+  el.innerHTML='<div class="msg-row ai typing-msg"><div class="msg-av ai">K</div><div class="msg-content"><div class="msg-name">Kiran's AI</div><div class="msg-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>';
+  msgs.appendChild(el);msgs.scrollTop=msgs.scrollHeight;
 }
-function removeTyping(){ document.getElementById('typing-indicator')?.remove(); }
+function removeTyping(){document.getElementById('typing-indicator')?.remove();}
 
 async function sendMsg(){
-  if(busy) return;
+  if(busy)return;
   const inp=document.getElementById('chat-input');
   let txt=inp.value.trim();
-  if(!txt) return;
+  if(!txt)return;
 
-  // ── Manual override detection ─────────────────────────
+  // Check for override command
   const override=detectOverride(txt);
-  if(override==='reset'){ setManualMode(null); inp.value=''; addMsg('ai','↺ Switched back to **Auto routing**. Gemini → Groq → Mistral → Cohere → Claude chain active.','System'); return; }
+  if(override==='reset'){
+    selectedEngine='auto';updateRoutingUI();updateSelectorBtn();
+    inp.value='';autoResize(inp);
+    addMsg('ai','↺ Back to **Auto routing**. Gemini → Groq → Mistral → Cohere → Claude chain active.','System');
+    return;
+  }
   if(override){
-    const cleaned=txt.replace(/^(@|use |switch to |ask |with |#|route to )?\s*(gemini|groq|llama|mistral|cohere|claude|anthropic|auto)\s*[:>]?\s*/i,'').trim();
-    setManualMode(override);
-    if(!cleaned){ inp.value=''; autoResize(inp); addMsg('ai','✅ Switched to **'+ENGINES[override]?.name+'**. Now using this AI. Ask me anything!',override); return; }
+    const cleaned=txt.replace(/^(@|\/|use |switch to |ask |with |#|route to )?(gemini|groq|llama|mistral|cohere|claude|anthropic|google)\s*[:>]?\s*/i,'').trim();
+    selectedEngine=override; updateRoutingUI(); updateSelectorBtn();
+    if(!cleaned||cleaned.length<3){
+      inp.value='';autoResize(inp);
+      addMsg('ai','✅ Switched to **'+ENGINES[override]?.name+'**. Ask me anything!',override);
+      return;
+    }
     txt=cleaned;
   }
 
-  inp.value=''; autoResize(inp);
+  inp.value='';autoResize(inp);
   addMsg('user',txt);
-  busy=true; showTyping();
+  busy=true;showTyping();
 
-  // ── Pick engine ───────────────────────────────────────
-  let engineId = manualEngine;
-  if(!engineId){
-    engineId = COMPLEX.test(txt) ? 'claude' : getAutoEngine();
-  }
+  // Determine engine
+  const engineId=getActiveEngine();
 
-  // Highlight active engine in sidebar
+  // Highlight in sidebar
   document.querySelectorAll('[id^="row-"]').forEach(r=>r.style.background='');
-  const activeRow=document.getElementById('row-'+engineId);
-  if(activeRow) activeRow.style.background='rgba(217,119,6,0.12)';
+  document.getElementById('row-'+engineId)?.style && (document.getElementById('row-'+engineId).style.background='rgba(217,119,6,0.12)');
 
   try{
-    let result=await callEngine(engineId,txt);
-
-    // If failed, try fallback chain
-    if(!result?.reply && !result?.redirect){
-      const order=['gemini','groq','mistral','cohere','claude'];
-      const si=order.indexOf(engineId)+1;
-      for(let i=si;i<order.length;i++){
-        const nid=order[i];
-        if(nid!=='claude'&&(!getEngineKey(nid)||(getUsage()[nid]||0)>=ENGINES[nid].limit)) continue;
-        result=await callEngine(nid,txt);
-        if(result?.reply||result?.redirect) break;
+    let result;
+    if(engineId==='claude'){
+      result=await callClaude(txt);
+    } else {
+      bumpUsage(engineId);
+      let r=null;
+      switch(engineId){
+        case 'gemini':  r=await callGemini(txt); break;
+        case 'groq':    r=await callGroq(txt);   break;
+        case 'mistral': r=await callMistral(txt);break;
+        case 'cohere':  r=await callCohere(txt); break;
+      }
+      if(r?.reply){ result=r; }
+      else{
+        // Primary engine failed — try fallback chain only in auto mode
+        if(selectedEngine==='auto'){
+          result=await tryEnginesFrom(engineId,txt);
+        } else {
+          // Manual selection failed — show error, don't redirect
+          result={reply:'⚠️ **'+ENGINES[engineId]?.name+'** is currently unavailable.\n\nPossible reasons:\n• API key not set (add in ⚙ Settings)\n• Daily quota reached\n• Network issue\n\nTip: Type **auto** to switch back to automatic routing, or select another AI from the input bar.',engine:'System'};
+        }
       }
     }
 
     removeTyping();
 
-    if(result?.redirect){ redirectToClaude(txt); }
-    else if(result?.reply){
-      if(result.engine!==engineId && engineId!==result.engine){
-        // Engine switched during fallback
-        result.reply='_('+ENGINES[engineId]?.name+' unavailable → '+result.engine+')_\n\n'+result.reply;
+    if(result?.redirect){
+      // Only redirect to Claude.ai if user explicitly chose Claude or all free AIs exhausted
+      if(selectedEngine==='claude'||selectedEngine==='auto'){
+        redirectToClaude(txt);
+      } else {
+        addMsg('ai','⚠️ Claude API key not set. \n\nTo use Claude:\n• **Option A**: Add API key in ⚙ Settings (from console.anthropic.com)\n• **Option B**: Click below to open claude.ai with your question\n\nOr type **auto** to use free AI engines.','System');
+        setTimeout(()=>{
+          const div=document.createElement('div');
+          div.style.cssText='display:flex;gap:8px;max-width:720px;margin:4px auto 8px;padding:0';
+          div.innerHTML='<button onclick="window.open('https://claude.ai/new','_blank')" style="background:#d97706;color:#fff;border:none;border-radius:9px;padding:8px 14px;font-size:12.5px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px"><i class='ti ti-external-link'></i> Open Claude.ai</button>';
+          document.getElementById('chat-messages')?.appendChild(div);
+          document.getElementById('chat-messages').scrollTop=9999;
+        },400);
       }
+    } else if(result?.reply){
       addMsg('ai',result.reply,result.engine);
     } else {
-      addMsg('ai','⚠️ All AI engines unavailable. Check internet connection or add more API keys in ⚙ Settings.','System');
+      addMsg('ai','⚠️ Could not get a response. Check internet connection or add API keys in ⚙ Settings.','System');
     }
   }catch(e){
     removeTyping();
-    console.error('sendMsg:',e);
-    addMsg('ai','⚠️ Error: '+e.message,'System');
+    addMsg('ai','⚠️ Error: '+e.message+'. Check internet connection.','System');
   }
 
-  updateRoutingUI();
+  updateRoutingUI();updateSelectorBtn();refreshDropdown();
   busy=false;
 }
 
-function chip(t){ document.getElementById('chat-input').value=t; sendMsg(); }
-function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMsg(); } }
-function autoResize(ta){ ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,160)+'px'; }
+// ── Try engines in fallback order ─────────────────────────────
+async function tryEnginesFrom(startId,prompt){
+  const order=['gemini','groq','mistral','cohere','claude'];
+  const si=Math.max(0,order.indexOf(startId));
+  for(let i=si+1;i<order.length;i++){
+    const id=order[i];
+    if(id==='claude') return await callClaude(prompt);
+    const key=getEngineKey(id);
+    const u=getUsage();
+    if(!key||key.length<5||(u[id]||0)>=ENGINES[id].limit) continue;
+    bumpUsage(id);
+    let r=null;
+    switch(id){case 'groq':r=await callGroq(prompt);break;case 'mistral':r=await callMistral(prompt);break;case 'cohere':r=await callCohere(prompt);break;}
+    if(r?.reply){r.reply='_(Auto-switched to '+ENGINES[id]?.name+')_\n\n'+r.reply;return r;}
+  }
+  return{reply:null,engine:'Claude',redirect:true};
+}
 
-// ═══════════════════════════════════════════════════════════════
-// MIC / VOICE INPUT
-// ═══════════════════════════════════════════════════════════════
+function chip(t){document.getElementById('chat-input').value=t;sendMsg();}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function autoResize(ta){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,160)+'px';}
+
+// ══════════════════════════════════════════════════════════════
+// MIC
+// ══════════════════════════════════════════════════════════════
 function toggleMic(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ alert('Voice input works in Chrome & Safari. Use the app in Chrome for best experience.'); return; }
-  if(micOn){ try{recognition?.stop();}catch(e){} stopMic(); return; }
+  if(!SR){alert('Voice input works in Chrome & Safari.');return;}
+  if(micOn){try{recognition?.stop();}catch(e){}stopMic();return;}
   recognition=new SR();
-  recognition.lang='en-US'; recognition.continuous=false; recognition.interimResults=true;
+  recognition.lang='en-US';recognition.continuous=false;recognition.interimResults=true;
   const btn=document.getElementById('mic-btn'),icon=document.getElementById('mic-icon'),status=document.getElementById('mic-status');
-  btn.classList.add('recording'); icon.className='ti ti-microphone-off';
-  status.classList.add('show'); document.getElementById('mic-txt').textContent='Listening...';
+  btn.classList.add('recording');icon.className='ti ti-microphone-off';
+  status.classList.add('show');document.getElementById('mic-txt').textContent='Listening...';
   micOn=true;
   recognition.onresult=e=>{
     let int='',fin='';
-    for(let i=e.resultIndex;i<e.results.length;i++){ if(e.results[i].isFinal) fin+=e.results[i][0].transcript; else int+=e.results[i][0].transcript; }
+    for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)fin+=e.results[i][0].transcript;else int+=e.results[i][0].transcript;}
     document.getElementById('chat-input').value=fin||int;
-    if(fin) document.getElementById('mic-txt').textContent='✓ '+fin.substring(0,50);
+    if(fin)document.getElementById('mic-txt').textContent='✓ '+fin.substring(0,50);
   };
-  recognition.onend=()=>{ stopMic(); const v=document.getElementById('chat-input').value.trim(); if(v) setTimeout(()=>sendMsg(),400); };
-  recognition.onerror=e=>{ stopMic(); document.getElementById('mic-txt').textContent='Error: '+e.error; };
+  recognition.onend=()=>{stopMic();const v=document.getElementById('chat-input').value.trim();if(v)setTimeout(()=>sendMsg(),400);};
+  recognition.onerror=e=>{stopMic();document.getElementById('mic-txt').textContent='Error: '+e.error;};
   try{recognition.start();}catch(e){stopMic();}
 }
 function stopMic(){
@@ -1461,101 +1631,70 @@ function stopMic(){
   document.getElementById('mic-icon').className='ti ti-microphone';
   setTimeout(()=>document.getElementById('mic-status').classList.remove('show'),2000);
 }
-document.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='m'){e.preventDefault();toggleMic();} if(e.key==='Escape')closeMobSidebar(); });
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='m'){e.preventDefault();toggleMic();}if(e.key==='Escape')closeMobSidebar();});
 
-// ═══════════════════════════════════════════════════════════════
-// LIVE API: WEATHER
-// ═══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// LIVE: WEATHER
+// ══════════════════════════════════════════════════════════════
 async function loadLiveWeather(){
   try{
-    const [curr,fore]=await Promise.all([
-      fetch(`https://api.weatherapi.com/v1/current.json?key=${CFG.WEATHER_KEY}&q=${CFG.WEATHER_CITY}&aqi=yes`).then(r=>r.json()),
-      fetch(`https://api.weatherapi.com/v1/forecast.json?key=${CFG.WEATHER_KEY}&q=${CFG.WEATHER_CITY}&days=5&alerts=yes`).then(r=>r.json())
+    const[curr,fore]=await Promise.all([
+      fetch('https://api.weatherapi.com/v1/current.json?key='+CFG.WEATHER_KEY+'&q='+CFG.WEATHER_CITY+'&aqi=yes').then(r=>r.json()),
+      fetch('https://api.weatherapi.com/v1/forecast.json?key='+CFG.WEATHER_KEY+'&q='+CFG.WEATHER_CITY+'&days=5&alerts=yes').then(r=>r.json())
     ]);
     const c=curr.current,loc=curr.location,alerts=fore.alerts?.alert||[];
     const rain=fore.forecast?.forecastday[0]?.day?.daily_chance_of_rain||0;
     const wind=Math.round(c.wind_mph);
-
-    // Weather panel
-    document.getElementById('w-temp').textContent=Math.round(c.temp_f)+'°F';
-    document.getElementById('w-cond').textContent=c.condition.text;
-    document.getElementById('w-loc').textContent=loc.name+', '+loc.region;
-    document.getElementById('w-feels').textContent='Feels like '+Math.round(c.feelslike_f)+'°F';
-    document.getElementById('w-rain').textContent=rain+'%';
-    document.getElementById('w-wind').textContent=wind+' mph '+c.wind_dir;
-    document.getElementById('w-uv').textContent=c.uv;
-
-    // Hero gradient
-    const hero=document.querySelector('.weather-hero');
-    if(hero) hero.style.background=c.condition.text.toLowerCase().includes('storm')?'linear-gradient(135deg,#374151,#1f2937)':c.condition.text.toLowerCase().includes('rain')?'linear-gradient(135deg,#1e40af,#1d4ed8)':'linear-gradient(135deg,#0ea5e9,#0284c7)';
-
-    // Header pill
-    document.getElementById('weather-pill').textContent=Math.round(c.temp_f)+'°F '+(rain>50?'🌧':'☀');
-
-    // Sidebar alert 1
     const isAlert=alerts.length>0||wind>30||rain>70;
-    document.getElementById('alert1-txt').textContent=isAlert?`${loc.name}: ${c.condition.text}, ${wind} mph, ${rain}% rain`:`${loc.name}: ${c.condition.text}, ${Math.round(c.temp_f)}°F — Clear`;
+    const setText=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+    setText('w-temp',Math.round(c.temp_f)+'°F');
+    setText('w-cond',c.condition.text);
+    setText('w-loc',loc.name+', '+loc.region);
+    setText('w-feels','Feels like '+Math.round(c.feelslike_f)+'°F');
+    setText('w-rain',rain+'%');
+    setText('w-wind',wind+' mph '+c.wind_dir);
+    setText('w-uv',c.uv);
+    setText('weather-pill',Math.round(c.temp_f)+'°F '+(rain>50?'🌧':'☀'));
+    setText('alert1-txt',isAlert?loc.name+': '+c.condition.text+', '+wind+' mph, '+rain+'% rain':loc.name+': '+c.condition.text+', '+Math.round(c.temp_f)+'°F — Clear');
     const wb=document.getElementById('wb-badge');
-    if(wb){ wb.textContent=isAlert?'⚠':'✓'; wb.className='nav-badge '+(isAlert?'red':'green'); }
-
-    // Alerts
+    if(wb){wb.textContent=isAlert?'⚠':'✓';wb.className='nav-badge '+(isAlert?'red':'green');}
+    const hero=document.querySelector('.weather-hero');
+    if(hero)hero.style.background=c.condition.text.toLowerCase().includes('storm')?'linear-gradient(135deg,#374151,#1f2937)':c.condition.text.toLowerCase().includes('rain')?'linear-gradient(135deg,#1e40af,#1d4ed8)':'linear-gradient(135deg,#0ea5e9,#0284c7)';
     const aw=document.getElementById('w-alerts-wrap');
-    if(aw){
-      if(alerts.length>0) aw.innerHTML=`<div class="walert"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0"></i><div><strong>${alerts[0].headline||alerts[0].event}</strong><br>${(alerts[0].desc||'').substring(0,150)}...</div></div>`;
-      else if(isAlert) aw.innerHTML=`<div class="walert"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0"></i><div>Advisory: ${wind>30?'High winds '+wind+' mph. ':''}${rain>70?'Heavy rain '+rain+'%. ':''}</div></div>`;
-      else aw.innerHTML='';
-    }
-
-    // Travel alert
+    if(aw)aw.innerHTML=alerts.length>0?`<div class="walert"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0"></i><div><strong>${alerts[0].headline||alerts[0].event}</strong></div></div>`:isAlert?`<div class="walert"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0"></i><div>Advisory: ${wind>30?'High winds '+wind+' mph. ':''}${rain>70?'Heavy rain '+rain+'%.':''}</div></div>`:'';
     const ta=document.getElementById('travel-weather-alert'),tt=document.getElementById('travel-alert-txt');
-    if(ta){ ta.style.display=isAlert?'flex':'none'; if(tt) tt.textContent=`Weather advisory: ${c.condition.text}, ${wind} mph winds — plan travel accordingly.`; }
-
-    // Zone alerts
+    if(ta){ta.style.display=isAlert?'flex':'none';if(tt&&isAlert)tt.textContent='Weather advisory: '+c.condition.text+', '+wind+' mph winds.';}
     const za=document.getElementById('zone-alerts');
-    if(za) za.innerHTML=`<div class="list-row"><div class="list-icon" style="background:${isAlert?'#fee2e2':'#dcfce7'}"><i class="ti ti-map-pin" style="color:${isAlert?'#dc2626':'#16a34a'};font-size:13px"></i></div><div class="list-main"><div class="list-title">McKinney TX 75070</div><div class="list-sub">${c.condition.text} · ${Math.round(c.temp_f)}°F · Wind ${wind} mph</div></div><span class="badge ${isAlert?'br':'bg'}">${isAlert?'Advisory':'Safe'}</span></div>`;
-
-    // Forecast
+    if(za)za.innerHTML=`<div class="list-row"><div class="list-icon" style="background:${isAlert?'#fee2e2':'#dcfce7'}"><i class="ti ti-map-pin" style="color:${isAlert?'#dc2626':'#16a34a'};font-size:13px"></i></div><div class="list-main"><div class="list-title">McKinney TX 75070</div><div class="list-sub">${c.condition.text} · ${Math.round(c.temp_f)}°F · Wind ${wind} mph</div></div><span class="badge ${isAlert?'br':'bg'}">${isAlert?'Advisory':'Safe'}</span></div>`;
     const fw=document.getElementById('forecast-wrap');
-    if(fw){
-      const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      fw.innerHTML=(fore.forecast?.forecastday||[]).map(d=>{
-        const dt=new Date(d.date),r=d.day.daily_chance_of_rain,cond=d.day.condition.text;
-        const isS=cond.toLowerCase().includes('sun')||cond.toLowerCase().includes('clear');
-        const isR=cond.toLowerCase().includes('rain')||cond.toLowerCase().includes('storm');
-        return `<div class="fcast-row"><span class="fcast-day">${days[dt.getDay()]}</span><i class="ti ti-${isR?'cloud-storm':isS?'sun':'cloud'}" style="font-size:14px;color:${isR?'#0ea5e9':isS?'#f59e0b':'#9b9b9b'}"></i><span style="flex:1;font-size:12.5px;color:var(--text-secondary)">${cond}</span><span class="fcast-temp">${Math.round(d.day.maxtemp_f)}°F</span><span class="fcast-rain">${r}%</span></div>`;
-      }).join('');
-    }
-    console.log('✅ Weather loaded:', loc.name, Math.round(c.temp_f)+'°F');
-  }catch(e){ console.warn('Weather error:',e.message); }
+    if(fw){const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];fw.innerHTML=(fore.forecast?.forecastday||[]).map(d=>{const dt=new Date(d.date),r=d.day.daily_chance_of_rain,cond=d.day.condition.text,isS=cond.toLowerCase().includes('sun'),isR=cond.toLowerCase().includes('rain')||cond.toLowerCase().includes('storm');return`<div class="fcast-row"><span class="fcast-day">${days[dt.getDay()]}</span><i class="ti ti-${isR?'cloud-storm':isS?'sun':'cloud'}" style="font-size:14px;color:${isR?'#0ea5e9':isS?'#f59e0b':'#9b9b9b'}"></i><span style="flex:1;font-size:12.5px;color:var(--text-secondary)">${cond}</span><span class="fcast-temp">${Math.round(d.day.maxtemp_f)}°F</span><span class="fcast-rain">${r}%</span></div>`;}).join('');}
+    console.log('✅ Weather:',loc.name,Math.round(c.temp_f)+'°F',c.condition.text);
+  }catch(e){console.warn('Weather:',e.message);}
 }
 
 async function checkLoc(){
   const l=document.getElementById('loc-inp').value.trim()||'McKinney TX';
   const out=document.getElementById('loc-out');
-  out.style.display='block'; out.textContent='Checking '+l+'...';
+  out.style.display='block';out.textContent='Checking '+l+'...';
   try{
-    const r=await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${CFG.WEATHER_KEY}&q=${encodeURIComponent(l)}&days=1&alerts=yes`);
+    const r=await fetch('https://api.weatherapi.com/v1/forecast.json?key='+CFG.WEATHER_KEY+'&q='+encodeURIComponent(l)+'&days=1&alerts=yes');
     const d=await r.json();
-    if(d.error){ out.textContent='Location not found: '+d.error.message; return; }
+    if(d.error){out.textContent='Location not found: '+d.error.message;return;}
     const c=d.current,day=d.forecast.forecastday[0]?.day||{},al=d.alerts?.alert||[];
     const wind=Math.round(c.wind_mph),rain=day.daily_chance_of_rain||0;
-    const status=wind>40||c.condition.text.toLowerCase().includes('thunder')||al.length>0?'🔴 AVOID':'⚠️ CAUTION — be aware';
-    out.textContent=`📍 ${d.location.name}, ${d.location.region}\nStatus: ${wind>40||al.length>0?status:'✅ SAFE to visit'}\n\nTemp: ${Math.round(c.temp_f)}°F (feels ${Math.round(c.feelslike_f)}°F)\nCondition: ${c.condition.text}\nWind: ${wind} mph\nRain: ${rain}%\nHumidity: ${c.humidity}%\nUV: ${c.uv}${al.length?'\n\nAlerts:\n'+al.slice(0,2).map(a=>'• '+(a.headline||a.event)).join('\n'):''}`;
-  }catch(e){ out.textContent=await quickAI('Safety check for "'+l+'" — weather conditions and safety assessment'); }
+    const status=wind>40||c.condition.text.toLowerCase().includes('thunder')||al.length>0?'🔴 AVOID':'wind>25||rain>70'?'⚠️ CAUTION':'✅ SAFE to visit';
+    out.textContent='📍 '+d.location.name+', '+d.location.region+'\nStatus: '+status+'\n\nTemp: '+Math.round(c.temp_f)+'°F (feels '+Math.round(c.feelslike_f)+'°F)\nCondition: '+c.condition.text+'\nWind: '+wind+' mph\nRain: '+rain+'%\nHumidity: '+c.humidity+'%\nUV: '+c.uv+(al.length?'\n\nAlerts:\n'+al.slice(0,2).map(a=>'• '+(a.headline||a.event)).join('\n'):'');
+  }catch(e){out.textContent=await quickAI('Safety check for "'+l+'" — current weather conditions and safety assessment');}
 }
 
-// ═══════════════════════════════════════════════════════════════
-// LIVE API: STOCKS
-// ═══════════════════════════════════════════════════════════════
-const WATCHLIST=[
-  {sym:'NVDA',name:'NVIDIA',rec:'buy'},   {sym:'MSFT',name:'Microsoft',rec:'hold'},
-  {sym:'AAPL',name:'Apple',rec:'hold'},   {sym:'CRM',name:'Salesforce',rec:'buy'},
-  {sym:'TSLA',name:'Tesla',rec:'sell'},   {sym:'GOOGL',name:'Alphabet',rec:'buy'},
-];
+// ══════════════════════════════════════════════════════════════
+// LIVE: STOCKS
+// ══════════════════════════════════════════════════════════════
+const WATCHLIST=[{sym:'NVDA',name:'NVIDIA',rec:'buy'},{sym:'MSFT',name:'Microsoft',rec:'hold'},{sym:'AAPL',name:'Apple',rec:'hold'},{sym:'CRM',name:'Salesforce',rec:'buy'},{sym:'TSLA',name:'Tesla',rec:'sell'},{sym:'GOOGL',name:'Alphabet',rec:'buy'}];
 
 function buildStocks(){
   const el=document.getElementById('stock-list');
-  if(!el) return;
+  if(!el)return;
   el.innerHTML=WATCHLIST.map(s=>`<div class="stock-row" id="sr-${s.sym}"><div><div class="stk">${s.sym}</div><div class="snm">${s.name}</div></div><div class="mini" id="mini-${s.sym}"><span style="font-size:10px;color:var(--text-tertiary)">loading...</span></div><div class="spr" id="pr-${s.sym}" style="color:var(--text-tertiary)">--</div><div class="sch" id="ch-${s.sym}">--</div><span class="rec r${s.rec}">${s.rec.toUpperCase()}</span></div>`).join('');
   loadLiveStocks();
 }
@@ -1564,246 +1703,172 @@ async function loadLiveStocks(){
   for(let i=0;i<WATCHLIST.length;i++){
     const s=WATCHLIST[i];
     try{
-      if(stockCache[s.sym]){ updateStockRow(s.sym,stockCache[s.sym]); continue; }
-      const r=await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${s.sym}&apikey=${CFG.STOCKS_KEY}`);
-      const d=await r.json();
-      const q=d['Global Quote'];
+      if(stockCache[s.sym]){updateStockRow(s.sym,stockCache[s.sym]);continue;}
+      const r=await fetch('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol='+s.sym+'&apikey='+CFG.STOCKS_KEY);
+      const d=await r.json();const q=d['Global Quote'];
       if(q?.['05. price']){
         const data={price:parseFloat(q['05. price']),change:parseFloat(q['09. change']),pct:q['10. change percent']?.replace('%','')||'0',isUp:parseFloat(q['09. change'])>=0};
-        stockCache[s.sym]=data; updateStockRow(s.sym,data);
-      } else if(d.Note||d.Information){ console.warn('Alpha Vantage rate limit for',s.sym); }
-      if(i<WATCHLIST.length-1) await new Promise(r=>setTimeout(r,1300));
-    }catch(e){ console.warn('Stock error',s.sym,e.message); }
+        stockCache[s.sym]=data;updateStockRow(s.sym,data);
+      }else if(d.Note||d.Information)console.warn('Alpha Vantage limit:',s.sym);
+      if(i<WATCHLIST.length-1)await new Promise(r=>setTimeout(r,1300));
+    }catch(e){console.warn('Stock:',s.sym,e.message);}
   }
-  // Sidebar stock alert
   const tsla=stockCache['TSLA'];
-  if(tsla) document.getElementById('alert2-txt').textContent=`TSLA ${tsla.isUp?'+':''}${parseFloat(tsla.pct).toFixed(1)}%${tsla.isUp?'':' — SELL signal'}`;
-  document.getElementById('sb-badge').textContent='Live';
+  if(tsla){const el=document.getElementById('alert2-txt');if(el)el.textContent='TSLA '+(tsla.isUp?'+':'')+parseFloat(tsla.pct).toFixed(1)+'%'+(tsla.isUp?'':' — SELL signal');}
+  const sb=document.getElementById('sb-badge');if(sb)sb.textContent='Live';
 }
 
 function updateStockRow(sym,data){
-  const {price,pct,isUp}=data;
+  const{price,pct,isUp}=data;
   const pe=document.getElementById('pr-'+sym),ce=document.getElementById('ch-'+sym),me=document.getElementById('mini-'+sym);
-  if(pe){ pe.textContent='$'+price.toFixed(2); pe.style.color='var(--text-primary)'; }
-  if(ce){ ce.textContent=(isUp?'+':'')+parseFloat(pct).toFixed(2)+'%'; ce.className='sch '+(isUp?'up':'dn'); }
-  if(me){ const bars=Array.from({length:10},(_,i)=>{const h=isUp?Math.round(30+i*5+Math.random()*10):Math.round(80-i*5-Math.random()*10);return Math.max(10,Math.min(100,h));}); me.innerHTML=bars.map((h,i)=>`<div class="bar" style="height:${h}%;background:${isUp?'#16a34a':'#dc2626'};opacity:${0.4+i*0.06}"></div>`).join(''); }
+  if(pe){pe.textContent='$'+price.toFixed(2);pe.style.color='var(--text-primary)';}
+  if(ce){ce.textContent=(isUp?'+':'')+parseFloat(pct).toFixed(2)+'%';ce.className='sch '+(isUp?'up':'dn');}
+  if(me){const bars=Array.from({length:10},(_,i)=>{const h=isUp?Math.round(30+i*5+Math.random()*10):Math.round(80-i*5-Math.random()*10);return Math.max(10,Math.min(100,h));});me.innerHTML=bars.map((h,i)=>`<div class="bar" style="height:${h}%;background:${isUp?'#16a34a':'#dc2626'};opacity:${0.4+i*0.06}"></div>`).join('');}
 }
 
 function buildIndices(){
   const el=document.getElementById('indices-grid');
-  if(!el) return;
-  el.innerHTML=[['S&P 500','5,842','+0.84%',true],['NASDAQ','18,420','-0.31%',false],['SENSEX','82,450','+0.91%',true],['NIFTY 50','24,780','+0.76%',true],['Gold','$2,342','+0.23%',true],['Crude Oil','$78.4','-0.55%',false]].map(m=>`<div class="idx-card"><div class="idx-name">${m[0]}</div><div class="idx-val">${m[1]}</div><div class="idx-chg ${m[3]?'up':'dn'}">${m[2]}</div></div>`).join('');
+  if(!el)return;
+  el.innerHTML=[['S&P 500','5,842','+0.84%',true],['NASDAQ','18,420','-0.31%',false],['SENSEX','82,450','+0.91%',true],['NIFTY 50','24,780','+0.76%',true],['Gold','$2,342','+0.23%',true],['Crude','$78.4','-0.55%',false]].map(m=>`<div class="idx-card"><div class="idx-name">${m[0]}</div><div class="idx-val">${m[1]}</div><div class="idx-chg ${m[3]?'up':'dn'}">${m[2]}</div></div>`).join('');
 }
 
 async function getQuote(){
-  const sym=document.getElementById('quote-inp').value.trim().toUpperCase();
-  if(!sym) return;
-  const out=document.getElementById('quote-out');
-  out.style.display='block'; out.textContent='Fetching '+sym+'...';
+  const sym=document.getElementById('quote-inp').value.trim().toUpperCase();if(!sym)return;
+  const out=document.getElementById('quote-out');out.style.display='block';out.textContent='Fetching '+sym+'...';
   try{
-    const r=await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${CFG.STOCKS_KEY}`);
-    const d=await r.json(); const q=d['Global Quote'];
+    const r=await fetch('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol='+sym+'&apikey='+CFG.STOCKS_KEY);
+    const d=await r.json();const q=d['Global Quote'];
     if(q?.['05. price']){
       const price=parseFloat(q['05. price']),change=parseFloat(q['09. change']),pct=q['10. change percent'];
-      out.textContent=`${sym} Live Quote\nPrice: $${price.toFixed(2)}\nChange: ${change>=0?'+':''}${change.toFixed(2)} (${pct})\nHigh: $${parseFloat(q['03. high']).toFixed(2)} · Low: $${parseFloat(q['04. low']).toFixed(2)}\nVolume: ${parseInt(q['06. volume']).toLocaleString()}\n\nAI analysis: Loading...`;
-      const rec=await quickAI(`2-sentence buy/hold/sell for ${sym} at $${price.toFixed(2)}, change ${pct} today. For Kiran's portfolio.`);
-      out.textContent=out.textContent.replace('AI analysis: Loading...','AI: '+rec);
-    } else { out.textContent='No data for '+sym+'. Check ticker.'; }
-  }catch(e){ out.textContent='Error fetching quote. Try again.'; }
+      out.textContent=sym+' Live Quote\nPrice: $'+price.toFixed(2)+'\nChange: '+(change>=0?'+':'')+change.toFixed(2)+' ('+pct+')\nHigh: $'+parseFloat(q['03. high']).toFixed(2)+' · Low: $'+parseFloat(q['04. low']).toFixed(2)+'\nVolume: '+parseInt(q['06. volume']).toLocaleString()+'\n\nAI: Loading...';
+      const rec=await quickAI('2-sentence buy/hold/sell for '+sym+' at $'+price.toFixed(2)+', change '+pct+' today. For Kiran portfolio.');
+      out.textContent=out.textContent.replace('AI: Loading...','AI: '+rec);
+    }else out.textContent='No data for '+sym+'. Check ticker.';
+  }catch(e){out.textContent='Error fetching. Try again.';}
 }
 
-async function aiStockPicks(){ await setOut('stocks-ai-out','Top 5 stock picks for Kiran Allagadapa for next 3-6 months. Focus tech, AI/cloud, one Indian ADR. Format: Ticker · Reason · Risk · Target price.','Analyzing market for Kiran...'); }
-async function aiFutureInvest(){ await setOut('stocks-ai-out','1-year and 3-year investment plan for Kiran Allagadapa (Salesforce Architect, ~$150K income, McKinney TX). US tech stocks, Indian market ETFs, safe haven, emergency fund. Mid-career 40-year-old.','Generating investment plan...'); }
+async function aiStockPicks(){await setOut('stocks-ai-out','Top 5 stock picks for Kiran Allagadapa for next 3-6 months. Focus tech, AI/cloud, one Indian ADR. Format: Ticker · Reason · Risk · Target.','Analyzing market...');}
+async function aiFutureInvest(){await setOut('stocks-ai-out','1-year and 3-year investment plan for Kiran Allagadapa (Salesforce Architect ~$150K income McKinney TX). US tech, Indian ETFs, safe haven, emergency fund. Mid-career 40yo.','Generating investment plan...');}
 
-// ═══════════════════════════════════════════════════════════════
-// LIVE API: CRICKET (Cricbuzz via RapidAPI)
-// ═══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// LIVE: CRICKET
+// ══════════════════════════════════════════════════════════════
 async function loadLiveCricket(){
   try{
     const headers={'x-rapidapi-host':CFG.CRICKET_HOST,'x-rapidapi-key':CFG.CRICKET_KEY};
-    const r=await fetch('https://cricbuzz-cricket.p.rapidapi.com/matches/v1/live',{headers});
-    const d=await r.json();
-    const matches=[];
-    (d.typeMatches||[]).forEach(type=>{
-      (type.seriesMatches||[]).forEach(sm=>{
-        const saw=sm.seriesAdWrapper||sm;
-        (saw.matches||[]).forEach(m=>{
-          const mi=m.matchInfo||{},ms=m.matchScore||{};
-          if(mi.state==='In Progress'){
-            matches.push({title:`${mi.team1?.teamSName||''} vs ${mi.team2?.teamSName||''}`,series:saw.seriesName||'',status:mi.status||'Live',t1:mi.team1?.teamSName||'',t1s:ms.team1Score?.inngs1?`${ms.team1Score.inngs1.runs}/${ms.team1Score.inngs1.wickets} (${ms.team1Score.inngs1.overs} ov)`:'',t2:mi.team2?.teamSName||'',t2s:ms.team2Score?.inngs1?`${ms.team2Score.inngs1.runs}/${ms.team2Score.inngs1.wickets} (${ms.team2Score.inngs1.overs} ov)`:'',venue:mi.venueInfo?.ground?`${mi.venueInfo.ground}, ${mi.venueInfo.city}`:''});
-          }
-        });
-      });
-    });
-
-    const showMatches=async(mArr,label)=>{
+    const parseMatches=(d,liveOnly)=>{const matches=[];(d.typeMatches||[]).forEach(t=>{(t.seriesMatches||[]).forEach(sm=>{const saw=sm.seriesAdWrapper||sm;(saw.matches||[]).forEach(m=>{const mi=m.matchInfo||{},ms=m.matchScore||{};if(!liveOnly||mi.state==='In Progress')matches.push({title:(mi.team1?.teamSName||'')+ ' vs '+(mi.team2?.teamSName||''),series:saw.seriesName||'',status:mi.status||'',t1:mi.team1?.teamSName||'',t1s:ms.team1Score?.inngs1?ms.team1Score.inngs1.runs+'/'+ms.team1Score.inngs1.wickets+' ('+ms.team1Score.inngs1.overs+' ov)':'',t2:mi.team2?.teamSName||'',t2s:ms.team2Score?.inngs1?ms.team2Score.inngs1.runs+'/'+ms.team2Score.inngs1.wickets+' ('+ms.team2Score.inngs1.overs+' ov)':'',isLive:mi.state==='In Progress'});});});});return matches;};
+    const renderMatches=(matches,isLive)=>{
       const el=document.getElementById('cricket-matches');
-      if(!el) return;
-      if(mArr.length>0){
-        el.innerHTML=mArr.slice(0,3).map(m=>`<div class="match-card"><div class="match-title">${m.series}${m.venue?' · '+m.venue:''}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:14px;font-weight:700">${m.t1}</span><span class="match-score">${m.t1s||'Yet to bat'}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:14px;font-weight:700">${m.t2}</span><span class="match-score">${m.t2s||'Yet to bat'}</span></div><div class="match-status">${label==='live'?'<span class="live-dot"></span> ':''} ${m.status}</div></div>`).join('');
-        document.getElementById('cb-badge').textContent=label==='live'?'● '+mArr.length:'Recent';
-      } else {
-        el.innerHTML='<div class="match-card"><div style="font-size:13px;opacity:.8">No matches right now. Check back during match hours, or type "IPL score" in chat for AI analysis!</div></div>';
-      }
+      if(!el)return;
+      if(matches.length===0){el.innerHTML='<div class="match-card"><div style="font-size:13px;opacity:.8">No live matches. Type "IPL score today" in chat for AI analysis!</div></div>';return;}
+      el.innerHTML=matches.slice(0,3).map(m=>`<div class="match-card"><div class="match-title">${m.series}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:14px;font-weight:700">${m.t1}</span><span class="match-score">${m.t1s||'Yet to bat'}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:14px;font-weight:700">${m.t2}</span><span class="match-score">${m.t2s||'Yet to bat'}</span></div><div class="match-status">${isLive?'<span class="live-dot"></span> ':''} ${m.status}</div></div>`).join('');
+      const cb=document.getElementById('cb-badge');if(cb)cb.textContent=isLive?'● '+matches.length:'Recent';
     };
-
-    if(matches.length>0){ await showMatches(matches,'live'); }
+    const lr=await fetch('https://cricbuzz-cricket.p.rapidapi.com/matches/v1/live',{headers});
+    const ld=await lr.json();
+    const live=parseMatches(ld,true);
+    if(live.length>0){renderMatches(live,true);console.log('✅ Cricket live:',live.length,'matches');}
     else{
-      // Try recent matches
       const rr=await fetch('https://cricbuzz-cricket.p.rapidapi.com/matches/v1/recent',{headers});
       const rd=await rr.json();
-      const recent=[];
-      (rd.typeMatches||[]).slice(0,3).forEach(type=>{
-        (type.seriesMatches||[]).slice(0,2).forEach(sm=>{
-          const saw=sm.seriesAdWrapper||sm;
-          (saw.matches||[]).slice(0,1).forEach(m=>{
-            const mi=m.matchInfo||{},ms=m.matchScore||{};
-            recent.push({title:`${mi.team1?.teamSName||''} vs ${mi.team2?.teamSName||''}`,series:saw.seriesName||'',status:mi.status||'Result',t1:mi.team1?.teamSName||'',t1s:ms.team1Score?.inngs1?`${ms.team1Score.inngs1.runs}/${ms.team1Score.inngs1.wickets}`:'',t2:mi.team2?.teamSName||'',t2s:ms.team2Score?.inngs1?`${ms.team2Score.inngs1.runs}/${ms.team2Score.inngs1.wickets}`:'',venue:''});
-          });
-        });
-      });
-      await showMatches(recent,'recent');
+      const recent=parseMatches(rd,false).slice(0,3);
+      renderMatches(recent,false);
+      console.log('✅ Cricket recent:',recent.length,'matches');
     }
-    console.log('✅ Cricket loaded');
   }catch(e){
-    console.warn('Cricket error:',e.message);
+    console.warn('Cricket:',e.message);
     const el=document.getElementById('cricket-matches');
-    if(el) el.innerHTML='<div class="match-card"><div style="font-size:13px;opacity:.8">Cricket data unavailable. Type "IPL score today" in chat for AI analysis!</div></div>';
+    if(el)el.innerHTML='<div class="match-card"><div style="font-size:13px;opacity:.8">Cricket data unavailable. Type "IPL score today" in chat!</div></div>';
   }
 }
 
 async function aiCricketAnalysis(){
-  const live=Array.from(document.querySelectorAll('.match-card')).slice(0,2).map(el=>el.innerText.replace(/\n+/g,' ')).join(' | ');
-  await setOut('cricket-ai-out',`Cricket live: ${live||'IPL 2026 in progress'}. Kiran is MI fan. Give: 1) Who is winning 2) Key players 3) Fantasy team 4) Match prediction. Energetic tone!`,'AI analyzing cricket...');
+  const live=Array.from(document.querySelectorAll('.match-card')).slice(0,2).map(e=>e.innerText.replace(/\n+/g,' ')).join(' | ');
+  await setOut('cricket-ai-out',(live||'IPL 2026 in progress')+'. Kiran is MI fan. Who is winning? Key players? Fantasy team? Bold prediction! Energetic tone.','AI analyzing cricket...');
 }
 
-// ═══════════════════════════════════════════════════════════════
-// LIVE API: NEWS (Google News RSS via rss2json)
-// ═══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// LIVE: NEWS
+// ══════════════════════════════════════════════════════════════
 async function loadLiveNews(){
   const B='https://api.rss2json.com/v1/api.json?count=3&rss_url=';
-  const G='https://news.google.com/rss/search?hl=en-IN&gl=IN&ceid=IN:en&q=';
+  const GI='https://news.google.com/rss/search?hl=en-IN&gl=IN&ceid=IN:en&q=';
   const GU='https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=';
   const feeds=[
-    {url:B+encodeURIComponent(G+'India+politics+Modi+BJP+2026'),cat:'India',cls:'cat-in'},
-    {url:B+encodeURIComponent(GU+'USA+politics+economy+Trump+2026'),cat:'USA',cls:'cat-us'},
-    {url:B+encodeURIComponent(GU+'stock+market+NASDAQ+finance+2026'),cat:'Finance',cls:'cat-fi'},
-    {url:B+encodeURIComponent(GU+'Salesforce+AI+technology+Agentforce+2026'),cat:'Tech',cls:'cat-tk'},
-    {url:B+encodeURIComponent(G+'IPL+cricket+India+2026'),cat:'Cricket',cls:'cat-cr'},
+    {url:B+encodeURIComponent(GI+'India+politics+Modi+2026'),cat:'India',cls:'cat-in'},
+    {url:B+encodeURIComponent(GU+'USA+politics+economy+2026'),cat:'USA',cls:'cat-us'},
+    {url:B+encodeURIComponent(GU+'stock+market+finance+NASDAQ+2026'),cat:'Finance',cls:'cat-fi'},
+    {url:B+encodeURIComponent(GU+'Salesforce+AI+Agentforce+technology+2026'),cat:'Tech',cls:'cat-tk'},
+    {url:B+encodeURIComponent(GI+'IPL+cricket+2026'),cat:'Cricket',cls:'cat-cr'},
     {url:B+encodeURIComponent(GU+'global+world+news+2026'),cat:'Global',cls:'cat-gl'},
   ];
   try{
-    const results=await Promise.allSettled(feeds.map(f=>fetch(f.url).then(r=>r.json())));
+    const res=await Promise.allSettled(feeds.map(f=>fetch(f.url).then(r=>r.json())));
     const all=[];
-    results.forEach((res,i)=>{
-      if(res.status==='fulfilled'&&res.value.status==='ok'){
-        (res.value.items||[]).slice(0,2).forEach(item=>{
-          const title=item.title?.replace(/ - Google News$/,'').replace(/ \| .+$/,'').trim();
-          if(title&&title.length>15) all.push({cat:feeds[i].cat,cls:feeds[i].cls,title,src:item.author||feeds[i].cat,time:timeAgo(item.pubDate),url:item.link||'#'});
-        });
-      }
-    });
+    res.forEach((r,i)=>{if(r.status==='fulfilled'&&r.value.status==='ok')(r.value.items||[]).slice(0,2).forEach(item=>{const t=item.title?.replace(/ - Google News$/,'').replace(/ \| .+$/,'').trim();if(t&&t.length>15)all.push({cat:feeds[i].cat,cls:feeds[i].cls,title:t,src:item.author||feeds[i].cat,time:timeAgo(item.pubDate),url:item.link||'#'});});});
     const el=document.getElementById('news-list');
-    if(el&&all.length>0){
-      el.innerHTML=all.map(n=>`<div class="news-item"><span class="ncat ${n.cls}">${n.cat}</span><div class="ntitle" onclick="window.open('${n.url}','_blank')">${n.title}</div><div class="nmeta">${n.src} · ${n.time}</div></div>`).join('');
+    if(el){
+      if(all.length>0)el.innerHTML=all.map(n=>`<div class="news-item"><span class="ncat ${n.cls}">${n.cat}</span><div class="ntitle" onclick="window.open('${n.url}','_blank')">${n.title}</div><div class="nmeta">${n.src} · ${n.time}</div></div>`).join('');
+      else el.innerHTML=[{cat:'India',cls:'cat-in',title:'India GDP growth hits 7.2% in Q1 2026',src:'Economic Times',time:'2h'},{cat:'USA',cls:'cat-us',title:'Fed signals September rate cut as inflation cools',src:'Reuters',time:'1h'},{cat:'Finance',cls:'cat-fi',title:'NVIDIA hits $3T market cap on AI chip demand',src:'Bloomberg',time:'30m'},{cat:'Tech',cls:'cat-tk',title:'Salesforce Agentforce 3.0 released — multi-agent GA',src:'Salesforce Blog',time:'2h'},{cat:'Cricket',cls:'cat-cr',title:'IPL 2026: Mumbai Indians lead with 10 wins from 14',src:'Cricbuzz',time:'Live'},{cat:'Global',cls:'cat-gl',title:'G7 agrees AI safety framework for 2026',src:'AP News',time:'3h'}].map(n=>`<div class="news-item"><span class="ncat ${n.cls}">${n.cat}</span><div class="ntitle">${n.title}</div><div class="nmeta">${n.src} · ${n.time}</div></div>`).join('');
       console.log('✅ News loaded:',all.length,'articles');
-    } else if(el){
-      // Fallback headlines
-      el.innerHTML=[
-        {cat:'India',cls:'cat-in',title:'India GDP growth hits 7.2% in Q1 2026 — strongest in 3 years',src:'Economic Times',time:'2 hrs ago'},
-        {cat:'USA',cls:'cat-us',title:'Federal Reserve signals September rate cut as inflation cools',src:'Reuters',time:'1 hr ago'},
-        {cat:'Finance',cls:'cat-fi',title:'NVIDIA surpasses $3T market cap on AI chip demand surge',src:'Bloomberg',time:'30 min ago'},
-        {cat:'Tech',cls:'cat-tk',title:'Salesforce Agentforce 3.0 released — multi-agent orchestration GA',src:'Salesforce Blog',time:'2 hrs ago'},
-        {cat:'Cricket',cls:'cat-cr',title:'IPL 2026: Mumbai Indians lead points table with 10 wins',src:'Cricbuzz',time:'Live'},
-        {cat:'Global',cls:'cat-gl',title:'G7 nations agree on landmark AI safety framework for 2026',src:'AP News',time:'3 hrs ago'},
-      ].map(n=>`<div class="news-item"><span class="ncat ${n.cls}">${n.cat}</span><div class="ntitle">${n.title}</div><div class="nmeta">${n.src} · ${n.time}</div></div>`).join('');
     }
-  }catch(e){ console.warn('News error:',e.message); }
+  }catch(e){console.warn('News:',e.message);}
 }
 
-function timeAgo(str){
-  if(!str) return 'Just now';
-  const diff=Math.floor((Date.now()-new Date(str))/1000);
-  if(diff<60) return diff+'s ago';
-  if(diff<3600) return Math.floor(diff/60)+' min ago';
-  if(diff<86400) return Math.floor(diff/3600)+' hrs ago';
-  return Math.floor(diff/86400)+'d ago';
-}
+function timeAgo(str){if(!str)return'Just now';const d=Math.floor((Date.now()-new Date(str))/1000);if(d<60)return d+'s';if(d<3600)return Math.floor(d/60)+'m ago';if(d<86400)return Math.floor(d/3600)+'h ago';return Math.floor(d/86400)+'d ago';}
 
 async function aiNewsBrief(){
   const h=Array.from(document.querySelectorAll('.ntitle')).slice(0,8).map(e=>e.textContent).join(' | ');
-  await setOut('news-ai-out',(h?'Live headlines: '+h+'. ':'')+' Give Kiran Allagadapa (Indian-American Salesforce Architect, MI fan, McKinney TX) a personalized daily brief under 150 words. Warm, conversational tone.','Generating your news brief...');
+  await setOut('news-ai-out',(h?'Live headlines: '+h+'. ':'')+' Personalized daily brief for Kiran Allagadapa (Salesforce Architect, McKinney TX, MI fan). India, USA, Tech, Cricket. Under 150 words. Warm tone.','Generating your brief...');
 }
 
-// ═══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 // HEALTH
-// ═══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 function buildVitals(){
-  const el=document.getElementById('vitals-grid');
-  if(!el) return;
+  const el=document.getElementById('vitals-grid');if(!el)return;
   el.innerHTML=[['Heart rate','72 bpm','Normal','ok'],['Blood pressure','118/76','Optimal','ok'],['Blood sugar','94 mg/dL','Normal','ok'],['SpO2','98%','Normal','ok'],['Steps','7,842','Goal: 10K','warn'],['Sleep','6.5 hrs','Goal: 8 hrs','warn']].map(v=>`<div class="vital"><div class="vval">${v[1]}</div><div class="vlbl">${v[0]}</div><div class="vstatus ${v[3]}">${v[2]}</div></div>`).join('');
 }
-
 function buildRx(){
-  const el=document.getElementById('rx-list');
-  if(!el) return;
+  const el=document.getElementById('rx-list');if(!el)return;
   el.innerHTML=[['Vitamin D3 · 2000 IU','Daily · Refill: Jun 10','bg','Active'],['Omega-3 · 1000 mg','Daily · Refill: Jun 25','bg','Active'],['Zyrtec · 10 mg','As needed · 1 refill left','ba','Refill soon']].map(p=>`<div class="rx-item"><i class="ti ti-pill" style="font-size:16px;color:#7c3aed;flex-shrink:0"></i><div style="flex:1"><div class="list-title">${p[0]}</div><div class="list-sub">${p[1]}</div></div><span class="badge ${p[2]}">${p[3]}</span></div>`).join('');
 }
-
 function buildDocs(){
-  const el=document.getElementById('doc-list');
-  if(!el) return;
+  const el=document.getElementById('doc-list');if(!el)return;
   el.innerHTML=[['Dr. Sarah Mitchell','Family Medicine · UT Southwestern','Available today 3 PM','#0ea5e9','SM'],['Dr. Rajan Patel','Internal Medicine · Baylor Scott','Tue Jun 3 · 10 AM','#7c3aed','RP'],['Dr. Lisa Chen','Dermatology · Medical City McKinney','Jun 12 · 2 PM','#16a34a','LC']].map(d=>`<div class="doc-card"><div class="doc-av" style="background:${d[3]}">${d[4]}</div><div style="flex:1"><div class="list-title">${d[0]}</div><div class="list-sub">${d[1]} · <span style="color:#16a34a">${d[2]}</span></div></div><button class="cbtn" style="font-size:11px" onclick="bookAppt('${d[0]}')"><i class="ti ti-calendar-plus"></i>Book</button></div>`).join('');
 }
-
 function bookAppt(doc){
-  const out=document.getElementById('health-out');
-  out.style.display='block';
-  if(doc==='Emergency') out.textContent='🚨 Urgent Care — McKinney TX:\n\n• CareNow Urgent Care: (972) 704-3600 — Open now\n• NextCare Urgent Care Allen: (480) 459-9000\n• CVS MinuteClinic McKinney: Walk-in\n• Medical City McKinney ER: 2400 Benchmark Dr · 24/7\n\nFor life-threatening: Call 911';
-  else out.textContent=`✅ Appointment request sent — ${doc}\n✅ Confirmation SMS sent\n✅ Calendar event created\n✅ Reminder set 24hrs before\n\nNote: Connect CVS Health account in ⚙ Settings for live booking.`;
+  const out=document.getElementById('health-out');out.style.display='block';
+  if(doc==='Emergency')out.textContent='🚨 Urgent Care — McKinney TX:\n\n• CareNow Urgent Care: (972) 704-3600 — Open now\n• NextCare Allen: (480) 459-9000\n• CVS MinuteClinic: Walk-in\n• Medical City ER: 2400 Benchmark Dr · 24/7\n\nLife-threatening: Call 911';
+  else out.textContent='✅ Appointment request sent — '+doc+'\n✅ Confirmation SMS sent\n✅ Calendar event created\n✅ Reminder set 24hrs before\n\nNote: Connect CVS Health in ⚙ Settings for live booking.';
 }
-
 function refillAll(){
-  const out=document.getElementById('health-out');
-  out.style.display='block';
+  const out=document.getElementById('health-out');out.style.display='block';
   out.textContent='✅ Refill sent to CVS McKinney:\n• Vitamin D3 — Ready in 2-4 hrs\n• Omega-3 — Ready in 2-4 hrs\n• Zyrtec — Ready in 2-4 hrs\n\nPickup: CVS, 3601 S. Stonebridge Dr, McKinney TX';
 }
 
-// ═══════════════════════════════════════════════════════════════
-// ASTROLOGY
-// ═══════════════════════════════════════════════════════════════
-async function aiAstroReading(){ await setOut('astro-out','Detailed Vedic astrology weekly reading for Kiran Allagadapa: Kanya Rashi, Hasta Nakshatra, Gemini Lagna, born Nov 29 1983, Venus Mahadasha Venus-Venus Antardasha. Cover career (Salesforce decisions), finance, health, relationships. Mention specific dates this week. Telugu cultural style.','Generating your horoscope...'); }
+// ══════════════════════════════════════════════════════════════
+// ASTROLOGY / TRAVEL / SALESFORCE
+// ══════════════════════════════════════════════════════════════
+async function aiAstroReading(){await setOut('astro-out','Detailed Vedic astrology weekly reading for Kiran: Kanya Rashi, Hasta Nakshatra, Gemini Lagna, born Nov 29 1983, Venus Mahadasha. Career, finance, health, relationships. Telugu cultural style.','Generating horoscope...');}
+async function aiTripPlan(){await setOut('health-out','Plan DFW to Hyderabad trip for Kiran. Best flights, hotels, must-see places, Telugu food, 7-day budget.','Planning trip...');}
+async function aiFood(){await setOut('health-out','Best Telugu & South Indian restaurants near McKinney TX. Name, dish, distance, rating, price range. Also 3 Telugu dinner ideas for tonight.','Finding Telugu food...');}
 
-// ═══════════════════════════════════════════════════════════════
-// TRAVEL / FOOD / SHOP
-// ═══════════════════════════════════════════════════════════════
-async function aiTripPlan(){ await setOut('travel-ai-out','Plan DFW to Hyderabad India trip for Kiran. Best flights, hotels in Hyderabad, must-visit places, Telugu food spots, budget 7 days.','Planning your trip...'); }
-async function aiFood(){ await setOut('travel-ai-out','Best Telugu & South Indian restaurants near McKinney TX and Allen TX. Name, specialty dish, distance, rating, price. Also 3 Telugu dinner menu ideas for tonight.','Finding Telugu food...'); }
-
-// ═══════════════════════════════════════════════════════════════
-// SALESFORCE
-// ═══════════════════════════════════════════════════════════════
 function sfTool(name){
-  const out=document.getElementById('sf-ai-out');
-  out.style.display='block';
-  out.textContent=`Opening ${name}...\n\nAll Salesforce tools available:\n• Workbench: SOQL · REST · Bulk · Debug\n• VS Code + Notepad++: Editor · IntelliSense · Tests\n• Schema Builder · Flow Debugger · Apex Replay\n• Data Loader · API Tester · Permission Analyzer · Metadata Explorer\n\nTip: Type "${name} help" in chat for AI guidance, or ask me to write any Salesforce code!`;
+  const out=document.getElementById('sf-ai-out');out.style.display='block';
+  out.textContent='Opening '+name+'...\n\nAll tools available:\n• Workbench: SOQL · REST · Bulk · Debug\n• VS Code: Editor · IntelliSense · Tests\n• Schema · Flow Debug · Apex Replay\n• Data Loader · API Tester · Permissions · Metadata\n\nTip: Ask in chat "write apex trigger" or "fix this SOQL" for AI code help!';
 }
-
 async function runSOQL(){
   const q=document.getElementById('soql-editor').value.trim();
-  const out=document.getElementById('soql-out');
-  out.style.display='block'; out.textContent='Running SOQL on Rackera Production...';
-  out.textContent=await quickAI(`Simulate running this SOQL on Salesforce, return realistic mock JSON with totalSize and records array (5 records max):\n\n${q}`,'Salesforce SOQL engine. Return formatted mock results.');
+  const out=document.getElementById('soql-out');out.style.display='block';out.textContent='Running SOQL...';
+  out.textContent=await quickAI('Simulate running this SOQL on Salesforce, return realistic mock JSON with totalSize and 3-5 records:\n\n'+q,'Salesforce SOQL engine.');
 }
-
 async function aiSOQL(){
   const q=document.getElementById('soql-editor').value.trim();
-  const result=await quickAI(`Optimize this SOQL for Salesforce governor limits and performance. Return only the optimized SOQL:\n\n${q}`,'Salesforce SOQL expert. Return optimized SOQL only.');
-  document.getElementById('soql-editor').value=result.replace(/```[\w]*\n?|```/g,'').trim();
+  const r=await quickAI('Optimize this SOQL for Salesforce governor limits. Return only optimized SOQL:\n\n'+q,'Salesforce SOQL expert.');
+  document.getElementById('soql-editor').value=r.replace(/```[\w]*\n?|```/g,'').trim();
 }
-
-async function aiSFAdvice(){ await setOut('sf-ai-out','Top 5 Salesforce architecture recommendations for Kiran at Rackera Inc: Agentforce 3.0 rollout, Data Cloud segmentation, Communications Cloud. Batch jobs 80% limit, test coverage 87%. Be specific and actionable.','AI analyzing Salesforce...'); }
-
+async function aiSFAdvice(){await setOut('sf-ai-out','Top 5 Salesforce architecture recs for Kiran at Rackera: Agentforce 3.0, Data Cloud, Communications Cloud. Batch 80% limit, test 87%. Specific and actionable.','AI analyzing Salesforce...');}
 </script>
 </body>
 </html>
