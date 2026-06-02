@@ -986,6 +986,7 @@ const CFG={
   GEMINI_KEY:  _k('AQ.Ab8RN6KebRzag1bI9SoDx3dLx9','AZF7tqN0kpHMQ7','Xbmf7cdU_g'),
   GROQ_KEY:    _k('gsk_ja72LDPQ2PloTsM0','LllyWGdyb3FY1Fjo2Q8P','qnyKXSq09xDnk3Cu'),
   MISTRAL_KEY: _k('oKxGdCp5RfYJ','oNznos8O9zxy','5sn6Wfyt'),
+  COHERE_KEY:  _k('cujwzXvFGpYzH7','HDJfT5qtjsdk2P','djTL4bDV6dXu'),
   CLAUDE_MODEL:'claude-sonnet-4-20250514',
 };
 
@@ -1023,7 +1024,7 @@ function getEngineKey(id){
   if(id==='gemini')  return localStorage.getItem('kai_gemini_key')  || CFG.GEMINI_KEY;
   if(id==='groq')    return localStorage.getItem('kai_groq_key')    || CFG.GROQ_KEY;
   if(id==='mistral') return localStorage.getItem('kai_mistral_key') || CFG.MISTRAL_KEY;
-  if(id==='cohere')  return localStorage.getItem('kai_cohere_key')  || '';
+  if(id==='cohere')  return localStorage.getItem('kai_cohere_key')  || CFG.COHERE_KEY;
   if(id==='claude')  return localStorage.getItem('kai_claude_key')  || '';
   return '';
 }
