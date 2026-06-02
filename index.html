@@ -1305,6 +1305,21 @@ async function callOpenRouter(prompt){
   }catch(e){console.warn('OpenRouter:',e.message);return null;}
 }
 
+// ── Master call function ─────────────────────────────────
+async function callEngine(id, prompt){
+  bumpUsage(id);
+  updateRoutingUI();
+  switch(id){
+    case 'gemini':     return await callGemini(prompt);
+    case 'groq':       return await callGroq(prompt);
+    case 'mistral':    return await callMistral(prompt);
+    case 'cohere':     return await callCohere(prompt);
+    case 'openrouter': return await callOpenRouter(prompt);
+    case 'claude':     return await callClaude(prompt);
+    default:           return await callGemini(prompt);
+  }
+}
+
 async function callClaude(prompt){
   const key=getClaudeKey();
   if(!key) return{reply:null,engine:'Claude',redirect:true};
@@ -1577,10 +1592,11 @@ async function sendMsg(){
       bumpUsage(engineId);
       let r=null;
       switch(engineId){
-        case 'gemini':  r=await callGemini(txt); break;
-        case 'groq':    r=await callGroq(txt);   break;
-        case 'mistral': r=await callMistral(txt);break;
-        case 'cohere':  r=await callCohere(txt); break;
+        case 'gemini':     r=await callGemini(txt);      break;
+        case 'groq':       r=await callGroq(txt);        break;
+        case 'mistral':    r=await callMistral(txt);     break;
+        case 'cohere':     r=await callCohere(txt);      break;
+        case 'openrouter': r=await callOpenRouter(txt);  break;
       }
       if(r?.reply){ result=r; }
       else{
@@ -1625,61 +1641,7 @@ async function sendMsg(){
 }
 
 // ── Try engines in fallback order ─────────────────────────────
-async function tryEnginesFrom(startId,prompt){
-  const order=['gemini','groq','mistral','cohere','claude'];
-  const si=Math.max(0,order.indexOf(startId));
-  for(let i=si+1;i<order.length;i++){
-    const id=order[i];
-    if(id==='claude') return await callClaude(prompt);
-    const key=getEngineKey(id);
-    const u=getUsage();
-    if(!key||key.length<5||(u[id]||0)>=ENGINES[id].limit) continue;
-    bumpUsage(id);
-    let r=null;
-    switch(id){case 'groq':r=await callGroq(prompt);break;case 'mistral':r=await callMistral(prompt);break;case 'cohere':r=await callCohere(prompt);break;case 'openrouter':r=await callOpenRouter(prompt);break;}
-    if(r?.reply){r.reply='_(Auto-switched to '+ENGINES[id]?.name+')_\n\n'+r.reply;return r;}
-  }
-  return{reply:null,engine:'Claude',redirect:true};
-}
 
-function chip(t){document.getElementById('chat-input').value=t;sendMsg();}
-function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
-function autoResize(ta){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,160)+'px';}
-
-// ══════════════════════════════════════════════════════════════
-// MIC
-// ══════════════════════════════════════════════════════════════
-function toggleMic(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){alert('Voice input works in Chrome & Safari.');return;}
-  if(micOn){try{recognition?.stop();}catch(e){}stopMic();return;}
-  recognition=new SR();
-  recognition.lang='en-US';recognition.continuous=false;recognition.interimResults=true;
-  const btn=document.getElementById('mic-btn'),icon=document.getElementById('mic-icon'),status=document.getElementById('mic-status');
-  btn.classList.add('recording');icon.className='ti ti-microphone-off';
-  status.classList.add('show');document.getElementById('mic-txt').textContent='Listening...';
-  micOn=true;
-  recognition.onresult=e=>{
-    let int='',fin='';
-    for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)fin+=e.results[i][0].transcript;else int+=e.results[i][0].transcript;}
-    document.getElementById('chat-input').value=fin||int;
-    if(fin)document.getElementById('mic-txt').textContent='✓ '+fin.substring(0,50);
-  };
-  recognition.onend=()=>{stopMic();const v=document.getElementById('chat-input').value.trim();if(v)setTimeout(()=>sendMsg(),400);};
-  recognition.onerror=e=>{stopMic();document.getElementById('mic-txt').textContent='Error: '+e.error;};
-  try{recognition.start();}catch(e){stopMic();}
-}
-function stopMic(){
-  micOn=false;
-  document.getElementById('mic-btn').classList.remove('recording');
-  document.getElementById('mic-icon').className='ti ti-microphone';
-  setTimeout(()=>document.getElementById('mic-status').classList.remove('show'),2000);
-}
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='m'){e.preventDefault();toggleMic();}if(e.key==='Escape')closeMobSidebar();});
-
-// ══════════════════════════════════════════════════════════════
-// LIVE: WEATHER
-// ══════════════════════════════════════════════════════════════
 async function loadLiveWeather(){
   try{
     const[curr,fore]=await Promise.all([
