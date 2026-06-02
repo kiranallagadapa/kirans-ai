@@ -513,17 +513,19 @@ a:hover{text-decoration:underline}
   </div>
 
   <div class="sb-routing">
-    <div class="routing-label">AI Routing</div>
-    <div class="routing-chain">
-      <div class="r-chip g" id="rc-g" title="Gemini Free - Simple tasks"><div class="r-dot"></div><span>Gemini</span><span class="r-lim" id="rl-g">60/day</span></div>
-      <div class="r-arrow">›</div>
-      <div class="r-chip c" id="rc-c" title="Copilot Free - Medium tasks"><div class="r-dot"></div><span>Copilot</span><span class="r-lim" id="rl-c">50/day</span></div>
-      <div class="r-arrow">›</div>
-      <div class="r-chip m" id="rc-m" title="Mistral Free - Technical"><div class="r-dot"></div><span>Mistral</span><span class="r-lim" id="rl-m">40/day</span></div>
-      <div class="r-arrow">›</div>
-      <div class="r-chip cl active" id="rc-cl" title="Claude Premium"><div class="r-dot"></div><span>Claude</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+      <span style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-sidebar-muted)">AI Routing</span>
+      <span id="routing-mode-lbl" style="font-size:9px;color:#d97706;cursor:pointer" onclick="setManualMode(null)">Auto ↺</span>
     </div>
-    <div id="eng-status">Active: Claude Premium</div>
+    <div style="display:flex;flex-direction:column;gap:3px">
+      <div id="row-gemini"     onclick="setManualMode('gemini')"     style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-gemini"     style="width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">Gemini</span><span style="font-size:9px;color:#555;flex:1">1500/day</span><span id="cnt-gemini" style="font-size:9.5px;color:#666">free</span></div>
+      <div id="row-groq"       onclick="setManualMode('groq')"       style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-groq"       style="width:7px;height:7px;border-radius:50%;background:#a855f7;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">Groq</span><span style="font-size:9px;color:#555;flex:1">500/day</span><span id="cnt-groq" style="font-size:9.5px;color:#666">free</span></div>
+      <div id="row-mistral"    onclick="setManualMode('mistral')"    style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-mistral"    style="width:7px;height:7px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">Mistral</span><span style="font-size:9px;color:#555;flex:1">100/day</span><span id="cnt-mistral" style="font-size:9.5px;color:#666">free</span></div>
+      <div id="row-cohere"     onclick="setManualMode('cohere')"     style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-cohere"     style="width:7px;height:7px;border-radius:50%;background:#06b6d4;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">Cohere</span><span style="font-size:9px;color:#555;flex:1">1000/day</span><span id="cnt-cohere" style="font-size:9.5px;color:#666">free</span></div>
+      <div id="row-openrouter" onclick="setManualMode('openrouter')" style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-openrouter" style="width:7px;height:7px;border-radius:50%;background:#6366f1;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">OpenRouter</span><span style="font-size:9px;color:#555;flex:1">∞ free</span><span id="cnt-openrouter" style="font-size:9.5px;color:#666">∞</span></div>
+      <div id="row-claude"     onclick="setManualMode('claude')"     style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-claude"     style="width:7px;height:7px;border-radius:50%;background:#d97706;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">Claude</span><span style="font-size:9px;color:#555;flex:1">fallback</span><span id="cnt-claude" style="font-size:9.5px;color:#666">∞</span></div>
+    </div>
+    <div id="eng-status" style="font-size:9.5px;color:var(--text-sidebar-muted);margin-top:4px">Auto: Gemini active</div>
   </div>
 
   <nav class="sb-nav">
