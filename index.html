@@ -648,6 +648,11 @@ a:hover{text-decoration:underline}
                   <div class="ao-info"><div class="ao-name">Cohere</div><div class="ao-label">Command-R · dashboard.cohere.com</div></div>
                   <span class="ao-badge nokey" id="badge-cohere">No key</span>
                 </div>
+                <div class="ai-option" id="opt-openrouter" onclick="selectAI('openrouter')">
+                  <div class="ao-dot" style="background:#6366f1" id="odot-openrouter"></div>
+                  <div class="ao-info"><div class="ao-name">OpenRouter</div><div class="ao-label">Llama 3.1 · Free unlimited · openrouter.ai</div></div>
+                  <span class="ao-badge free" id="badge-openrouter">∞ Free</span>
+                </div>
                 <div class="ai-option" id="opt-claude" onclick="selectAI('claude')">
                   <div class="ao-dot" style="background:#d97706" id="odot-claude"></div>
                   <div class="ao-info"><div class="ao-name">Claude</div><div class="ao-label">Opens claude.ai · Your account</div></div>
@@ -935,6 +940,14 @@ LIMIT 10</textarea>
         <div class="key-status none" id="status-cohere"><i class="ti ti-circle" style="font-size:12px"></i> Not set — get free at dashboard.cohere.com</div>
       </div>
 
+      <!-- OpenRouter - free unlimited -->
+      <div class="setting-group">
+        <div class="setting-label"><i class="ti ti-topology-star-3"></i>5. OpenRouter · Llama 3.1 <span style="font-size:10px;background:#e0e7ff;color:#3730a3;padding:1px 6px;border-radius:4px;margin-left:4px">✅ Active · Unlimited FREE</span></div>
+        <div class="setting-desc">Already configured! Uses Llama 3.1 8B free model. Get new key at <strong>openrouter.ai</strong> if needed.</div>
+        <input class="setting-input" id="key-openrouter" type="password" placeholder="sk-or-v1-... (already set)" autocomplete="off" oninput="checkKeyInput('openrouter')"/>
+        <div class="key-status ok" id="status-openrouter"><i class="ti ti-circle-check" style="font-size:11px"></i> Active — Unlimited free responses</div>
+      </div>
+
       <!-- Claude - optional backup -->
       <div class="setting-group">
         <div class="setting-label"><i class="ti ti-sparkles"></i>5. Claude API <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;margin-left:4px">Optional — final fallback</span></div>
@@ -1005,6 +1018,7 @@ const ENGINES={
   groq:   {name:'Groq',   label:'Groq · Llama 3.3 70B',  limit:500, color:'#a855f7',free:true},
   mistral:{name:'Mistral',label:'Mistral Small Latest',   limit:100, color:'#f59e0b',free:true},
   cohere: {name:'Cohere', label:'Cohere Command-R',       limit:1000,color:'#06b6d4',free:true},
+  openrouter:{name:'OpenRouter',label:'Llama 3.1 · Free unlimited',limit:99999,color:'#6366f1',free:true},
   claude: {name:'Claude', label:'Claude AI',              limit:9999,color:'#d97706',free:false},
 };
 
@@ -1025,6 +1039,7 @@ function getEngineKey(id){
   if(id==='groq')    return localStorage.getItem('kai_groq_key')    || CFG.GROQ_KEY;
   if(id==='mistral') return localStorage.getItem('kai_mistral_key') || CFG.MISTRAL_KEY;
   if(id==='cohere')  return localStorage.getItem('kai_cohere_key')  || CFG.COHERE_KEY;
+  if(id==='openrouter') return localStorage.getItem('kai_or_key') || CFG.OR_KEY;
   if(id==='claude')  return localStorage.getItem('kai_claude_key')  || '';
   return '';
 }
@@ -1041,7 +1056,7 @@ function getActiveEngine(){
 
 function getAutoEngine(){
   const u=getUsage();
-  for(const id of ['gemini','groq','mistral','cohere']){
+  for(const id of ['gemini','groq','mistral','cohere','openrouter']){
     const key=getEngineKey(id);
     if(key&&key.length>5&&(u[id]||0)<ENGINES[id].limit) return id;
   }
@@ -1264,6 +1279,31 @@ async function callCohere(prompt){
   }catch(e){console.warn('callCohere:',e.message);return null;}
 }
 
+async function callOpenRouter(prompt){
+  const key=getEngineKey('openrouter');
+  if(!key) return null;
+  try{
+    const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+key,
+        'HTTP-Referer':'https://kiranallagadapa.github.io/kirans-ai/',
+        'X-Title':"Kiran's AI Superman Edition"
+      },
+      body:JSON.stringify({
+        model:'meta-llama/llama-3.1-8b-instruct:free',
+        messages:[{role:'system',content:KIRAN_SYS},{role:'user',content:prompt}],
+        max_tokens:700,temperature:0.7
+      })
+    });
+    if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('OpenRouter',res.status,e?.error?.message||'');return null;}
+    const d=await res.json();
+    const t=d.choices?.[0]?.message?.content;
+    return t?{reply:t.trim(),engine:'OpenRouter'}:null;
+  }catch(e){console.warn('OpenRouter:',e.message);return null;}
+}
+
 async function callClaude(prompt){
   const key=getClaudeKey();
   if(!key) return{reply:null,engine:'Claude',redirect:true};
@@ -1340,7 +1380,7 @@ function redirectToClaude(question){
 // ══════════════════════════════════════════════════════════════
 async function quickAI(prompt,sys){
   const p=sys?sys+'\n\n'+prompt:KIRAN_SYS+'\n\n'+prompt;
-  for(const id of ['gemini','groq','mistral','cohere']){
+  for(const id of ['gemini','groq','mistral','cohere','openrouter']){
     const key=getEngineKey(id);
     if(!key||key.length<5) continue;
     const u=getUsage();
@@ -1374,7 +1414,7 @@ async function setOut(id,prompt,loading,sys){
 // SETTINGS
 // ══════════════════════════════════════════════════════════════
 function saveKeys(){
-  const ids=['gemini','groq','mistral','cohere','claude'];
+  const ids=['gemini','groq','mistral','cohere','openrouter','claude'];
   const saved=[];
   ids.forEach(id=>{
     const val=document.getElementById('key-'+id)?.value.trim()||'';
@@ -1385,7 +1425,7 @@ function saveKeys(){
 }
 function openSettings(){
   document.getElementById('settings-modal').classList.remove('hidden');
-  ['gemini','groq','mistral','cohere','claude'].forEach(id=>{
+  ['gemini','groq','mistral','cohere','openrouter','claude'].forEach(id=>{
     const el=document.getElementById('key-'+id);
     if(!el) return;
     const saved=localStorage.getItem('kai_'+id+'_key')||(id==='gemini'?CFG.GEMINI_KEY:'');
@@ -1595,7 +1635,7 @@ async function tryEnginesFrom(startId,prompt){
     if(!key||key.length<5||(u[id]||0)>=ENGINES[id].limit) continue;
     bumpUsage(id);
     let r=null;
-    switch(id){case 'groq':r=await callGroq(prompt);break;case 'mistral':r=await callMistral(prompt);break;case 'cohere':r=await callCohere(prompt);break;}
+    switch(id){case 'groq':r=await callGroq(prompt);break;case 'mistral':r=await callMistral(prompt);break;case 'cohere':r=await callCohere(prompt);break;case 'openrouter':r=await callOpenRouter(prompt);break;}
     if(r?.reply){r.reply='_(Auto-switched to '+ENGINES[id]?.name+')_\n\n'+r.reply;return r;}
   }
   return{reply:null,engine:'Claude',redirect:true};
