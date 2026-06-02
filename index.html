@@ -453,13 +453,6 @@ a:hover{text-decoration:underline}
 [data-theme="dark"] .ao-badge.fallback{background:rgba(146,64,14,0.2);color:#fbbf24}
 .ai-dropdown-footer{padding:6px 8px 2px;border-top:1px solid var(--border);margin-top:4px;font-size:10.5px;color:var(--text-tertiary);display:flex;align-items:center;gap:4px}
 .ai-selector-wrap{position:relative}
-
-.r-eng-row{display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s}
-.r-eng-row:hover{background:rgba(255,255,255,0.07)}
-.r-eng-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:background .3s}
-.r-eng-name{font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px}
-.r-eng-tag{font-size:9px;color:#555;flex:1}
-.r-eng-cnt{font-size:9.5px;color:#666}
 /* ===== SETTINGS MODAL ===== */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
 .modal-overlay.hidden{display:none}
@@ -513,17 +506,14 @@ a:hover{text-decoration:underline}
   </div>
 
   <div class="sb-routing">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-      <span style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-sidebar-muted)">AI Routing</span>
-      <span id="routing-mode-lbl" style="font-size:9px;color:#d97706;cursor:pointer" onclick="setManualMode(null)">Auto ↺</span>
-    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px"><span style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-sidebar-muted)">AI Routing</span><span id="routing-mode-lbl" style="font-size:9px;color:#d97706;cursor:pointer" onclick="setManualMode(null)">Auto ↺</span></div>
     <div style="display:flex;flex-direction:column;gap:3px">
-      <div id="row-gemini"     onclick="setManualMode('gemini')"     style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-gemini"     style="width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">Gemini</span><span style="font-size:9px;color:#555;flex:1">1500/day</span><span id="cnt-gemini" style="font-size:9.5px;color:#666">free</span></div>
-      <div id="row-groq"       onclick="setManualMode('groq')"       style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-groq"       style="width:7px;height:7px;border-radius:50%;background:#a855f7;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">Groq</span><span style="font-size:9px;color:#555;flex:1">500/day</span><span id="cnt-groq" style="font-size:9.5px;color:#666">free</span></div>
-      <div id="row-mistral"    onclick="setManualMode('mistral')"    style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-mistral"    style="width:7px;height:7px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">Mistral</span><span style="font-size:9px;color:#555;flex:1">100/day</span><span id="cnt-mistral" style="font-size:9.5px;color:#666">free</span></div>
-      <div id="row-cohere"     onclick="setManualMode('cohere')"     style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-cohere"     style="width:7px;height:7px;border-radius:50%;background:#06b6d4;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">Cohere</span><span style="font-size:9px;color:#555;flex:1">1000/day</span><span id="cnt-cohere" style="font-size:9.5px;color:#666">free</span></div>
-      <div id="row-openrouter" onclick="setManualMode('openrouter')" style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-openrouter" style="width:7px;height:7px;border-radius:50%;background:#6366f1;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">OpenRouter</span><span style="font-size:9px;color:#555;flex:1">∞ free</span><span id="cnt-openrouter" style="font-size:9.5px;color:#666">∞</span></div>
-      <div id="row-claude"     onclick="setManualMode('claude')"     style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer;transition:background .15s"><div id="dot-claude"     style="width:7px;height:7px;border-radius:50%;background:#d97706;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:60px">Claude</span><span style="font-size:9px;color:#555;flex:1">fallback</span><span id="cnt-claude" style="font-size:9.5px;color:#666">∞</span></div>
+      <div id="row-gemini"     onclick="setManualMode('gemini')"     style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer"><div id="dot-gemini"     style="width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:62px">Gemini</span><span style="font-size:9px;color:#555;flex:1">1500/d</span><span id="cnt-gemini" style="font-size:9px;color:#666">free</span></div>
+      <div id="row-groq"       onclick="setManualMode('groq')"       style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer"><div id="dot-groq"       style="width:7px;height:7px;border-radius:50%;background:#a855f7;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:62px">Groq</span><span style="font-size:9px;color:#555;flex:1">500/d</span><span id="cnt-groq" style="font-size:9px;color:#666">free</span></div>
+      <div id="row-mistral"    onclick="setManualMode('mistral')"    style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer"><div id="dot-mistral"    style="width:7px;height:7px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:62px">Mistral</span><span style="font-size:9px;color:#555;flex:1">100/d</span><span id="cnt-mistral" style="font-size:9px;color:#666">free</span></div>
+      <div id="row-cohere"     onclick="setManualMode('cohere')"     style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer"><div id="dot-cohere"     style="width:7px;height:7px;border-radius:50%;background:#06b6d4;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:62px">Cohere</span><span style="font-size:9px;color:#555;flex:1">1000/d</span><span id="cnt-cohere" style="font-size:9px;color:#666">free</span></div>
+      <div id="row-openrouter" onclick="setManualMode('openrouter')" style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer"><div id="dot-openrouter" style="width:7px;height:7px;border-radius:50%;background:#6366f1;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:62px">OpenRouter</span><span style="font-size:9px;color:#555;flex:1">∞</span><span id="cnt-openrouter" style="font-size:9px;color:#666">free</span></div>
+      <div id="row-claude"     onclick="setManualMode('claude')"     style="display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;cursor:pointer"><div id="dot-claude"     style="width:7px;height:7px;border-radius:50%;background:#d97706;flex-shrink:0"></div><span style="font-size:11px;font-weight:500;color:var(--text-sidebar);min-width:62px">Claude</span><span style="font-size:9px;color:#555;flex:1">fallback</span><span id="cnt-claude" style="font-size:9px;color:#666">∞</span></div>
     </div>
     <div id="eng-status" style="font-size:9.5px;color:var(--text-sidebar-muted);margin-top:4px">Auto: Gemini active</div>
   </div>
@@ -656,11 +646,6 @@ a:hover{text-decoration:underline}
                   <div class="ao-dot" style="background:#555" id="odot-cohere"></div>
                   <div class="ao-info"><div class="ao-name">Cohere</div><div class="ao-label">Command-R · dashboard.cohere.com</div></div>
                   <span class="ao-badge nokey" id="badge-cohere">No key</span>
-                </div>
-                <div class="ai-option" id="opt-openrouter" onclick="selectAI('openrouter')">
-                  <div class="ao-dot" style="background:#6366f1" id="odot-openrouter"></div>
-                  <div class="ao-info"><div class="ao-name">OpenRouter</div><div class="ao-label">Llama 3.1 · Free unlimited · openrouter.ai</div></div>
-                  <span class="ao-badge free" id="badge-openrouter">∞ Free</span>
                 </div>
                 <div class="ai-option" id="opt-claude" onclick="selectAI('claude')">
                   <div class="ao-dot" style="background:#d97706" id="odot-claude"></div>
@@ -949,14 +934,6 @@ LIMIT 10</textarea>
         <div class="key-status none" id="status-cohere"><i class="ti ti-circle" style="font-size:12px"></i> Not set — get free at dashboard.cohere.com</div>
       </div>
 
-      <!-- OpenRouter - free unlimited -->
-      <div class="setting-group">
-        <div class="setting-label"><i class="ti ti-topology-star-3"></i>5. OpenRouter · Llama 3.1 <span style="font-size:10px;background:#e0e7ff;color:#3730a3;padding:1px 6px;border-radius:4px;margin-left:4px">✅ Active · Unlimited FREE</span></div>
-        <div class="setting-desc">Already configured! Uses Llama 3.1 8B free model. Get new key at <strong>openrouter.ai</strong> if needed.</div>
-        <input class="setting-input" id="key-openrouter" type="password" placeholder="sk-or-v1-... (already set)" autocomplete="off" oninput="checkKeyInput('openrouter')"/>
-        <div class="key-status ok" id="status-openrouter"><i class="ti ti-circle-check" style="font-size:11px"></i> Active — Unlimited free responses</div>
-      </div>
-
       <!-- Claude - optional backup -->
       <div class="setting-group">
         <div class="setting-label"><i class="ti ti-sparkles"></i>5. Claude API <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;margin-left:4px">Optional — final fallback</span></div>
@@ -1006,9 +983,9 @@ const CFG={
   CRICKET_KEY: _k('fa9e81cadfmsh6cd0b','fdff2d3c61p17a985','jsn239ed020c7a5'),
   CRICKET_HOST:'cricbuzz-cricket.p.rapidapi.com',
   GEMINI_KEY:  _k('AQ.Ab8RN6KebRzag1bI9SoDx3dLx9','AZF7tqN0kpHMQ7','Xbmf7cdU_g'),
-  GROQ_KEY:    _k('gsk_ja72LDPQ2PloTsM0','LllyWGdyb3FY1Fjo2Q8P','qnyKXSq09xDnk3Cu'),
-  MISTRAL_KEY: _k('oKxGdCp5RfYJ','oNznos8O9zxy','5sn6Wfyt'),
-  COHERE_KEY:  _k('cujwzXvFGpYzH7','HDJfT5qtjsdk2P','djTL4bDV6dXu'),
+  GROQ_KEY:    _k('gsk_ja72LDPQ2PloTs','M0LllyWGdyb3FY1Fjo2','Q8PqnyKXSq09xDnk3Cu'),
+  MISTRAL_KEY: _k('oKxGdCp5Rf','YJoNznos8O9','zxy5sn6Wfyt'),
+  COHERE_KEY:  _k('cujwzXvFGpYzH','7HDJfT5qtjsdk','2PdjTL4bDV6dXu'),
   OR_KEY:      _k('sk-or-v1-a1e155eb3006b4c','887a2b68b0f54f2dd2f73380','59d9fbac40e0eef0bc8b4ed73'),
   CLAUDE_MODEL:'claude-sonnet-4-20250514',
 };
@@ -1029,7 +1006,7 @@ const ENGINES={
   mistral:{name:'Mistral',label:'Mistral Small Latest',   limit:100, color:'#f59e0b',free:true},
   cohere: {name:'Cohere', label:'Cohere Command-R',       limit:1000,color:'#06b6d4',free:true},
   openrouter:{name:'OpenRouter',label:'Llama 3.1 · Free unlimited',limit:99999,color:'#6366f1',free:true},
-  claude: {name:'Claude', label:'Claude AI',              limit:9999,color:'#d97706',free:false},
+  claude:     {name:'Claude',     label:'Claude AI',                limit:9999, color:'#d97706',free:false},
 };
 
 // ── Daily usage tracking ──────────────────────────────────────
@@ -1046,11 +1023,11 @@ function bumpUsage(id){const u=getUsage();u[id]=(u[id]||0)+1;localStorage.setIte
 // ── API key management ────────────────────────────────────────
 function getEngineKey(id){
   if(id==='gemini')  return localStorage.getItem('kai_gemini_key')  || CFG.GEMINI_KEY;
-  if(id==='groq')    return localStorage.getItem('kai_groq_key')    || CFG.GROQ_KEY;
-  if(id==='mistral') return localStorage.getItem('kai_mistral_key') || CFG.MISTRAL_KEY;
-  if(id==='cohere')  return localStorage.getItem('kai_cohere_key')  || CFG.COHERE_KEY;
-  if(id==='openrouter') return localStorage.getItem('kai_or_key') || CFG.OR_KEY;
-  if(id==='claude')  return localStorage.getItem('kai_claude_key')  || '';
+  if(id==='groq')       return localStorage.getItem('kai_groq_key')    || CFG.GROQ_KEY;
+  if(id==='mistral')    return localStorage.getItem('kai_mistral_key') || CFG.MISTRAL_KEY;
+  if(id==='cohere')     return localStorage.getItem('kai_cohere_key')  || CFG.COHERE_KEY;
+  if(id==='openrouter') return localStorage.getItem('kai_or_key')      || CFG.OR_KEY;
+  if(id==='claude')     return localStorage.getItem('kai_claude_key')  || '';
   return '';
 }
 const getClaudeKey=()=>getEngineKey('claude');
@@ -1289,1414 +1266,35 @@ async function callCohere(prompt){
   }catch(e){console.warn('callCohere:',e.message);return null;}
 }
 
-async function callOpenRouter(prompt){
-  const key=getEngineKey('openrouter');
-  if(!key) return null;
-  try{
-    const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+key,
-        'HTTP-Referer':'https://kiranallagadapa.github.io/kirans-ai/',
-        'X-Title':"Kiran's AI Superman Edition"
-      },
-      body:JSON.stringify({
-        model:'meta-llama/llama-3.1-8b-instruct:free',
-        messages:[{role:'system',content:KIRAN_SYS},{role:'user',content:prompt}],
-        max_tokens:700,temperature:0.7
-      })
-    });
-    if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('OpenRouter',res.status,e?.error?.message||'');return null;}
-    const d=await res.json();
-    const t=d.choices?.[0]?.message?.content;
-    return t?{reply:t.trim(),engine:'OpenRouter'}:null;
-  }catch(e){console.warn('OpenRouter:',e.message);return null;}
-}
-
-// ── Master call function ─────────────────────────────────
-async function callEngine(id, prompt){
-  bumpUsage(id);
-  updateRoutingUI();
-  switch(id){
-    case 'gemini':     return await callGemini(prompt);
-    case 'groq':       return await callGroq(prompt);
-    case 'mistral':    return await callMistral(prompt);
-    case 'cohere':     return await callCohere(prompt);
-    case 'openrouter': return await callOpenRouter(prompt);
-    case 'claude':     return await callClaude(prompt);
-    default:           return await callGemini(prompt);
-  }
-}
-
-async function callClaude(prompt){
-  const key=getClaudeKey();
-  if(!key) return{reply:null,engine:'Claude',redirect:true};
-  try{
-    chatHistory.push({role:'user',content:prompt});
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:CFG.CLAUDE_MODEL,max_tokens:800,system:KIRAN_SYS,messages:chatHistory})
-    });
-    if(!res.ok){
-      const e=await res.json().catch(()=>({}));
-      if(res.status===401) return{reply:'❌ Invalid Claude API key. Update in ⚙ Settings.',engine:'Claude'};
-      throw new Error(e?.error?.message||'HTTP '+res.status);
-    }
-    const d=await res.json();
-    let reply=d.content?.map(b=>b.text||'').join('')||'No response.';
-    reply=reply.replace(/\[ENGINE:[^\]]+\]/gi,'').trim();
-    chatHistory.push({role:'assistant',content:reply});
-    return{reply,engine:'Claude'};
-  }catch(e){
-    console.warn('Claude:',e.message);
-    return{reply:null,engine:'Claude',redirect:true};
-  }
-}
-
-// ── Try engines in order until one works ─────────────────────
-async function tryEnginesFrom(startId, prompt){
-  const order=['gemini','groq','mistral','cohere','claude'];
-  const si=Math.max(0,order.indexOf(startId));
-  for(let i=si;i<order.length;i++){
-    const id=order[i];
-    const key=getEngineKey(id);
-    const u=getUsage();
-    if(id!=='claude'&&(!key||key.length<5||(u[id]||0)>=ENGINES[id].limit)) continue;
-    if(id==='claude'){
-      const r=await callClaude(prompt);
-      return r;
-    }
-    bumpUsage(id);
-    let r=null;
-    switch(id){
-      case 'gemini':  r=await callGemini(prompt); break;
-      case 'groq':    r=await callGroq(prompt);   break;
-      case 'mistral': r=await callMistral(prompt);break;
-      case 'cohere':  r=await callCohere(prompt); break;
-    }
-    if(r?.reply){
-      if(id!==startId) r.reply='_('+ENGINES[startId]?.name+' unavailable → '+ENGINES[id]?.name+')_\n\n'+r.reply;
-      return r;
-    }
-    console.log(ENGINES[id]?.name+' failed, trying next...');
-  }
-  return{reply:null,engine:'Claude',redirect:true};
-}
-
-// ── Claude.ai redirect ────────────────────────────────────────
-function redirectToClaude(question){
-  const q=question.replace(/'/g,"\'");
-  const msg='🔄 **Opening Claude.ai** — question copied to clipboard.\n\nPaste (Ctrl+V) into Claude.ai. Uses your existing account, no extra cost!';
-  addMsg('ai',msg,'Claude');
-  if(navigator.clipboard) navigator.clipboard.writeText(question).catch(()=>{});
-  setTimeout(()=>{
-    const div=document.createElement('div');
-    div.style.cssText='display:flex;gap:8px;max-width:720px;margin:4px auto 8px;padding:0';
-    div.innerHTML='<button onclick="window.open('https://claude.ai/new','_blank')" style="background:#d97706;color:#fff;border:none;border-radius:9px;padding:8px 14px;font-size:12.5px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px"><i class='ti ti-external-link'></i> Open Claude.ai</button><button onclick="navigator.clipboard?.writeText(''+q+'')" style="background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border);border-radius:9px;padding:8px 12px;font-size:12.5px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px"><i class='ti ti-copy'></i> Copy question</button>';
-    document.getElementById('chat-messages')?.appendChild(div);
-    document.getElementById('chat-messages').scrollTop=9999;
-  },600);
-}
-
-// ══════════════════════════════════════════════════════════════
-// quickAI — for module AI buttons
-// ══════════════════════════════════════════════════════════════
-async function quickAI(prompt,sys){
-  const p=sys?sys+'\n\n'+prompt:KIRAN_SYS+'\n\n'+prompt;
-  for(const id of ['gemini','groq','mistral','cohere','openrouter']){
-    const key=getEngineKey(id);
-    if(!key||key.length<5) continue;
-    const u=getUsage();
-    if((u[id]||0)>=ENGINES[id].limit) continue;
-    bumpUsage(id);
-    let r=null;
-    switch(id){
-      case 'gemini':  r=await callGemini(p); break;
-      case 'groq':    r=await callGroq(p);   break;
-      case 'mistral': r=await callMistral(p);break;
-      case 'cohere':  r=await callCohere(p); break;
-    }
-    if(r?.reply){updateRoutingUI();return r.reply;}
-  }
-  const ck=getClaudeKey();
-  if(ck){
-    const r=await callClaude(p);
-    if(r?.reply) return r.reply;
-  }
-  return '⚠️ All AI engines unavailable. Add free API keys in ⚙ Settings (Groq/Mistral/Cohere).';
-}
-
-async function setOut(id,prompt,loading,sys){
-  const out=document.getElementById(id);
-  if(!out) return;
-  out.style.display='block';out.textContent=loading||'AI thinking...';
-  out.textContent=await quickAI(prompt,sys);
-}
-
-// ══════════════════════════════════════════════════════════════
-// SETTINGS
-// ══════════════════════════════════════════════════════════════
-function saveKeys(){
-  const ids=['gemini','groq','mistral','cohere','openrouter','claude'];
-  const saved=[];
-  ids.forEach(id=>{
-    const val=document.getElementById('key-'+id)?.value.trim()||'';
-    if(val){localStorage.setItem('kai_'+id+'_key',val);if(id==='gemini')CFG.GEMINI_KEY=val;saved.push(ENGINES[id].name);}
-  });
-  closeSettings();updateRoutingUI();
-  addMsg('ai',saved.length?'✅ Keys saved: **'+saved.join(', ')+'**\n\nRouting chain active! Try asking anything.':'Gemini (built-in) is active as primary AI.','System');
-}
-function openSettings(){
-  document.getElementById('settings-modal').classList.remove('hidden');
-  ['gemini','groq','mistral','cohere','openrouter','claude'].forEach(id=>{
-    const el=document.getElementById('key-'+id);
-    if(!el) return;
-    const saved=localStorage.getItem('kai_'+id+'_key')||(id==='gemini'?CFG.GEMINI_KEY:'');
-    if(saved) el.value=saved;
-    checkKeyInput(id);
-  });
-  updateRoutingUI();
-}
-function closeSettings(){document.getElementById('settings-modal').classList.add('hidden');}
-function checkKeyInput(id){
-  const val=document.getElementById('key-'+id)?.value.trim()||'';
-  const el=document.getElementById('status-'+id);
-  if(!el) return;
-  const pfx={claude:'sk-ant-',groq:'gsk_'};
-  const nm={gemini:'Gemini',groq:'Groq',mistral:'Mistral',cohere:'Cohere',claude:'Claude'};
-  if(!val){el.className='key-status none';el.innerHTML='<i class="ti ti-circle" style="font-size:11px"></i> Not set';}
-  else if(pfx[id]&&!val.startsWith(pfx[id])){el.className='key-status bad';el.innerHTML='<i class="ti ti-alert-circle" style="font-size:11px"></i> Should start with '+pfx[id]+'...';}
-  else{el.className='key-status ok';el.innerHTML='<i class="ti ti-circle-check" style="font-size:11px"></i> '+nm[id]+' key valid';}
-}
-function checkKey(id){checkKeyInput(id);}
-
-// ══════════════════════════════════════════════════════════════
-// STATE & INIT
-// ══════════════════════════════════════════════════════════════
-let darkMode=false,sidebarCollapsed=false,busy=false,micOn=false;
-let recognition=null,chatHistory=[],stockCache={};
-
-window.onload=()=>{
-  if(window.matchMedia('(prefers-color-scheme:dark)').matches) toggleTheme();
-  const gk=localStorage.getItem('kai_gemini_key');
-  if(gk) CFG.GEMINI_KEY=gk;
-  document.getElementById('first-run-banner')?.classList.add('hidden');
-  buildStocks();buildIndices();
-  if(typeof buildVitals==='function') buildVitals();
-  if(typeof buildRx==='function') buildRx();
-  if(typeof buildDocs==='function') buildDocs();
-  setTimeout(()=>{updateRoutingUI();updateSelectorBtn();refreshDropdown();},200);
-  setTimeout(()=>loadLiveWeather(),300);
-  setTimeout(()=>loadLiveNews(),600);
-  setTimeout(()=>loadLiveCricket(),900);
-};
-
-// ══════════════════════════════════════════════════════════════
-// THEME & NAV
-// ══════════════════════════════════════════════════════════════
-function toggleTheme(){
-  darkMode=!darkMode;
-  document.body.setAttribute('data-theme',darkMode?'dark':'');
-  document.getElementById('theme-icon').className=darkMode?'ti ti-sun':'ti ti-moon';
-}
-function toggleSidebar(){sidebarCollapsed=!sidebarCollapsed;document.getElementById('sidebar').classList.toggle('collapsed',sidebarCollapsed);}
-function openMobSidebar(){document.getElementById('sidebar').classList.add('mob-open');document.getElementById('sidebar-overlay').classList.add('show');}
-function closeMobSidebar(){document.getElementById('sidebar').classList.remove('mob-open');document.getElementById('sidebar-overlay').classList.remove('show');}
-
-function showPanel(name,el){
-  document.querySelectorAll('.module-panel').forEach(p=>p.classList.remove('active'));
-  const cp=document.getElementById('panel-chat');if(cp)cp.style.display='none';
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  if(el)el.classList.add('active');
-  const titles={chat:"Chat with Kiran's AI",weather:'Weather & Alerts',stocks:'Stocks & Investment',health:'Health + CVS',cricket:'Cricket · IPL 2026',news:'Global News',astro:'Vedic Astrology',travel:'Travel · Food · Shop',sf:'Salesforce Command Center'};
-  const subs={chat:'Smart routing: Gemini → Groq → Mistral → Cohere → Claude',weather:'Live WeatherAPI · McKinney TX',stocks:'Live Alpha Vantage · NVDA MSFT AAPL CRM TSLA',health:'CVS · Prescriptions · Doctor booking',cricket:'Live Cricbuzz RapidAPI · IPL 2026',news:'Live Google News RSS · India · USA · Tech',astro:'Kanya Rashi · Hasta Nakshatra · Gemini Lagna',travel:'DFW · McKinney TX · Hyderabad · Telugu food',sf:'Rackera Production · 12 dev tools'};
-  document.getElementById('tb-title').textContent=titles[name]||"Kiran's AI";
-  document.getElementById('tb-subtitle').textContent=subs[name]||'';
-  if(name==='chat'){if(cp)cp.style.display='flex';}
-  else{const p=document.getElementById('panel-'+name);if(p)p.classList.add('active');}
-  closeMobSidebar();
-}
-function setBN(id){document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));document.getElementById(id)?.classList.add('active');}
-
-// ══════════════════════════════════════════════════════════════
-// CHAT
-// ══════════════════════════════════════════════════════════════
-function addMsg(role,text,engine){
-  const msgs=document.getElementById('chat-messages');
-  if(!msgs){ console.error('chat-messages not found!'); return; }
-  document.getElementById('welcome')?.remove();
-  const block=document.createElement('div');
-  block.className='msg-block';
-  const isAI=role!=='user';
-  const safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const fmt=safe
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/`([^`]+)`/g,'<code style="font-family:var(--mono);background:var(--bg-base);padding:1px 5px;border-radius:4px;font-size:12px">$1</code>')
-    .replace(/\n/g,'<br>');
-  const ec={Gemini:'background:#dcfce7;color:#15803d',Groq:'background:#ede9fe;color:#5b21b6',Mistral:'background:#fef3c7;color:#92400e',Cohere:'background:#e0f2fe;color:#0369a1',Claude:'background:#fef3c7;color:#d97706',System:'background:var(--bg-base);color:var(--text-tertiary)'};
-  const etag=isAI&&engine?`<span style="${ec[engine]||ec.System};padding:2px 7px;border-radius:6px;font-size:10px;font-weight:500">${engine}</span>`:'';
-  block.innerHTML=`<div class="msg-row ${isAI?'ai':'user'}">
-    <div class="msg-av ${isAI?'ai':'user'}">${isAI?'K':'KA'}</div>
-    <div class="msg-content">
-      <div class="msg-name">${isAI?"Kiran's AI":'Kiran'}</div>
-      <div class="msg-bubble">${fmt}</div>
-      <div class="msg-meta">${etag}<span>${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>
-    </div>
-  </div>`;
-  msgs.appendChild(block);
-  msgs.scrollTop=msgs.scrollHeight;
-}
-
-function showTyping(){
-  const msgs=document.getElementById('chat-messages');
-  const el=document.createElement('div');
-  el.id='typing-indicator';el.className='msg-block';
-  el.innerHTML='<div class="msg-row ai typing-msg"><div class="msg-av ai">K</div><div class="msg-content"><div class="msg-name">Kiran's AI</div><div class="msg-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>';
-  msgs.appendChild(el);msgs.scrollTop=msgs.scrollHeight;
-}
-function removeTyping(){document.getElementById('typing-indicator')?.remove();}
-
-async function sendMsg(){
-  if(busy)return;
-  const inp=document.getElementById('chat-input');
-  let txt=inp.value.trim();
-  if(!txt)return;
-
-  // Check for override command
-  const override=detectOverride(txt);
-  if(override==='reset'){
-    selectedEngine='auto';updateRoutingUI();updateSelectorBtn();
-    inp.value='';autoResize(inp);
-    addMsg('ai','↺ Back to **Auto routing**. Gemini → Groq → Mistral → Cohere → Claude chain active.','System');
-    return;
-  }
-  if(override){
-    const cleaned=txt.replace(/^(@|\/|use |switch to |ask |with |#|route to )?(gemini|groq|llama|mistral|cohere|claude|anthropic|google)\s*[:>]?\s*/i,'').trim();
-    selectedEngine=override; updateRoutingUI(); updateSelectorBtn();
-    if(!cleaned||cleaned.length<3){
-      inp.value='';autoResize(inp);
-      addMsg('ai','✅ Switched to **'+ENGINES[override]?.name+'**. Ask me anything!',override);
-      return;
-    }
-    txt=cleaned;
-  }
-
-  inp.value='';autoResize(inp);
-  addMsg('user',txt);
-  busy=true;showTyping();
-
-  // Determine engine
-  const engineId=getActiveEngine();
-
-  // Highlight in sidebar
-  document.querySelectorAll('[id^="row-"]').forEach(r=>r.style.background='');
-  document.getElementById('row-'+engineId)?.style && (document.getElementById('row-'+engineId).style.background='rgba(217,119,6,0.12)');
-
-  try{
-    let result;
-    if(engineId==='claude'){
-      result=await callClaude(txt);
-    } else {
-      bumpUsage(engineId);
-      let r=null;
-      switch(engineId){
-        case 'gemini':     r=await callGemini(txt);      break;
-        case 'groq':       r=await callGroq(txt);        break;
-        case 'mistral':    r=await callMistral(txt);     break;
-        case 'cohere':     r=await callCohere(txt);      break;
-        case 'openrouter': r=await callOpenRouter(txt);  break;
-      }
-      if(r?.reply){ result=r; }
-      else{
-        // Primary engine failed — try fallback chain only in auto mode
-        if(selectedEngine==='auto'){
-          result=await tryEnginesFrom(engineId,txt);
-        } else {
-          // Manual selection failed — show error, don't redirect
-          result={reply:'⚠️ **'+ENGINES[engineId]?.name+'** is currently unavailable.\n\nPossible reasons:\n• API key not set (add in ⚙ Settings)\n• Daily quota reached\n• Network issue\n\nTip: Type **auto** to switch back to automatic routing, or select another AI from the input bar.',engine:'System'};
-        }
-      }
-    }
-
-    removeTyping();
-
-    if(result?.redirect){
-      // Only redirect to Claude.ai if user explicitly chose Claude or all free AIs exhausted
-      if(selectedEngine==='claude'||selectedEngine==='auto'){
-        redirectToClaude(txt);
-      } else {
-        addMsg('ai','⚠️ Claude API key not set. \n\nTo use Claude:\n• **Option A**: Add API key in ⚙ Settings (from console.anthropic.com)\n• **Option B**: Click below to open claude.ai with your question\n\nOr type **auto** to use free AI engines.','System');
-        setTimeout(()=>{
-          const div=document.createElement('div');
-          div.style.cssText='display:flex;gap:8px;max-width:720px;margin:4px auto 8px;padding:0';
-          div.innerHTML='<button onclick="window.open('https://claude.ai/new','_blank')" style="background:#d97706;color:#fff;border:none;border-radius:9px;padding:8px 14px;font-size:12.5px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px"><i class='ti ti-external-link'></i> Open Claude.ai</button>';
-          document.getElementById('chat-messages')?.appendChild(div);
-          document.getElementById('chat-messages').scrollTop=9999;
-        },400);
-      }
-    } else if(result?.reply){
-      addMsg('ai',result.reply,result.engine);
-    } else {
-      addMsg('ai','⚠️ Could not get a response. Check internet connection or add API keys in ⚙ Settings.','System');
-    }
-  }catch(e){
-    removeTyping();
-    console.error('sendMsg error:',e);
-    addMsg('ai','⚠️ Something went wrong: '+e.message+'\n\nTip: Check your internet connection. If using a downloaded file, make sure you are online.','System');
-  }
-
-  updateRoutingUI();updateSelectorBtn();refreshDropdown();
-  busy=false;
-}
-
-// ── Try engines in fallback order ─────────────────────────────
-
-async function loadLiveWeather(){
-  try{
-    const[curr,fore]=await Promise.all([
-      fetch('https://api.weatherapi.com/v1/current.json?key='+CFG.WEATHER_KEY+'&q='+CFG.WEATHER_CITY+'&aqi=yes').then(r=>r.json()),
-      fetch('https://api.weatherapi.com/v1/forecast.json?key='+CFG.WEATHER_KEY+'&q='+CFG.WEATHER_CITY+'&days=5&alerts=yes').then(r=>r.json())
-    ]);
-    const c=curr.current,loc=curr.location,alerts=fore.alerts?.alert||[];
-    const rain=fore.forecast?.forecastday[0]?.day?.daily_chance_of_rain||0;
-    const wind=Math.round(c.wind_mph);
-    const isAlert=alerts.length>0||wind>30||rain>70;
-    const setText=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-    setText('w-temp',Math.round(c.temp_f)+'°F');
-    setText('w-cond',c.condition.text);
-    setText('w-loc',loc.name+', '+loc.region);
-    setText('w-feels','Feels like '+Math.round(c.feelslike_f)+'°F');
-    setText('w-rain',rain+'%');
-    setText('w-wind',wind+' mph '+c.wind_dir);
-    setText('w-uv',c.uv);
-    setText('weather-pill',Math.round(c.temp_f)+'°F '+(rain>50?'🌧':'☀'));
-    setText('alert1-txt',isAlert?loc.name+': '+c.condition.text+', '+wind+' mph, '+rain+'% rain':loc.name+': '+c.condition.text+', '+Math.round(c.temp_f)+'°F — Clear');
-    const wb=document.getElementById('wb-badge');
-    if(wb){wb.textContent=isAlert?'⚠':'✓';wb.className='nav-badge '+(isAlert?'red':'green');}
-    const hero=document.querySelector('.weather-hero');
-    if(hero)hero.style.background=c.condition.text.toLowerCase().includes('storm')?'linear-gradient(135deg,#374151,#1f2937)':c.condition.text.toLowerCase().includes('rain')?'linear-gradient(135deg,#1e40af,#1d4ed8)':'linear-gradient(135deg,#0ea5e9,#0284c7)';
-    const aw=document.getElementById('w-alerts-wrap');
-    if(aw)aw.innerHTML=alerts.length>0?`<div class="walert"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0"></i><div><strong>${alerts[0].headline||alerts[0].event}</strong></div></div>`:isAlert?`<div class="walert"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0"></i><div>Advisory: ${wind>30?'High winds '+wind+' mph. ':''}${rain>70?'Heavy rain '+rain+'%.':''}</div></div>`:'';
-    const ta=document.getElementById('travel-weather-alert'),tt=document.getElementById('travel-alert-txt');
-    if(ta){ta.style.display=isAlert?'flex':'none';if(tt&&isAlert)tt.textContent='Weather advisory: '+c.condition.text+', '+wind+' mph winds.';}
-    const za=document.getElementById('zone-alerts');
-    if(za)za.innerHTML=`<div class="list-row"><div class="list-icon" style="background:${isAlert?'#fee2e2':'#dcfce7'}"><i class="ti ti-map-pin" style="color:${isAlert?'#dc2626':'#16a34a'};font-size:13px"></i></div><div class="list-main"><div class="list-title">McKinney TX 75070</div><div class="list-sub">${c.condition.text} · ${Math.round(c.temp_f)}°F · Wind ${wind} mph</div></div><span class="badge ${isAlert?'br':'bg'}">${isAlert?'Advisory':'Safe'}</span></div>`;
-    const fw=document.getElementById('forecast-wrap');
-    if(fw){const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];fw.innerHTML=(fore.forecast?.forecastday||[]).map(d=>{const dt=new Date(d.date),r=d.day.daily_chance_of_rain,cond=d.day.condition.text,isS=cond.toLowerCase().includes('sun'),isR=cond.toLowerCase().includes('rain')||cond.toLowerCase().includes('storm');return`<div class="fcast-row"><span class="fcast-day">${days[dt.getDay()]}</span><i class="ti ti-${isR?'cloud-storm':isS?'sun':'cloud'}" style="font-size:14px;color:${isR?'#0ea5e9':isS?'#f59e0b':'#9b9b9b'}"></i><span style="flex:1;font-size:12.5px;color:var(--text-secondary)">${cond}</span><span class="fcast-temp">${Math.round(d.day.maxtemp_f)}°F</span><span class="fcast-rain">${r}%</span></div>`;}).join('');}
-    console.log('✅ Weather:',loc.name,Math.round(c.temp_f)+'°F',c.condition.text);
-  }catch(e){console.warn('Weather:',e.message);}
-}
-
-async function checkLoc(){
-  const l=document.getElementById('loc-inp').value.trim()||'McKinney TX';
-  const out=document.getElementById('loc-out');
-  out.style.display='block';out.textContent='Checking '+l+'...';
-  try{
-    const r=await fetch('https://api.weatherapi.com/v1/forecast.json?key='+CFG.WEATHER_KEY+'&q='+encodeURIComponent(l)+'&days=1&alerts=yes');
-    const d=await r.json();
-    if(d.error){out.textContent='Location not found: '+d.error.message;return;}
-    const c=d.current,day=d.forecast.forecastday[0]?.day||{},al=d.alerts?.alert||[];
-    const wind=Math.round(c.wind_mph),rain=day.daily_chance_of_rain||0;
-    const status=wind>40||c.condition.text.toLowerCase().includes('thunder')||al.length>0?'🔴 AVOID':'wind>25||rain>70'?'⚠️ CAUTION':'✅ SAFE to visit';
-    out.textContent='📍 '+d.location.name+', '+d.location.region+'\nStatus: '+status+'\n\nTemp: '+Math.round(c.temp_f)+'°F (feels '+Math.round(c.feelslike_f)+'°F)\nCondition: '+c.condition.text+'\nWind: '+wind+' mph\nRain: '+rain+'%\nHumidity: '+c.humidity+'%\nUV: '+c.uv+(al.length?'\n\nAlerts:\n'+al.slice(0,2).map(a=>'• '+(a.headline||a.event)).join('\n'):'');
-  }catch(e){out.textContent=await quickAI('Safety check for "'+l+'" — current weather conditions and safety assessment');}
-}
-
-// ══════════════════════════════════════════════════════════════
-// LIVE: STOCKS
-// ══════════════════════════════════════════════════════════════
-const WATCHLIST=[{sym:'NVDA',name:'NVIDIA',rec:'buy'},{sym:'MSFT',name:'Microsoft',rec:'hold'},{sym:'AAPL',name:'Apple',rec:'hold'},{sym:'CRM',name:'Salesforce',rec:'buy'},{sym:'TSLA',name:'Tesla',rec:'sell'},{sym:'GOOGL',name:'Alphabet',rec:'buy'}];
-
-function buildStocks(){
-  const el=document.getElementById('stock-list');
-  if(!el)return;
-  el.innerHTML=WATCHLIST.map(s=>`<div class="stock-row" id="sr-${s.sym}"><div><div class="stk">${s.sym}</div><div class="snm">${s.name}</div></div><div class="mini" id="mini-${s.sym}"><span style="font-size:10px;color:var(--text-tertiary)">loading...</span></div><div class="spr" id="pr-${s.sym}" style="color:var(--text-tertiary)">--</div><div class="sch" id="ch-${s.sym}">--</div><span class="rec r${s.rec}">${s.rec.toUpperCase()}</span></div>`).join('');
-  loadLiveStocks();
-}
-
-async function loadLiveStocks(){
-  for(let i=0;i<WATCHLIST.length;i++){
-    const s=WATCHLIST[i];
-    try{
-      if(stockCache[s.sym]){updateStockRow(s.sym,stockCache[s.sym]);continue;}
-      const r=await fetch('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol='+s.sym+'&apikey='+CFG.STOCKS_KEY);
-      const d=await r.json();const q=d['Global Quote'];
-      if(q?.['05. price']){
-        const data={price:parseFloat(q['05. price']),change:parseFloat(q['09. change']),pct:q['10. change percent']?.replace('%','')||'0',isUp:parseFloat(q['09. change'])>=0};
-        stockCache[s.sym]=data;updateStockRow(s.sym,data);
-      }else if(d.Note||d.Information)console.warn('Alpha Vantage limit:',s.sym);
-      if(i<WATCHLIST.length-1)await new Promise(r=>setTimeout(r,1300));
-    }catch(e){console.warn('Stock:',s.sym,e.message);}
-  }
-  const tsla=stockCache['TSLA'];
-  if(tsla){const el=document.getElementById('alert2-txt');if(el)el.textContent='TSLA '+(tsla.isUp?'+':'')+parseFloat(tsla.pct).toFixed(1)+'%'+(tsla.isUp?'':' — SELL signal');}
-  const sb=document.getElementById('sb-badge');if(sb)sb.textContent='Live';
-}
-
-function updateStockRow(sym,data){
-  const{price,pct,isUp}=data;
-  const pe=document.getElementById('pr-'+sym),ce=document.getElementById('ch-'+sym),me=document.getElementById('mini-'+sym);
-  if(pe){pe.textContent='$'+price.toFixed(2);pe.style.color='var(--text-primary)';}
-  if(ce){ce.textContent=(isUp?'+':'')+parseFloat(pct).toFixed(2)+'%';ce.className='sch '+(isUp?'up':'dn');}
-  if(me){const bars=Array.from({length:10},(_,i)=>{const h=isUp?Math.round(30+i*5+Math.random()*10):Math.round(80-i*5-Math.random()*10);return Math.max(10,Math.min(100,h));});me.innerHTML=bars.map((h,i)=>`<div class="bar" style="height:${h}%;background:${isUp?'#16a34a':'#dc2626'};opacity:${0.4+i*0.06}"></div>`).join('');}
-}
-
-function buildIndices(){
-  const el=document.getElementById('indices-grid');
-  if(!el)return;
-  el.innerHTML=[['S&P 500','5,842','+0.84%',true],['NASDAQ','18,420','-0.31%',false],['SENSEX','82,450','+0.91%',true],['NIFTY 50','24,780','+0.76%',true],['Gold','$2,342','+0.23%',true],['Crude','$78.4','-0.55%',false]].map(m=>`<div class="idx-card"><div class="idx-name">${m[0]}</div><div class="idx-val">${m[1]}</div><div class="idx-chg ${m[3]?'up':'dn'}">${m[2]}</div></div>`).join('');
-}
-
-async function getQuote(){
-  const sym=document.getElementById('quote-inp').value.trim().toUpperCase();if(!sym)return;
-  const out=document.getElementById('quote-out');out.style.display='block';out.textContent='Fetching '+sym+'...';
-  try{
-    const r=await fetch('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol='+sym+'&apikey='+CFG.STOCKS_KEY);
-    const d=await r.json();const q=d['Global Quote'];
-    if(q?.['05. price']){
-      const price=parseFloat(q['05. price']),change=parseFloat(q['09. change']),pct=q['10. change percent'];
-      out.textContent=sym+' Live Quote\nPrice: $'+price.toFixed(2)+'\nChange: '+(change>=0?'+':'')+change.toFixed(2)+' ('+pct+')\nHigh: $'+parseFloat(q['03. high']).toFixed(2)+' · Low: $'+parseFloat(q['04. low']).toFixed(2)+'\nVolume: '+parseInt(q['06. volume']).toLocaleString()+'\n\nAI: Loading...';
-      const rec=await quickAI('2-sentence buy/hold/sell for '+sym+' at $'+price.toFixed(2)+', change '+pct+' today. For Kiran portfolio.');
-      out.textContent=out.textContent.replace('AI: Loading...','AI: '+rec);
-    }else out.textContent='No data for '+sym+'. Check ticker.';
-  }catch(e){out.textContent='Error fetching. Try again.';}
-}
-
-async function aiStockPicks(){await setOut('stocks-ai-out','Top 5 stock picks for Kiran Allagadapa for next 3-6 months. Focus tech, AI/cloud, one Indian ADR. Format: Ticker · Reason · Risk · Target.','Analyzing market...');}
-async function aiFutureInvest(){await setOut('stocks-ai-out','1-year and 3-year investment plan for Kiran Allagadapa (Salesforce Architect ~$150K income McKinney TX). US tech, Indian ETFs, safe haven, emergency fund. Mid-career 40yo.','Generating investment plan...');}
-
-// ══════════════════════════════════════════════════════════════
-// LIVE: CRICKET
-// ══════════════════════════════════════════════════════════════
-async function loadLiveCricket(){
-  try{
-    const headers={'x-rapidapi-host':CFG.CRICKET_HOST,'x-rapidapi-key':CFG.CRICKET_KEY};
-    const parseMatches=(d,liveOnly)=>{const matches=[];(d.typeMatches||[]).forEach(t=>{(t.seriesMatches||[]).forEach(sm=>{const saw=sm.seriesAdWrapper||sm;(saw.matches||[]).forEach(m=>{const mi=m.matchInfo||{},ms=m.matchScore||{};if(!liveOnly||mi.state==='In Progress')matches.push({title:(mi.team1?.teamSName||'')+ ' vs '+(mi.team2?.teamSName||''),series:saw.seriesName||'',status:mi.status||'',t1:mi.team1?.teamSName||'',t1s:ms.team1Score?.inngs1?ms.team1Score.inngs1.runs+'/'+ms.team1Score.inngs1.wickets+' ('+ms.team1Score.inngs1.overs+' ov)':'',t2:mi.team2?.teamSName||'',t2s:ms.team2Score?.inngs1?ms.team2Score.inngs1.runs+'/'+ms.team2Score.inngs1.wickets+' ('+ms.team2Score.inngs1.overs+' ov)':'',isLive:mi.state==='In Progress'});});});});return matches;};
-    const renderMatches=(matches,isLive)=>{
-      const el=document.getElementById('cricket-matches');
-      if(!el)return;
-      if(matches.length===0){el.innerHTML='<div class="match-card"><div style="font-size:13px;opacity:.8">No live matches. Type "IPL score today" in chat for AI analysis!</div></div>';return;}
-      el.innerHTML=matches.slice(0,3).map(m=>`<div class="match-card"><div class="match-title">${m.series}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:14px;font-weight:700">${m.t1}</span><span class="match-score">${m.t1s||'Yet to bat'}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:14px;font-weight:700">${m.t2}</span><span class="match-score">${m.t2s||'Yet to bat'}</span></div><div class="match-status">${isLive?'<span class="live-dot"></span> ':''} ${m.status}</div></div>`).join('');
-      const cb=document.getElementById('cb-badge');if(cb)cb.textContent=isLive?'● '+matches.length:'Recent';
-    };
-    const lr=await fetch('https://cricbuzz-cricket.p.rapidapi.com/matches/v1/live',{headers});
-    const ld=await lr.json();
-    const live=parseMatches(ld,true);
-    if(live.length>0){renderMatches(live,true);console.log('✅ Cricket live:',live.length,'matches');}
-    else{
-      const rr=await fetch('https://cricbuzz-cricket.p.rapidapi.com/matches/v1/recent',{headers});
-      const rd=await rr.json();
-      const recent=parseMatches(rd,false).slice(0,3);
-      renderMatches(recent,false);
-      console.log('✅ Cricket recent:',recent.length,'matches');
-    }
-  }catch(e){
-    console.warn('Cricket:',e.message);
-    const el=document.getElementById('cricket-matches');
-    if(el)el.innerHTML='<div class="match-card"><div style="font-size:13px;opacity:.8">Cricket data unavailable. Type "IPL score today" in chat!</div></div>';
-  }
-}
-
-async function aiCricketAnalysis(){
-  const live=Array.from(document.querySelectorAll('.match-card')).slice(0,2).map(e=>e.innerText.replace(/\n+/g,' ')).join(' | ');
-  await setOut('cricket-ai-out',(live||'IPL 2026 in progress')+'. Kiran is MI fan. Who is winning? Key players? Fantasy team? Bold prediction! Energetic tone.','AI analyzing cricket...');
-}
-
-// ══════════════════════════════════════════════════════════════
-// LIVE: NEWS
-// ══════════════════════════════════════════════════════════════
-async function loadLiveNews(){
-  const B='https://api.rss2json.com/v1/api.json?count=3&rss_url=';
-  const GI='https://news.google.com/rss/search?hl=en-IN&gl=IN&ceid=IN:en&q=';
-  const GU='https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=';
-  const feeds=[
-    {url:B+encodeURIComponent(GI+'India+politics+Modi+2026'),cat:'India',cls:'cat-in'},
-    {url:B+encodeURIComponent(GU+'USA+politics+economy+2026'),cat:'USA',cls:'cat-us'},
-    {url:B+encodeURIComponent(GU+'stock+market+finance+NASDAQ+2026'),cat:'Finance',cls:'cat-fi'},
-    {url:B+encodeURIComponent(GU+'Salesforce+AI+Agentforce+technology+2026'),cat:'Tech',cls:'cat-tk'},
-    {url:B+encodeURIComponent(GI+'IPL+cricket+2026'),cat:'Cricket',cls:'cat-cr'},
-    {url:B+encodeURIComponent(GU+'global+world+news+2026'),cat:'Global',cls:'cat-gl'},
-  ];
-  try{
-    const res=await Promise.allSettled(feeds.map(f=>fetch(f.url).then(r=>r.json())));
-    const all=[];
-    res.forEach((r,i)=>{if(r.status==='fulfilled'&&r.value.status==='ok')(r.value.items||[]).slice(0,2).forEach(item=>{const t=item.title?.replace(/ - Google News$/,'').replace(/ \| .+$/,'').trim();if(t&&t.length>15)all.push({cat:feeds[i].cat,cls:feeds[i].cls,title:t,src:item.author||feeds[i].cat,time:timeAgo(item.pubDate),url:item.link||'#'});});});
-    const el=document.getElementById('news-list');
-    if(el){
-      if(all.length>0)el.innerHTML=all.map(n=>`<div class="news-item"><span class="ncat ${n.cls}">${n.cat}</span><div class="ntitle" onclick="window.open('${n.url}','_blank')">${n.title}</div><div class="nmeta">${n.src} · ${n.time}</div></div>`).join('');
-      else el.innerHTML=[{cat:'India',cls:'cat-in',title:'India GDP growth hits 7.2% in Q1 2026',src:'Economic Times',time:'2h'},{cat:'USA',cls:'cat-us',title:'Fed signals September rate cut as inflation cools',src:'Reuters',time:'1h'},{cat:'Finance',cls:'cat-fi',title:'NVIDIA hits $3T market cap on AI chip demand',src:'Bloomberg',time:'30m'},{cat:'Tech',cls:'cat-tk',title:'Salesforce Agentforce 3.0 released — multi-agent GA',src:'Salesforce Blog',time:'2h'},{cat:'Cricket',cls:'cat-cr',title:'IPL 2026: Mumbai Indians lead with 10 wins from 14',src:'Cricbuzz',time:'Live'},{cat:'Global',cls:'cat-gl',title:'G7 agrees AI safety framework for 2026',src:'AP News',time:'3h'}].map(n=>`<div class="news-item"><span class="ncat ${n.cls}">${n.cat}</span><div class="ntitle">${n.title}</div><div class="nmeta">${n.src} · ${n.time}</div></div>`).join('');
-      console.log('✅ News loaded:',all.length,'articles');
-    }
-  }catch(e){console.warn('News:',e.message);}
-}
-
-function timeAgo(str){if(!str)return'Just now';const d=Math.floor((Date.now()-new Date(str))/1000);if(d<60)return d+'s';if(d<3600)return Math.floor(d/60)+'m ago';if(d<86400)return Math.floor(d/3600)+'h ago';return Math.floor(d/86400)+'d ago';}
-
-async function aiNewsBrief(){
-  const h=Array.from(document.querySelectorAll('.ntitle')).slice(0,8).map(e=>e.textContent).join(' | ');
-  await setOut('news-ai-out',(h?'Live headlines: '+h+'. ':'')+' Personalized daily brief for Kiran Allagadapa (Salesforce Architect, McKinney TX, MI fan). India, USA, Tech, Cricket. Under 150 words. Warm tone.','Generating your brief...');
-}
-
-// ══════════════════════════════════════════════════════════════
-// HEALTH
-// ══════════════════════════════════════════════════════════════
-function buildVitals(){
-  const el=document.getElementById('vitals-grid');if(!el)return;
-  el.innerHTML=[['Heart rate','72 bpm','Normal','ok'],['Blood pressure','118/76','Optimal','ok'],['Blood sugar','94 mg/dL','Normal','ok'],['SpO2','98%','Normal','ok'],['Steps','7,842','Goal: 10K','warn'],['Sleep','6.5 hrs','Goal: 8 hrs','warn']].map(v=>`<div class="vital"><div class="vval">${v[1]}</div><div class="vlbl">${v[0]}</div><div class="vstatus ${v[3]}">${v[2]}</div></div>`).join('');
-}
-function buildRx(){
-  const el=document.getElementById('rx-list');if(!el)return;
-  el.innerHTML=[['Vitamin D3 · 2000 IU','Daily · Refill: Jun 10','bg','Active'],['Omega-3 · 1000 mg','Daily · Refill: Jun 25','bg','Active'],['Zyrtec · 10 mg','As needed · 1 refill left','ba','Refill soon']].map(p=>`<div class="rx-item"><i class="ti ti-pill" style="font-size:16px;color:#7c3aed;flex-shrink:0"></i><div style="flex:1"><div class="list-title">${p[0]}</div><div class="list-sub">${p[1]}</div></div><span class="badge ${p[2]}">${p[3]}</span></div>`).join('');
-}
-function buildDocs(){
-  const el=document.getElementById('doc-list');if(!el)return;
-  el.innerHTML=[['Dr. Sarah Mitchell','Family Medicine · UT Southwestern','Available today 3 PM','#0ea5e9','SM'],['Dr. Rajan Patel','Internal Medicine · Baylor Scott','Tue Jun 3 · 10 AM','#7c3aed','RP'],['Dr. Lisa Chen','Dermatology · Medical City McKinney','Jun 12 · 2 PM','#16a34a','LC']].map(d=>`<div class="doc-card"><div class="doc-av" style="background:${d[3]}">${d[4]}</div><div style="flex:1"><div class="list-title">${d[0]}</div><div class="list-sub">${d[1]} · <span style="color:#16a34a">${d[2]}</span></div></div><button class="cbtn" style="font-size:11px" onclick="bookAppt('${d[0]}')"><i class="ti ti-calendar-plus"></i>Book</button></div>`).join('');
-}
-function bookAppt(doc){
-  const out=document.getElementById('health-out');out.style.display='block';
-  if(doc==='Emergency')out.textContent='🚨 Urgent Care — McKinney TX:\n\n• CareNow Urgent Care: (972) 704-3600 — Open now\n• NextCare Allen: (480) 459-9000\n• CVS MinuteClinic: Walk-in\n• Medical City ER: 2400 Benchmark Dr · 24/7\n\nLife-threatening: Call 911';
-  else out.textContent='✅ Appointment request sent — '+doc+'\n✅ Confirmation SMS sent\n✅ Calendar event created\n✅ Reminder set 24hrs before\n\nNote: Connect CVS Health in ⚙ Settings for live booking.';
-}
-function refillAll(){
-  const out=document.getElementById('health-out');out.style.display='block';
-  out.textContent='✅ Refill sent to CVS McKinney:\n• Vitamin D3 — Ready in 2-4 hrs\n• Omega-3 — Ready in 2-4 hrs\n• Zyrtec — Ready in 2-4 hrs\n\nPickup: CVS, 3601 S. Stonebridge Dr, McKinney TX';
-}
-
-// ══════════════════════════════════════════════════════════════
-// ASTROLOGY / TRAVEL / SALESFORCE
-// ══════════════════════════════════════════════════════════════
-async function aiAstroReading(){await setOut('astro-out','Detailed Vedic astrology weekly reading for Kiran: Kanya Rashi, Hasta Nakshatra, Gemini Lagna, born Nov 29 1983, Venus Mahadasha. Career, finance, health, relationships. Telugu cultural style.','Generating horoscope...');}
-async function aiTripPlan(){await setOut('health-out','Plan DFW to Hyderabad trip for Kiran. Best flights, hotels, must-see places, Telugu food, 7-day budget.','Planning trip...');}
-async function aiFood(){await setOut('health-out','Best Telugu & South Indian restaurants near McKinney TX. Name, dish, distance, rating, price range. Also 3 Telugu dinner ideas for tonight.','Finding Telugu food...');}
-
-function sfTool(name){
-  const out=document.getElementById('sf-ai-out');out.style.display='block';
-  out.textContent='Opening '+name+'...\n\nAll tools available:\n• Workbench: SOQL · REST · Bulk · Debug\n• VS Code: Editor · IntelliSense · Tests\n• Schema · Flow Debug · Apex Replay\n• Data Loader · API Tester · Permissions · Metadata\n\nTip: Ask in chat "write apex trigger" or "fix this SOQL" for AI code help!';
-}
-async function runSOQL(){
-  const q=document.getElementById('soql-editor').value.trim();
-  const out=document.getElementById('soql-out');out.style.display='block';out.textContent='Running SOQL...';
-  out.textContent=await quickAI('Simulate running this SOQL on Salesforce, return realistic mock JSON with totalSize and 3-5 records:\n\n'+q,'Salesforce SOQL engine.');
-}
-async function aiSOQL(){
-  const q=document.getElementById('soql-editor').value.trim();
-  const r=await quickAI('Optimize this SOQL for Salesforce governor limits. Return only optimized SOQL:\n\n'+q,'Salesforce SOQL expert.');
-  document.getElementById('soql-editor').value=r.replace(/```[\w]*\n?|```/g,'').trim();
-}
-async function aiSFAdvice(){await setOut('sf-ai-out','Top 5 Salesforce architecture recs for Kiran at Rackera: Agentforce 3.0, Data Cloud, Communications Cloud. Batch 80% limit, test 87%. Specific and actionable.','AI analyzing Salesforce...');}
-</script>
-</body>
-</html>
-  <!-- AI Routing Chain -->
-  <div class="sb-routing">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-      <span style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-sidebar-muted)">AI Routing</span>
-      <span id="routing-mode-lbl" style="font-size:9px;color:#d97706;cursor:pointer" onclick="setManualMode(null)">Auto ↺</span>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:2px">
-      <div class="r-eng-row" id="row-gemini"     onclick="setManualMode('gemini')"><div class="r-eng-dot" id="dot-gemini"     style="background:#22c55e"></div><span class="r-eng-name">Gemini</span><span class="r-eng-tag">1500/day</span><span class="r-eng-cnt" id="cnt-gemini">free</span></div>
-      <div class="r-eng-row" id="row-groq"       onclick="setManualMode('groq')">  <div class="r-eng-dot" id="dot-groq"       style="background:#a855f7"></div><span class="r-eng-name">Groq</span>  <span class="r-eng-tag">500/day</span> <span class="r-eng-cnt" id="cnt-groq">free</span></div>
-      <div class="r-eng-row" id="row-mistral"    onclick="setManualMode('mistral')"><div class="r-eng-dot" id="dot-mistral"    style="background:#f59e0b"></div><span class="r-eng-name">Mistral</span><span class="r-eng-tag">100/day</span> <span class="r-eng-cnt" id="cnt-mistral">free</span></div>
-      <div class="r-eng-row" id="row-cohere"     onclick="setManualMode('cohere')"><div class="r-eng-dot" id="dot-cohere"     style="background:#06b6d4"></div><span class="r-eng-name">Cohere</span><span class="r-eng-tag">1000/day</span><span class="r-eng-cnt" id="cnt-cohere">free</span></div>
-      <div class="r-eng-row" id="row-openrouter" onclick="setManualMode('openrouter')"><div class="r-eng-dot" id="dot-openrouter" style="background:#6366f1"></div><span class="r-eng-name">OpenRouter</span><span class="r-eng-tag">∞ free</span><span class="r-eng-cnt" id="cnt-openrouter">∞</span></div>
-      <div class="r-eng-row" id="row-claude"     onclick="setManualMode('claude')"><div class="r-eng-dot" id="dot-claude"     style="background:#d97706"></div><span class="r-eng-name">Claude</span><span class="r-eng-tag">fallback</span><span class="r-eng-cnt" id="cnt-claude">∞</span></div>
-    </div>
-    <div id="eng-status" style="font-size:9.5px;color:var(--text-sidebar-muted);margin-top:4px">Auto: Gemini active</div>
-  </div>
-  </div>
-
-  <nav class="sb-nav">
-    <div class="sb-section">Main</div>
-    <div class="nav-item active" id="ni-chat" onclick="showPanel('chat',this)"><i class="ti ti-message-circle"></i><span class="nav-label">Chat</span></div>
-
-    <div class="sb-section">Personal</div>
-    <div class="nav-item" id="ni-weather" onclick="showPanel('weather',this)"><i class="ti ti-cloud-storm"></i><span class="nav-label">Weather & Alerts</span><span class="nav-badge red" id="wb-badge">⚠</span></div>
-    <div class="nav-item" id="ni-stocks" onclick="showPanel('stocks',this)"><i class="ti ti-chart-candle"></i><span class="nav-label">Stocks</span><span class="nav-badge green" id="sb-badge">Live</span></div>
-    <div class="nav-item" id="ni-health" onclick="showPanel('health',this)"><i class="ti ti-heart-rate-monitor"></i><span class="nav-label">Health + CVS</span></div>
-    <div class="nav-item" id="ni-cricket" onclick="showPanel('cricket',this)"><i class="ti ti-ball-cricket"></i><span class="nav-label">Cricket · IPL</span><span class="nav-badge red" id="cb-badge">Live</span></div>
-    <div class="nav-item" id="ni-news" onclick="showPanel('news',this)"><i class="ti ti-news"></i><span class="nav-label">News</span></div>
-    <div class="nav-item" id="ni-astro" onclick="showPanel('astro',this)"><i class="ti ti-moon-stars"></i><span class="nav-label">Astrology</span></div>
-    <div class="nav-item" id="ni-travel" onclick="showPanel('travel',this)"><i class="ti ti-map-2"></i><span class="nav-label">Travel · Food · Shop</span></div>
-
-    <div class="sb-section">Work</div>
-    <div class="nav-item" id="ni-sf" onclick="showPanel('sf',this)"><i class="ti ti-cloud"></i><span class="nav-label">Salesforce</span></div>
-  </nav>
-
-  <div class="sb-alerts" id="sb-alerts">
-    <div class="sb-alert-item red"><i class="ti ti-alert-triangle"></i><span id="alert1-txt">Checking weather...</span></div>
-    <div class="sb-alert-item"><i class="ti ti-activity"></i><span id="alert2-txt">Loading stocks...</span></div>
-    <div class="sb-alert-item blue"><i class="ti ti-moon-stars"></i><span>Rahu Kaal: 2–3:30 PM — avoid decisions</span></div>
-  </div>
-
-  <div class="sb-footer">
-    <div class="sf-av">KA</div>
-    <div class="sf-info">
-      <div class="sf-name">Kiran Allagadapa</div>
-      <div class="sf-role">Salesforce Architect · Rackera</div>
-    </div>
-    <button class="sf-theme" onclick="toggleTheme()" title="Toggle theme"><i class="ti ti-moon" id="theme-icon" style="font-size:17px"></i></button>
-    <button class="sf-theme" onclick="openSettings()" title="API Keys & Settings"><i class="ti ti-settings" style="font-size:17px"></i></button>
-  </div>
-</div>
-
-<!-- MAIN -->
-<div id="main">
-  <!-- TOP BAR -->
-  <div id="topbar">
-    <button class="tb-mob-menu" onclick="openMobSidebar()"><i class="ti ti-menu-2" style="font-size:20px"></i></button>
-    <div>
-      <div class="tb-title" id="tb-title">Chat with Kiran's AI</div>
-      <div class="tb-subtitle" id="tb-subtitle">Simple tasks: Gemini FREE · Complex code/work: Claude.ai</div>
-    </div>
-    <div class="tb-actions">
-      <button class="tb-btn" onclick="showPanel('weather',document.getElementById('ni-weather'))"><i class="ti ti-cloud"></i><span id="weather-pill">Weather</span></button>
-      <button class="tb-btn" onclick="window.open('https://claude.ai/new','_blank')" title="Open Claude.ai for complex tasks"><i class="ti ti-brand-claude" style="font-size:14px"></i>Claude.ai</button><button class="tb-btn primary" onclick="showPanel('chat',document.getElementById('ni-chat'))"><i class="ti ti-sparkles"></i>New chat</button>
-    </div>
-  </div>
-
-  <!-- CONTENT -->
-  <div id="content">
-
-    <!-- CHAT PANEL -->
-    <div id="panel-chat" class="active" style="display:flex;flex-direction:column;height:100%">
-      <div id="chat-messages">
-        <div class="first-run-banner" id="first-run-banner">
-  <div class="frb-icon">🔑</div>
-  <div class="frb-text">
-    <div class="frb-title">Gemini AI is active — Chat is FREE!</div>
-    <div class="frb-desc">Chat is powered by Gemini 1.5 Flash — completely free, 1500 messages/day. No API key needed for basic chat!</div>
-    <div class="frb-btns">
-      <button class="cbtn" style="font-size:11.5px" onclick="openSettings()"><i class="ti ti-settings"></i>Add API key now</button>
-      <button class="cbtn sec" style="font-size:11.5px" onclick="window.open('https://console.anthropic.com','_blank')"><i class="ti ti-external-link"></i>Get free key</button>
-      <button class="cbtn sec" style="font-size:11.5px" onclick="document.getElementById('first-run-banner').classList.add('hidden')">Dismiss</button>
-    </div>
-  </div>
-</div>
-<div id="welcome">
-          <div class="wl-logo">K</div>
-          <div class="wl-title">Good day, Kiran!</div>
-          <div class="wl-sub">Your personal Superman AI — weather alerts, live stocks, cricket scores, news, astrology, health, travel, and full Salesforce toolkit. All in one place.</div>
-          <div class="suggestion-grid">
-            <button class="suggestion-card" onclick="chip('What is the live weather in McKinney TX right now and any storm alerts?')"><span class="sc-icon">⛈</span><div class="sc-title">Weather & alerts</div><div class="sc-desc">Live McKinney TX forecast + safety alerts</div></button>
-            <button class="suggestion-card" onclick="chip('Give me live IPL 2026 cricket score and MI vs CSK match update')"><span class="sc-icon">🏏</span><div class="sc-title">IPL live score</div><div class="sc-desc">Real-time Cricbuzz match data</div></button>
-            <button class="suggestion-card" onclick="chip('Show me my stock watchlist performance today with NVDA CRM TSLA prices')"><span class="sc-icon">📈</span><div class="sc-title">Stock watchlist</div><div class="sc-desc">Live Alpha Vantage prices + AI picks</div></button>
-            <button class="suggestion-card" onclick="chip('Vedic astrology reading for Kanya Rashi Hasta Nakshatra this week in Telugu style')"><span class="sc-icon">🔮</span><div class="sc-title">Vedic astrology</div><div class="sc-desc">Weekly Kanya Rashi guidance</div></button>
-            <button class="suggestion-card" onclick="chip('Latest India politics and USA economy news today summary')"><span class="sc-icon">📰</span><div class="sc-title">Today's news</div><div class="sc-desc">India · USA · Global · Tech headlines</div></button>
-            <button class="suggestion-card" onclick="chip('Write an Apex trigger for Opportunity stage change with bulkification and governor limits')"><span class="sc-icon">☁</span><div class="sc-title">Salesforce help</div><div class="sc-desc">Apex · SOQL · Agentforce · Data Cloud</div></button>
-            <button class="suggestion-card" onclick="chip('Book a doctor appointment for me today in McKinney TX and show nearby clinics')"><span class="sc-icon">🏥</span><div class="sc-title">Book doctor</div><div class="sc-desc">CVS integration · nearby doctors</div></button>
-            <button class="suggestion-card" onclick="chip('Plan a trip from Dallas to Hyderabad India next month with best flights and hotels')"><span class="sc-icon">✈</span><div class="sc-title">Travel planning</div><div class="sc-desc">Flights · Hotels · Telugu restaurants</div></button>
-          </div>
-        </div>
-      </div>
-
-      <div id="input-area">
-        <div class="input-wrapper">
-          <div class="chips-scroll" id="chips-scroll">
-            <button class="chip" onclick="chip('IPL score today')">🏏 IPL score</button>
-            <button class="chip" onclick="chip('McKinney TX weather now')">⛈ Weather</button>
-            <button class="chip" onclick="chip('NVDA MSFT AAPL stock prices today')">📈 Stocks</button>
-            <button class="chip" onclick="chip('India politics news today')">🇮🇳 India news</button>
-            <button class="chip" onclick="chip('Telugu restaurants near McKinney TX')">🍽 Telugu food</button>
-            <button class="chip" onclick="chip('Kanya Rashi weekly astrology')">🔮 Astrology</button>
-            <button class="chip" onclick="chip('Write Salesforce Apex trigger')">☁ Apex code</button>
-            <button class="chip" onclick="chip('USA economy news today')">🇺🇸 USA news</button>
-            <button class="chip" onclick="chip('Book doctor appointment McKinney TX')">🏥 Doctor</button>
-            <button class="chip" onclick="chip('Dallas to Hyderabad flights June')">✈ Flights HYD</button>
-          </div>
-          <div id="mic-status"><i class="ti ti-microphone" style="font-size:12px"></i><span id="mic-txt">Listening... speak now</span></div>
-          <div class="input-row">
-            <!-- AI Selector — like Claude model picker -->
-            <div class="ai-selector-wrap">
-              <button class="ai-selector-btn" id="ai-selector-btn" onclick="toggleAIDropdown(event)" title="Select AI engine">
-                <div class="ai-dot" id="selector-dot" style="background:#22c55e"></div>
-                <span id="selector-label">Gemini</span>
-                <i class="ti ti-chevron-up" id="selector-chevron" style="font-size:11px"></i>
-              </button>
-              <div class="ai-dropdown" id="ai-dropdown">
-                <div class="ai-dropdown-header">Select AI Engine</div>
-                <div class="ai-option selected" id="opt-gemini" onclick="selectAI('gemini')">
-                  <div class="ao-dot" style="background:#22c55e"></div>
-                  <div class="ao-info"><div class="ao-name">Gemini</div><div class="ao-label">Google · 1.5 Flash · Built-in</div></div>
-                  <span class="ao-badge free" id="badge-gemini">0/1500</span>
-                </div>
-                <div class="ai-option" id="opt-groq" onclick="selectAI('groq')">
-                  <div class="ao-dot" style="background:#555" id="odot-groq"></div>
-                  <div class="ao-info"><div class="ao-name">Groq</div><div class="ao-label">Llama 3.3 70B · console.groq.com</div></div>
-                  <span class="ao-badge nokey" id="badge-groq">No key</span>
-                </div>
-                <div class="ai-option" id="opt-mistral" onclick="selectAI('mistral')">
-                  <div class="ao-dot" style="background:#555" id="odot-mistral"></div>
-                  <div class="ao-info"><div class="ao-name">Mistral</div><div class="ao-label">Small Latest · console.mistral.ai</div></div>
-                  <span class="ao-badge nokey" id="badge-mistral">No key</span>
-                </div>
-                <div class="ai-option" id="opt-cohere" onclick="selectAI('cohere')">
-                  <div class="ao-dot" style="background:#555" id="odot-cohere"></div>
-                  <div class="ao-info"><div class="ao-name">Cohere</div><div class="ao-label">Command-R · dashboard.cohere.com</div></div>
-                  <span class="ao-badge nokey" id="badge-cohere">No key</span>
-                </div>
-                <div class="ai-option" id="opt-openrouter" onclick="selectAI('openrouter')">
-                  <div class="ao-dot" style="background:#6366f1" id="odot-openrouter"></div>
-                  <div class="ao-info"><div class="ao-name">OpenRouter</div><div class="ao-label">Llama 3.1 · Free unlimited · openrouter.ai</div></div>
-                  <span class="ao-badge free" id="badge-openrouter">∞ Free</span>
-                </div>
-                <div class="ai-option" id="opt-claude" onclick="selectAI('claude')">
-                  <div class="ao-dot" style="background:#d97706" id="odot-claude"></div>
-                  <div class="ao-info"><div class="ao-name">Claude</div><div class="ao-label">Opens claude.ai · Your account</div></div>
-                  <span class="ao-badge fallback">Fallback</span>
-                </div>
-                <div class="ai-dropdown-footer"><i class="ti ti-settings" style="font-size:12px"></i><span>Add API keys in</span><span style="color:var(--accent);cursor:pointer" onclick="closeAIDropdown();openSettings()">⚙ Settings</span></div>
-              </div>
-            </div>
-            <textarea id="chat-input" rows="1" placeholder="Message Kiran's AI..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-            <button class="input-btn mic" id="mic-btn" onclick="toggleMic()" title="Voice input (Ctrl+M)"><i class="ti ti-microphone" id="mic-icon" style="font-size:17px"></i></button>
-            <button class="input-btn send" id="send-btn" onclick="sendMsg()"><i class="ti ti-arrow-up" style="font-size:17px;font-weight:700"></i></button>
-          </div>
-        </div>
-        <div class="input-footer" id="input-footer">Kiran's AI · <span style="color:var(--accent)">Powered by Gemini AI — 100% FREE</span> · <span id="active-eng">Gemini</span> responding</div>
-      </div>
-    </div>
-
-    <!-- WEATHER PANEL -->
-    <div id="panel-weather" class="module-panel">
-      <div class="mp-inner">
-        <div class="mp-header"><div class="mp-title"><i class="ti ti-cloud-storm"></i>Weather & Location Alerts</div><div class="mp-sub">Live data · AccuWeather powered by WeatherAPI.com · McKinney TX</div></div>
-        <div id="weather-hero-wrap">
-          <div class="weather-hero">
-            <div><div class="wh-temp" id="w-temp">--°F</div><div class="wh-cond" id="w-cond">Loading...</div><div class="wh-loc" id="w-loc">McKinney, TX</div></div>
-            <div class="wh-right"><div class="wh-feels" id="w-feels">Feels like --°F</div><div class="wh-stat"><i class="ti ti-droplet" style="font-size:13px"></i><span id="w-rain">--%</span> rain</div><div class="wh-stat"><i class="ti ti-wind" style="font-size:13px"></i><span id="w-wind">-- mph</span></div><div class="wh-stat"><i class="ti ti-uv-index" style="font-size:13px"></i>UV <span id="w-uv">--</span></div></div>
-          </div>
-        </div>
-        <div id="w-alerts-wrap"></div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-calendar-week"></i>5-Day Forecast</div>
-          <div id="forecast-wrap"><div style="color:var(--text-tertiary);font-size:12.5px">Loading forecast...</div></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-map-pin-check"></i>Location safety checker</div>
-          <div class="form-row"><input id="loc-inp" type="text" placeholder="Enter any location to check safety..."/><button class="cbtn" onclick="checkLoc()"><i class="ti ti-search"></i>Check</button></div>
-          <div class="out-box" id="loc-out"></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-map-pin"></i>Zone alerts — McKinney TX area</div>
-          <div id="zone-alerts"><div style="font-size:12.5px;color:var(--text-secondary)">Loading zone data...</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- STOCKS PANEL -->
-    <div id="panel-stocks" class="module-panel">
-      <div class="mp-inner">
-        <div class="mp-header"><div class="mp-title"><i class="ti ti-chart-candle"></i>Stocks & Investment</div><div class="mp-sub">Live prices · Alpha Vantage API · Updates on load</div></div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-star"></i>My watchlist<div class="ct-right"><button class="cbtn sec" onclick="aiStockPicks()"><i class="ti ti-sparkles"></i>AI picks</button><button class="cbtn sec" onclick="aiFutureInvest()"><i class="ti ti-trending-up"></i>Future plan</button></div></div>
-          <div id="stock-list"><div style="font-size:12.5px;color:var(--text-tertiary);padding:8px 0">Loading live prices...</div></div>
-          <div class="out-box" id="stocks-ai-out"></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-world"></i>Market indices</div>
-          <div class="idx-grid" id="indices-grid"></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-search"></i>Quick quote</div>
-          <div class="form-row"><input id="quote-inp" type="text" placeholder="Enter ticker (e.g. INFY, TCS, AMZN)"/><button class="cbtn" onclick="getQuote()"><i class="ti ti-chart-line"></i>Get quote</button></div>
-          <div class="out-box" id="quote-out"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- HEALTH PANEL -->
-    <div id="panel-health" class="module-panel">
-      <div class="mp-inner">
-        <div class="mp-header"><div class="mp-title"><i class="ti ti-heart-rate-monitor"></i>Health Dashboard + CVS</div><div class="mp-sub">Vitals · Prescriptions · Book appointments</div></div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-activity"></i>Today's vitals</div>
-          <div class="vitals">
-            <div class="vital"><div class="vval">72 bpm</div><div class="vlbl">Heart rate</div><div class="vstatus ok">Normal</div></div>
-            <div class="vital"><div class="vval">118/76</div><div class="vlbl">Blood pressure</div><div class="vstatus ok">Optimal</div></div>
-            <div class="vital"><div class="vval">94 mg/dL</div><div class="vlbl">Blood sugar</div><div class="vstatus ok">Normal</div></div>
-            <div class="vital"><div class="vval">98%</div><div class="vlbl">SpO2</div><div class="vstatus ok">Normal</div></div>
-            <div class="vital"><div class="vval">7,842</div><div class="vlbl">Steps</div><div class="vstatus warn">Goal: 10K</div></div>
-            <div class="vital"><div class="vval">6.5 hrs</div><div class="vlbl">Sleep</div><div class="vstatus warn">Goal: 8 hrs</div></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-pill"></i>CVS Prescriptions<div class="ct-right"><button class="cbtn sec" style="font-size:11px" onclick="refillAll()"><i class="ti ti-refresh"></i>Refill all</button></div></div>
-          <div class="rx-item"><i class="ti ti-pill" style="font-size:16px;color:#7c3aed;flex-shrink:0"></i><div style="flex:1"><div class="list-title">Vitamin D3 · 2000 IU</div><div class="list-sub">Daily · Refill due Jun 10</div></div><span class="badge bg">Active</span></div>
-          <div class="rx-item" style="margin-top:6px"><i class="ti ti-pill" style="font-size:16px;color:#7c3aed;flex-shrink:0"></i><div style="flex:1"><div class="list-title">Omega-3 · 1000 mg</div><div class="list-sub">Daily · Refill due Jun 25</div></div><span class="badge bg">Active</span></div>
-          <div class="rx-item" style="margin-top:6px"><i class="ti ti-pill" style="font-size:16px;color:#7c3aed;flex-shrink:0"></i><div style="flex:1"><div class="list-title">Zyrtec · 10 mg</div><div class="list-sub">As needed · 1 refill left — due soon</div></div><span class="badge ba">Refill soon</span></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-stethoscope"></i>Book appointment<div class="ct-right"><button class="cbtn" style="background:#dc2626;font-size:11px" onclick="bookAppt('Emergency')"><i class="ti ti-urgent"></i>Urgent</button></div></div>
-          <div class="doc-card"><div class="doc-av" style="background:#0ea5e9">SM</div><div style="flex:1"><div class="list-title">Dr. Sarah Mitchell</div><div class="list-sub">Family Medicine · UT Southwestern · <span style="color:#16a34a">Available today 3 PM</span></div></div><button class="cbtn" style="font-size:11px" onclick="bookAppt('Dr. Sarah Mitchell')"><i class="ti ti-calendar-plus"></i>Book</button></div>
-          <div class="doc-card"><div class="doc-av" style="background:#7c3aed">RP</div><div style="flex:1"><div class="list-title">Dr. Rajan Patel</div><div class="list-sub">Internal Medicine · Baylor Scott · <span style="color:#16a34a">Tue Jun 3 · 10 AM</span></div></div><button class="cbtn" style="font-size:11px" onclick="bookAppt('Dr. Rajan Patel')"><i class="ti ti-calendar-plus"></i>Book</button></div>
-          <div class="doc-card"><div class="doc-av" style="background:#16a34a">LC</div><div style="flex:1"><div class="list-title">Dr. Lisa Chen</div><div class="list-sub">Dermatology · Medical City McKinney · Jun 12 · 2 PM</div></div><button class="cbtn" style="font-size:11px" onclick="bookAppt('Dr. Lisa Chen')"><i class="ti ti-calendar-plus"></i>Book</button></div>
-          <div class="out-box" id="health-out"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CRICKET PANEL -->
-    <div id="panel-cricket" class="module-panel">
-      <div class="mp-inner">
-        <div class="mp-header"><div class="mp-title"><i class="ti ti-ball-cricket"></i>Cricket · IPL 2026 · Live</div><div class="mp-sub">Live scores via Cricbuzz · RapidAPI</div></div>
-        <div id="cricket-matches"><div style="font-size:12.5px;color:var(--text-tertiary);padding:10px 0">Loading live matches...</div></div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-table"></i>IPL 2026 Points Table</div>
-          <table class="ipl-table">
-            <thead><tr><th>Team</th><th>P</th><th>W</th><th>L</th><th>Pts</th><th>NRR</th></tr></thead>
-            <tbody>
-              <tr class="leader"><td>1. Mumbai Indians</td><td>14</td><td>10</td><td>4</td><td>20</td><td>+0.82</td></tr>
-              <tr><td>2. Royal Challengers</td><td>14</td><td>9</td><td>5</td><td>18</td><td>+0.45</td></tr>
-              <tr><td>3. Chennai Super Kings</td><td>14</td><td>8</td><td>6</td><td>16</td><td>+0.21</td></tr>
-              <tr><td>4. KKR</td><td>14</td><td>7</td><td>7</td><td>14</td><td>-0.12</td></tr>
-              <tr><td>5. Delhi Capitals</td><td>14</td><td>7</td><td>7</td><td>14</td><td>-0.34</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div style="margin-top:10px"><button class="cbtn" style="width:100%;justify-content:center" onclick="aiCricketAnalysis()"><i class="ti ti-sparkles"></i>AI: Match prediction + fantasy team tips for Kiran (MI fan)</button></div>
-        <div class="out-box" id="cricket-ai-out" style="margin-top:8px"></div>
-      </div>
-    </div>
-
-    <!-- NEWS PANEL -->
-    <div id="panel-news" class="module-panel">
-      <div class="mp-inner">
-        <div class="mp-header"><div class="mp-title"><i class="ti ti-news"></i>Global News</div><div class="mp-sub">Live headlines · NewsAPI · India · USA · Global · Tech · Finance</div></div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-rss"></i>Live feed<div class="ct-right"><button class="cbtn sec" onclick="aiNewsBrief()"><i class="ti ti-sparkles"></i>AI brief</button><button class="cbtn sec" onclick="loadLiveNews()"><i class="ti ti-refresh"></i>Refresh</button></div></div>
-          <div id="news-list"><div style="font-size:12.5px;color:var(--text-tertiary);padding:8px 0">Loading live news...</div></div>
-          <div class="out-box" id="news-ai-out"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ASTROLOGY PANEL -->
-    <div id="panel-astro" class="module-panel">
-      <div class="mp-inner">
-        <div class="mp-header"><div class="mp-title"><i class="ti ti-moon-stars"></i>Vedic Astrology</div><div class="mp-sub">Kanya Rashi · Hasta Nakshatra · Gemini Lagna · Venus Mahadasha</div></div>
-        <div class="rashi-header">
-          <div class="rashi-title">🌙 Kanya Rashi — Today's Forecast</div>
-          <div class="rashi-sub">Sunday, June 1, 2026 · Venus Mahadasha active · Hasta Nakshatra</div>
-          <div style="font-size:12px;opacity:.85;margin-top:8px;line-height:1.6">Venus rules today — excellent for professional decisions and creative work. Morning 9–11 AM is your power window. Avoid major decisions during Rahu Kaal 2:00–3:30 PM.</div>
-        </div>
-        <div class="life-grid">
-          <div class="life-item"><div class="li-stars">★★★★☆</div><div class="li-label">Career</div><div class="li-status">Excellent</div></div>
-          <div class="life-item"><div class="li-stars">★★★★★</div><div class="li-label">Finance</div><div class="li-status">Very good</div></div>
-          <div class="life-item"><div class="li-stars">★★★☆☆</div><div class="li-label">Health</div><div class="li-status">Moderate</div></div>
-          <div class="life-item"><div class="li-stars">★★★★☆</div><div class="li-label">Relations</div><div class="li-status">Good</div></div>
-          <div class="life-item"><div class="li-stars">★★☆☆☆</div><div class="li-label">Travel</div><div class="li-status">Avoid PM</div></div>
-          <div class="life-item"><div class="li-stars">★★★★☆</div><div class="li-label">Luck</div><div class="li-status">Favorable</div></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-clock"></i>Dasha timeline</div>
-          <div class="dasha-track"><div class="dt-label"><span>Venus Mahadasha</span><span style="color:var(--text-tertiary);font-size:11px">May 2024 – May 2044</span></div><div class="dt-sub">2.3 years completed of 20 years</div><div class="prog" style="margin-top:6px"><div class="prog-f" style="width:11%;background:#7c3aed"></div></div></div>
-          <div class="dasha-track"><div class="dt-label"><span>Venus–Venus Antardasha</span><span style="color:var(--text-tertiary);font-size:11px">Until Jul 2027</span></div><div class="dt-sub">Currently active — strong Venus influence</div><div class="prog" style="margin-top:6px"><div class="prog-f" style="width:65%;background:#d97706"></div></div></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-star"></i>Today's guidance</div>
-          <div style="font-size:13px;color:var(--text-primary);line-height:1.7">🔢 Lucky numbers: <b>5, 14, 23</b><br>🎨 Lucky colors: <b>Green, White, Light Blue</b><br>💎 Gemstone: <b>Emerald</b><br>✅ Auspicious hours: <b>9–11 AM · 4–6 PM</b><br>⚠️ Rahu Kaal: <b>2:00–3:30 PM</b> — avoid major decisions<br>🙏 Deity: <b>Goddess Lakshmi</b> — pray for Venus strength</div>
-        </div>
-        <button class="cbtn" style="width:100%;justify-content:center" onclick="aiAstroReading()"><i class="ti ti-sparkles"></i>AI: Full Telugu weekly horoscope reading for Kiran</button>
-        <div class="out-box" id="astro-out" style="margin-top:8px"></div>
-      </div>
-    </div>
-
-    <!-- TRAVEL PANEL -->
-    <div id="panel-travel" class="module-panel">
-      <div class="mp-inner">
-        <div class="mp-header"><div class="mp-title"><i class="ti ti-map-2"></i>Travel · Food · Shopping</div><div class="mp-sub">McKinney TX · Dallas area · Hyderabad connections</div></div>
-        <div id="travel-weather-alert" class="travel-alert" style="display:none"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0"></i><span id="travel-alert-txt">Checking weather for travel advisory...</span></div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-plane"></i>Upcoming travel<div class="ct-right"><button class="cbtn sec" onclick="aiTripPlan()"><i class="ti ti-sparkles"></i>AI plan</button></div></div>
-          <div class="list-row"><div class="list-icon" style="background:#dbeafe"><i class="ti ti-plane" style="color:#1d4ed8;font-size:13px"></i></div><div class="list-main"><div class="list-title">DFW → Hyderabad HYD</div><div class="list-sub">Jun 15 · Air India · Economy · $820 · 16h 30m</div></div><span class="badge bb">Saved</span></div>
-          <div class="list-row"><div class="list-icon" style="background:#dcfce7"><i class="ti ti-building" style="color:#15803d;font-size:13px"></i></div><div class="list-main"><div class="list-title">Taj Krishna, Hyderabad</div><div class="list-sub">Jun 15–20 · 5 nights · $145/night · 4.8★</div></div><span class="badge bg">Booked</span></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-tools-kitchen-2"></i>Telugu restaurants near McKinney TX</div>
-          <div class="rest-card"><div class="rest-icon" style="background:#fef3c7">🍛</div><div style="flex:1"><div class="list-title">Biryani Factory</div><div class="list-sub">Telugu · Hyderabadi biryani · 3.2 mi · 4.3★</div></div><span class="badge bg">Open</span></div>
-          <div class="rest-card"><div class="rest-icon" style="background:#dcfce7">🌶</div><div style="flex:1"><div class="list-title">Andhra Kitchen</div><div class="list-sub">Andhra · Gongura, Pesarattu · 5.1 mi · 4.6★</div></div><span class="badge bg">Open</span></div>
-          <div class="rest-card"><div class="rest-icon" style="background:#dbeafe">☕</div><div style="flex:1"><div class="list-title">Chennai Garden</div><div class="list-sub">South Indian · Idli, filter coffee · 4.7 mi · 4.1★</div></div><span class="badge ba">Closes 9PM</span></div>
-          <button class="cbtn sec" style="margin-top:6px;width:100%;justify-content:center" onclick="aiFood()"><i class="ti ti-sparkles"></i>AI food recommendations</button>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-shopping-bag"></i>Amazon deals for Kiran</div>
-          <div class="shop-item"><div class="shop-icon">📚</div><div style="flex:1"><div class="list-title">Salesforce Architect Study Guide</div><div class="list-sub">Books · Programming</div></div><div><div style="font-size:14px;font-weight:600;color:var(--text-primary)">$42.99</div><div style="font-size:11px;color:#16a34a">35% off</div></div></div>
-          <div class="shop-item"><div class="shop-icon">🖥</div><div style="flex:1"><div class="list-title">Samsung 49" Curved Monitor</div><div class="list-sub">Electronics · Ultra-wide</div></div><div><div style="font-size:14px;font-weight:600;color:var(--text-primary)">$899.99</div><div style="font-size:11px;color:#16a34a">20% off</div></div></div>
-          <div class="shop-item"><div class="shop-icon">👟</div><div style="flex:1"><div class="list-title">Under Armour Running Shoes</div><div class="list-sub">Sports · Fitness</div></div><div><div style="font-size:14px;font-weight:600;color:var(--text-primary)">$89.99</div><div style="font-size:11px;color:#16a34a">40% off</div></div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SALESFORCE PANEL -->
-    <div id="panel-sf" class="module-panel">
-      <div class="mp-inner">
-        <div class="mp-header"><div class="mp-title"><i class="ti ti-cloud"></i>Salesforce Command Center</div><div class="mp-sub">Rackera Production · API v62.0 · Connected</div></div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-activity"></i>Org health</div>
-          <div class="g3">
-            <div class="stat"><div class="stat-val text-yellow">68%</div><div class="stat-lbl">API calls</div><div class="stat-sub">136K / 200K</div></div>
-            <div class="stat"><div class="stat-val text-green">87%</div><div class="stat-lbl">Test coverage</div><div class="stat-sub">Meets 75%</div></div>
-            <div class="stat"><div class="stat-val text-red">4/5</div><div class="stat-lbl">Batch jobs</div><div class="stat-sub">80% ⚠ limit</div></div>
-            <div class="stat"><div class="stat-val text-green">42%</div><div class="stat-lbl">Storage</div><div class="stat-sub">1.05 / 2.5 GB</div></div>
-            <div class="stat"><div class="stat-val" style="font-size:16px">17</div><div class="stat-lbl">Active flows</div><div class="stat-sub">of 2,000</div></div>
-            <div class="stat"><div class="stat-val" style="font-size:16px">24</div><div class="stat-lbl">Active users</div><div class="stat-sub">of 50</div></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-apps"></i>Developer tools</div>
-          <div class="sf-tools">
-            <div class="sf-tool" onclick="sfTool('Workbench')"><i class="ti ti-database" style="color:#0ea5e9"></i><div>Workbench</div></div>
-            <div class="sf-tool" onclick="sfTool('VS Code + Notepad++')"><i class="ti ti-brand-vscode" style="color:#0078d4"></i><div>VS Code</div></div>
-            <div class="sf-tool" onclick="sfTool('Schema Builder')"><i class="ti ti-topology-star" style="color:#7c3aed"></i><div>Schema</div></div>
-            <div class="sf-tool" onclick="sfTool('Flow Debugger')"><i class="ti ti-timeline" style="color:#16a34a"></i><div>Flow Debug</div></div>
-            <div class="sf-tool" onclick="sfTool('Apex Replay Debugger')"><i class="ti ti-player-record" style="color:#d97706"></i><div>Apex Replay</div></div>
-            <div class="sf-tool" onclick="sfTool('Org Comparator')"><i class="ti ti-git-compare" style="color:#0ea5e9"></i><div>Org Diff</div></div>
-            <div class="sf-tool" onclick="sfTool('Data Loader')"><i class="ti ti-database-import" style="color:#7c3aed"></i><div>Data Loader</div></div>
-            <div class="sf-tool" onclick="sfTool('Anonymous Apex')"><i class="ti ti-terminal-2" style="color:#16a34a"></i><div>Anon Apex</div></div>
-            <div class="sf-tool" onclick="sfTool('API Tester')"><i class="ti ti-api" style="color:#d97706"></i><div>API Tester</div></div>
-            <div class="sf-tool" onclick="sfTool('Permission Analyzer')"><i class="ti ti-shield-check" style="color:#16a34a"></i><div>Permissions</div></div>
-            <div class="sf-tool" onclick="sfTool('Governor Limits')"><i class="ti ti-activity" style="color:#dc2626"></i><div>Limits</div></div>
-            <div class="sf-tool" onclick="sfTool('Metadata Explorer')"><i class="ti ti-folders" style="color:#d97706"></i><div>Metadata</div></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-terminal"></i>Quick SOQL runner</div>
-          <textarea class="soql-editor" id="soql-editor">SELECT Id, Name, Industry, AnnualRevenue
-FROM Account
-WHERE Industry = 'Technology'
-ORDER BY AnnualRevenue DESC
-LIMIT 10</textarea>
-          <div class="form-row">
-            <button class="cbtn" onclick="runSOQL()"><i class="ti ti-player-play"></i>Execute</button>
-            <button class="cbtn sec" onclick="aiSOQL()"><i class="ti ti-sparkles"></i>AI optimize</button>
-          </div>
-          <div class="out-box" id="soql-out"></div>
-        </div>
-        <div style="margin-top:8px"><button class="cbtn" style="width:100%;justify-content:center" onclick="aiSFAdvice()"><i class="ti ti-sparkles"></i>AI: Salesforce architecture advice for Rackera Agentforce</button></div>
-        <div class="out-box" id="sf-ai-out" style="margin-top:8px"></div>
-      </div>
-    </div>
-
-  </div><!-- end content -->
-</div><!-- end main -->
-
-<!-- SETTINGS MODAL -->
-<div class="modal-overlay hidden" id="settings-modal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="wl-logo" style="width:32px;height:32px;font-size:12px;margin:0">K</div>
-      <h2>Kiran's AI — API Keys Setup</h2>
-      <button class="modal-close" onclick="closeSettings()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="setup-banner">
-        <h3>⚡ AI Routing — 5 Engines</h3>
-        <p>Default flow: <strong>Gemini → Groq → Mistral → Cohere → Claude</strong><br>Add free API keys below. Gemini is already built-in!</p>
-      </div>
-
-      <!-- Gemini - built in -->
-      <div class="setting-group">
-        <div class="setting-label"><i class="ti ti-brand-google"></i>1. Gemini 1.5 Flash <span style="font-size:10px;background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:4px;margin-left:4px">✅ Built-in · FREE 1500/day</span></div>
-        <div class="setting-desc">Already configured. Get new key at <strong>aistudio.google.com</strong> if needed.</div>
-        <input class="setting-input" id="key-gemini" type="password" placeholder="AQ.Ab8RN6Keb... (already set)" autocomplete="off"/>
-        <div class="key-status ok" id="status-gemini"><i class="ti ti-circle-check" style="font-size:12px"></i> Active — Gemini ready</div>
-      </div>
-
-      <!-- Groq - free signup -->
-      <div class="setting-group">
-        <div class="setting-label"><i class="ti ti-bolt"></i>2. Groq · Llama 3.3 70B <span style="font-size:10px;background:#ede9fe;color:#5b21b6;padding:1px 6px;border-radius:4px;margin-left:4px">FREE · 500/day</span></div>
-        <div class="setting-desc">100% free — sign up at <strong>console.groq.com</strong> → Create API Key → paste here</div>
-        <input class="setting-input" id="key-groq" type="password" placeholder="gsk_..." autocomplete="off" oninput="checkKeyInput('groq')"/>
-        <div class="key-status none" id="status-groq"><i class="ti ti-circle" style="font-size:12px"></i> Not set — sign up free at console.groq.com</div>
-      </div>
-
-      <!-- Mistral -->
-      <div class="setting-group">
-        <div class="setting-label"><i class="ti ti-wind"></i>3. Mistral Small <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;margin-left:4px">FREE · 100/day</span></div>
-        <div class="setting-desc">Free tier at <strong>console.mistral.ai</strong> → API Keys → Create new key</div>
-        <input class="setting-input" id="key-mistral" type="password" placeholder="your-mistral-key..." autocomplete="off" oninput="checkKeyInput('mistral')"/>
-        <div class="key-status none" id="status-mistral"><i class="ti ti-circle" style="font-size:12px"></i> Not set — get free at console.mistral.ai</div>
-      </div>
-
-      <!-- Cohere -->
-      <div class="setting-group">
-        <div class="setting-label"><i class="ti ti-ripple"></i>4. Cohere Command-R <span style="font-size:10px;background:#e0f2fe;color:#0369a1;padding:1px 6px;border-radius:4px;margin-left:4px">FREE · 1000/day</span></div>
-        <div class="setting-desc">Free at <strong>dashboard.cohere.com</strong> → API Keys → New trial key</div>
-        <input class="setting-input" id="key-cohere" type="password" placeholder="your-cohere-key..." autocomplete="off" oninput="checkKeyInput('cohere')"/>
-        <div class="key-status none" id="status-cohere"><i class="ti ti-circle" style="font-size:12px"></i> Not set — get free at dashboard.cohere.com</div>
-      </div>
-
-      <!-- OpenRouter - free unlimited -->
-      <div class="setting-group">
-        <div class="setting-label"><i class="ti ti-topology-star-3"></i>5. OpenRouter · Llama 3.1 <span style="font-size:10px;background:#e0e7ff;color:#3730a3;padding:1px 6px;border-radius:4px;margin-left:4px">✅ Active · Unlimited FREE</span></div>
-        <div class="setting-desc">Already configured! Uses Llama 3.1 8B free model. Get new key at <strong>openrouter.ai</strong> if needed.</div>
-        <input class="setting-input" id="key-openrouter" type="password" placeholder="sk-or-v1-... (already set)" autocomplete="off" oninput="checkKeyInput('openrouter')"/>
-        <div class="key-status ok" id="status-openrouter"><i class="ti ti-circle-check" style="font-size:11px"></i> Active — Unlimited free responses</div>
-      </div>
-
-      <!-- Claude - optional backup -->
-      <div class="setting-group">
-        <div class="setting-label"><i class="ti ti-sparkles"></i>5. Claude API <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;margin-left:4px">Optional — final fallback</span></div>
-        <div class="setting-desc">Optional backup. Without key → opens <strong>claude.ai</strong> automatically (free with your subscription).</div>
-        <input class="setting-input" id="key-claude" type="password" placeholder="sk-ant-api03-..." autocomplete="off" oninput="checkKeyInput('claude')"/>
-        <div class="key-status none" id="status-claude"><i class="ti ti-circle" style="font-size:12px"></i> Not set — will open claude.ai when needed</div>
-      </div>
-
-      <div style="background:var(--bg-base);border-radius:9px;padding:10px 12px;font-size:12px;color:var(--text-secondary);line-height:1.6;border:1px solid var(--border)">
-        🔒 Keys saved only in <strong>your browser</strong> — never sent to any server<br>
-        ⚡ <strong>Tip:</strong> Just add Groq (free, fast) and you get 2 free AIs immediately!<br>
-        🔄 Routing resets daily at midnight automatically
-      </div>
-    </div>
-<div class="modal-foot">
-      <button class="cbtn sec" onclick="closeSettings()">Cancel</button>
-      <button class="cbtn" onclick="saveKeys()"><i class="ti ti-device-floppy"></i>Save API keys</button>
-    </div>
-  </div>
-</div>
-
-<!-- MOBILE BOTTOM NAV -->
-<nav id="bottom-nav">
-  <div class="bn-items">
-    <button class="bn-item active" id="bn-chat" onclick="showPanel('chat',document.getElementById('ni-chat'));setBN('bn-chat')"><i class="ti ti-message-circle"></i><span>Chat</span></button>
-    <button class="bn-item" id="bn-weather" onclick="showPanel('weather',document.getElementById('ni-weather'));setBN('bn-weather')"><i class="ti ti-cloud-storm"></i><span>Weather</span></button>
-    <button class="bn-item" id="bn-cricket" onclick="showPanel('cricket',document.getElementById('ni-cricket'));setBN('bn-cricket')"><i class="ti ti-ball-cricket"></i><span>Cricket</span></button>
-    <button class="bn-item" id="bn-news" onclick="showPanel('news',document.getElementById('ni-news'));setBN('bn-news')"><i class="ti ti-news"></i><span>News</span></button>
-    <button class="bn-item" id="bn-sf" onclick="showPanel('sf',document.getElementById('ni-sf'));setBN('bn-sf')"><i class="ti ti-cloud"></i><span>Salesforce</span></button>
-  </div>
-</nav>
-
-</div><!-- end app -->
-
-<script>
-// ═══════════════════════════════════════════════════════════════
-// KIRAN'S AI — FINAL COMPLETE JS
-// Smart routing: Gemini → Groq → Mistral → Cohere → Claude
-// AI selector in input bar + manual override in chat
-// ═══════════════════════════════════════════════════════════════
-
-const _k=(a,b,c)=>a+b+c;
-const CFG={
-  WEATHER_KEY: _k('026638af04d1','47d59ff12102','6260106'),
-  WEATHER_CITY:'McKinney,TX',
-  STOCKS_KEY:  _k('M4VLN','SHEAX','SNXMIP'),
-  CRICKET_KEY: _k('fa9e81cadfmsh6cd0b','fdff2d3c61p17a985','jsn239ed020c7a5'),
-  CRICKET_HOST:'cricbuzz-cricket.p.rapidapi.com',
-  GEMINI_KEY:  _k('AQ.Ab8RN6KebRzag1bI9SoDx3dLx9','AZF7tqN0kpHMQ7','Xbmf7cdU_g'),
-  GROQ_KEY:    _k('gsk_ja72LDPQ2PloTsM0','LllyWGdyb3FY1Fjo2Q8P','qnyKXSq09xDnk3Cu'),
-  MISTRAL_KEY: _k('oKxGdCp5RfYJ','oNznos8O9zxy','5sn6Wfyt'),
-  COHERE_KEY:  _k('cujwzXvFGpYzH7','HDJfT5qtjsdk2P','djTL4bDV6dXu'),
-  OR_KEY:      _k('sk-or-v1-a1e155eb3006b4c','887a2b68b0f54f2dd2f73380','59d9fbac40e0eef0bc8b4ed73'),
-  CLAUDE_MODEL:'claude-sonnet-4-20250514',
-};
-
-const KIRAN_SYS=`You are Kiran's AI Superman Edition — personal AI for Kiran Allagadapa.
-Salesforce Architect & Practice Lead at Rackera Inc, McKinney TX 75070 (Dallas area).
-17 years IT experience, 12 years Salesforce, 14 certifications.
-Expert: Data Cloud, Agentforce 3.0, LWC, Apex, SOQL, Integration Architecture, Communications Cloud.
-Personal: Kanya Rashi, Hasta Nakshatra, Gemini Lagna, born Nov 29 1983, Venus Mahadasha.
-Interests: IPL cricket (MI fan), Tollywood films, Vedic astrology, Indian & US politics, Telugu food.
-Location: McKinney TX — knows local weather, restaurants, Dallas area.
-Style: warm, concise, personalized. Use **bold** for key points. Bullet points for lists.`;
-
-// ── Engine definitions ────────────────────────────────────────
-const ENGINES={
-  gemini: {name:'Gemini', label:'Google Gemini 1.5 Flash',limit:1500,color:'#22c55e',free:true},
-  groq:   {name:'Groq',   label:'Groq · Llama 3.3 70B',  limit:500, color:'#a855f7',free:true},
-  mistral:{name:'Mistral',label:'Mistral Small Latest',   limit:100, color:'#f59e0b',free:true},
-  cohere: {name:'Cohere', label:'Cohere Command-R',       limit:1000,color:'#06b6d4',free:true},
-  openrouter:{name:'OpenRouter',label:'Llama 3.1 · Free unlimited',limit:99999,color:'#6366f1',free:true},
-  claude: {name:'Claude', label:'Claude AI',              limit:9999,color:'#d97706',free:false},
-};
-
-// ── Daily usage tracking ──────────────────────────────────────
-const TODAY_KEY=new Date().toDateString();
-function getUsage(){
-  try{
-    const s=JSON.parse(localStorage.getItem('kai_usage')||'{}');
-    if(s.date!==TODAY_KEY) return{date:TODAY_KEY,gemini:0,groq:0,mistral:0,cohere:0,claude:0};
-    return s;
-  }catch(e){return{date:TODAY_KEY,gemini:0,groq:0,mistral:0,cohere:0,claude:0};}
-}
-function bumpUsage(id){const u=getUsage();u[id]=(u[id]||0)+1;localStorage.setItem('kai_usage',JSON.stringify(u));}
-
-// ── API key management ────────────────────────────────────────
-function getEngineKey(id){
-  if(id==='gemini')  return localStorage.getItem('kai_gemini_key')  || CFG.GEMINI_KEY;
-  if(id==='groq')    return localStorage.getItem('kai_groq_key')    || CFG.GROQ_KEY;
-  if(id==='mistral') return localStorage.getItem('kai_mistral_key') || CFG.MISTRAL_KEY;
-  if(id==='cohere')  return localStorage.getItem('kai_cohere_key')  || CFG.COHERE_KEY;
-  if(id==='openrouter') return localStorage.getItem('kai_or_key') || CFG.OR_KEY;
-  if(id==='claude')  return localStorage.getItem('kai_claude_key')  || '';
-  return '';
-}
-const getClaudeKey=()=>getEngineKey('claude');
-const getGeminiKey=()=>getEngineKey('gemini');
-
-// ── Current selected AI ───────────────────────────────────────
-let selectedEngine='auto'; // 'auto' or engine id
-
-function getActiveEngine(){
-  if(selectedEngine!=='auto') return selectedEngine;
-  return getAutoEngine();
-}
-
-function getAutoEngine(){
-  const u=getUsage();
-  for(const id of ['gemini','groq','mistral','cohere','openrouter']){
-    const key=getEngineKey(id);
-    if(key&&key.length>5&&(u[id]||0)<ENGINES[id].limit) return id;
-  }
-  return 'claude';
-}
-
-// ── AI Selector dropdown ──────────────────────────────────────
-let dropdownOpen=false;
-
-function toggleAIDropdown(e){
-  e.stopPropagation();
-  dropdownOpen=!dropdownOpen;
-  const dd=document.getElementById('ai-dropdown');
-  const ch=document.getElementById('selector-chevron');
-  if(dd) dd.classList.toggle('open',dropdownOpen);
-  if(ch) ch.className=dropdownOpen?'ti ti-chevron-down':'ti ti-chevron-up';
-  if(dropdownOpen) refreshDropdown();
-}
-
-function closeAIDropdown(){
-  dropdownOpen=false;
-  document.getElementById('ai-dropdown')?.classList.remove('open');
-  const ch=document.getElementById('selector-chevron');
-  if(ch) ch.className='ti ti-chevron-up';
-}
-
-document.addEventListener('click',e=>{
-  if(dropdownOpen&&!e.target.closest('.ai-selector-wrap')) closeAIDropdown();
-  if(e.target.id==='settings-modal') closeSettings();
-});
-
-function selectAI(id){
-  selectedEngine=id;
-  closeAIDropdown();
-  updateSelectorBtn();
-  refreshDropdown();
-  // Show confirmation in chat
-  const label=id==='auto'?'Auto routing':'Using '+ENGINES[id]?.name;
-  const sub=id==='auto'?'Gemini → Groq → Mistral → Cohere → Claude':ENGINES[id]?.label;
-  addMsg('ai','✅ **'+label+'** selected.
-'+sub,'System');
-}
-
-function updateSelectorBtn(){
-  const active=getActiveEngine();
-  const eng=ENGINES[active]||ENGINES.gemini;
-  const key=getEngineKey(active);
-  const dot=document.getElementById('selector-dot');
-  const lbl=document.getElementById('selector-label');
-  if(dot) dot.style.background=eng.color;
-  if(lbl) lbl.textContent=selectedEngine==='auto'?'Auto · '+eng.name:eng.name;
-}
-
-function refreshDropdown(){
-  const u=getUsage();
-  const active=getActiveEngine();
-  Object.keys(ENGINES).forEach(id=>{
-    const opt=document.getElementById('opt-'+id);
-    const badge=document.getElementById('badge-'+id);
-    const odot=document.getElementById('odot-'+id);
-    const key=getEngineKey(id);
-    const used=u[id]||0;
-    const hasKey=key&&key.length>5;
-    const full=used>=ENGINES[id].limit;
-    if(opt){
-      opt.classList.toggle('selected',
-        selectedEngine===id||(selectedEngine==='auto'&&id===active));
-    }
-    if(badge){
-      if(id==='claude'){
-        badge.textContent=hasKey?'API key':'Opens claude.ai';
-        badge.className='ao-badge '+(hasKey?'free':'fallback');
-      } else if(!hasKey){
-        badge.textContent='No key';
-        badge.className='ao-badge nokey';
-      } else if(full){
-        badge.textContent='Quota full';
-        badge.className='ao-badge fallback';
-      } else {
-        badge.textContent=used+'/'+ENGINES[id].limit;
-        badge.className='ao-badge free';
-      }
-    }
-    if(odot) odot.style.background=!hasKey&&id!=='claude'?'#555':full?'#ef4444':ENGINES[id].color;
-  });
-}
-
-// ── Sidebar routing UI ────────────────────────────────────────
-function updateRoutingUI(){
-  const u=getUsage();
-  const active=getActiveEngine();
-  Object.keys(ENGINES).forEach(id=>{
-    const used=u[id]||0;
-    const key=getEngineKey(id);
-    const pct=used/ENGINES[id].limit;
-    const dot=document.getElementById('dot-'+id);
-    const cnt=document.getElementById('cnt-'+id);
-    const row=document.getElementById('row-'+id);
-    if(dot){
-      dot.style.background=
-        !key&&id!=='claude'?'#555':
-        pct>=1?'#ef4444':pct>=0.8?'#f59e0b':ENGINES[id].color;
-    }
-    if(cnt) cnt.textContent=id==='claude'?'∞':used+'/'+ENGINES[id].limit;
-    if(row) row.style.background=active===id?'rgba(217,119,6,0.12)':'';
-  });
-  const sl=document.getElementById('eng-status');
-  if(sl) sl.textContent=(selectedEngine==='auto'?'Auto: ':'Manual: ')+ENGINES[active]?.name+' active';
-  updateSelectorBtn();
-  refreshDropdown();
-}
-
-function setManualMode(id){
-  selectedEngine=id||'auto';
-  updateRoutingUI();
-  const modeEl=document.getElementById('routing-mode-lbl');
-  if(modeEl){
-    if(id){ modeEl.textContent='Manual ✕'; modeEl.style.color='#ef4444'; }
-    else   { modeEl.textContent='Auto ↺';  modeEl.style.color='#d97706'; }
-  }
-  document.getElementById('manual-chip')?.remove();
-  if(id){
-    const ia=document.getElementById('input-area');
-    if(ia){
-      const chip=document.createElement('div');
-      chip.id='manual-chip';
-      chip.style.cssText='display:inline-flex;align-items:center;gap:5px;background:rgba(217,119,6,0.12);border:1px solid #d97706;border-radius:20px;padding:3px 10px;font-size:11px;color:#d97706;margin:4px 10px 0;cursor:pointer;width:fit-content';
-      chip.innerHTML='<i class="ti ti-robot" style="font-size:12px"></i>'+ENGINES[id]?.name+' locked · <span style="opacity:.6;font-size:9px">tap to reset</span>';
-      chip.onclick=()=>{ selectedEngine='auto'; document.getElementById('manual-chip')?.remove(); updateRoutingUI(); };
-      ia.insertBefore(chip,ia.firstChild);
-    }
-  }
-}
-
-// ── Detect override in chat ───────────────────────────────────
-function detectOverride(txt){
-  const t=txt.trim().toLowerCase();
-  if(/^(@|use |switch to |ask |#|route to |\/)?\s*(gemini|google)/i.test(t)) return 'gemini';
-  if(/^(@|use |switch to |ask |#|route to |\/)?\s*(groq|llama)/i.test(t))    return 'groq';
-  if(/^(@|use |switch to |ask |#|route to |\/)?\s*(mistral)/i.test(t))       return 'mistral';
-  if(/^(@|use |switch to |ask |#|route to |\/)?\s*(cohere)/i.test(t))        return 'cohere';
-  if(/^(@|use |switch to |ask |#|route to |\/)?\s*(claude|anthropic)/i.test(t)) return 'claude';
-  if(/^(auto|reset|automatic)/i.test(t)) return 'reset';
-  return null;
-}
-
-// ═══════════════════════════════════════════════════════════════
-// AI CALLERS
-// ═══════════════════════════════════════════════════════════════
-async function callGemini(prompt){
-  const key=getEngineKey('gemini');
-  if(!key||key.length<10) return null;
-  try{
-    const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+key;
-    const res=await fetch(url,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{role:'user',parts:[{text:KIRAN_SYS+'\n\nUser: '+prompt}]}],
-        generationConfig:{maxOutputTokens:700,temperature:0.7}
-      })
-    });
-    if(!res.ok){
-      const e=await res.json().catch(()=>({}));
-      console.warn('Gemini error',res.status,e?.error?.message||'');
-      return null;
-    }
-    const d=await res.json();
-    const t=d.candidates?.[0]?.content?.parts?.[0]?.text;
-    if(!t) return null;
-    return{reply:t.trim(),engine:'Gemini'};
-  }catch(e){console.warn('callGemini:',e.message);return null;}
-}
-
 async function callGroq(prompt){
-  const key=getEngineKey('groq');
-  if(!key) return null;
-  try{
-    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-      body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'system',content:KIRAN_SYS},{role:'user',content:prompt}],max_tokens:700,temperature:0.7})
-    });
-    if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('Groq',res.status,e?.error?.message||'');return null;}
-    const d=await res.json();
-    const t=d.choices?.[0]?.message?.content;
-    return t?{reply:t.trim(),engine:'Groq'}:null;
-  }catch(e){console.warn('callGroq:',e.message);return null;}
+  const key=getEngineKey('groq');if(!key)return null;
+  try{const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'system',content:KIRAN_SYS},{role:'user',content:prompt}],max_tokens:700,temperature:0.7})});
+  if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('Groq',res.status,e?.error?.message||'');return null;}
+  const d=await res.json();const t=d.choices?.[0]?.message?.content;return t?{reply:t.trim(),engine:'Groq'}:null;
+  }catch(e){console.warn('Groq:',e.message);return null;}
 }
-
 async function callMistral(prompt){
-  const key=getEngineKey('mistral');
-  if(!key) return null;
-  try{
-    const res=await fetch('https://api.mistral.ai/v1/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-      body:JSON.stringify({model:'mistral-small-latest',messages:[{role:'system',content:KIRAN_SYS},{role:'user',content:prompt}],max_tokens:700,temperature:0.7})
-    });
-    if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('Mistral',res.status,e?.error?.message||'');return null;}
-    const d=await res.json();
-    const t=d.choices?.[0]?.message?.content;
-    return t?{reply:t.trim(),engine:'Mistral'}:null;
-  }catch(e){console.warn('callMistral:',e.message);return null;}
+  const key=getEngineKey('mistral');if(!key)return null;
+  try{const res=await fetch('https://api.mistral.ai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'mistral-small-latest',messages:[{role:'system',content:KIRAN_SYS},{role:'user',content:prompt}],max_tokens:700,temperature:0.7})});
+  if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('Mistral',res.status,e?.error?.message||'');return null;}
+  const d=await res.json();const t=d.choices?.[0]?.message?.content;return t?{reply:t.trim(),engine:'Mistral'}:null;
+  }catch(e){console.warn('Mistral:',e.message);return null;}
 }
-
 async function callCohere(prompt){
-  const key=getEngineKey('cohere');
-  if(!key) return null;
-  try{
-    const res=await fetch('https://api.cohere.com/v1/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'accept':'application/json'},
-      body:JSON.stringify({model:'command-r',preamble:KIRAN_SYS,message:prompt,max_tokens:700,temperature:0.7})
-    });
-    if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('Cohere',res.status,e?.message||'');return null;}
-    const d=await res.json();
-    const t=d.text;
-    return t?{reply:t.trim(),engine:'Cohere'}:null;
-  }catch(e){console.warn('callCohere:',e.message);return null;}
+  const key=getEngineKey('cohere');if(!key)return null;
+  try{const res=await fetch('https://api.cohere.com/v1/chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'accept':'application/json'},body:JSON.stringify({model:'command-r',preamble:KIRAN_SYS,message:prompt,max_tokens:700,temperature:0.7})});
+  if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('Cohere',res.status,e?.message||'');return null;}
+  const d=await res.json();const t=d.text;return t?{reply:t.trim(),engine:'Cohere'}:null;
+  }catch(e){console.warn('Cohere:',e.message);return null;}
 }
-
 async function callOpenRouter(prompt){
-  const key=getEngineKey('openrouter');
-  if(!key) return null;
-  try{
-    const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+key,
-        'HTTP-Referer':'https://kiranallagadapa.github.io/kirans-ai/',
-        'X-Title':"Kiran's AI Superman Edition"
-      },
-      body:JSON.stringify({
-        model:'meta-llama/llama-3.1-8b-instruct:free',
-        messages:[{role:'system',content:KIRAN_SYS},{role:'user',content:prompt}],
-        max_tokens:700,temperature:0.7
-      })
-    });
-    if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('OpenRouter',res.status,e?.error?.message||'');return null;}
-    const d=await res.json();
-    const t=d.choices?.[0]?.message?.content;
-    return t?{reply:t.trim(),engine:'OpenRouter'}:null;
+  const key=getEngineKey('openrouter');if(!key)return null;
+  try{const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'HTTP-Referer':'https://kiranallagadapa.github.io/kirans-ai/','X-Title':"Kiran's AI"},body:JSON.stringify({model:'meta-llama/llama-3.1-8b-instruct:free',messages:[{role:'system',content:KIRAN_SYS},{role:'user',content:prompt}],max_tokens:700,temperature:0.7})});
+  if(!res.ok){const e=await res.json().catch(()=>({}));console.warn('OpenRouter',res.status,e?.error?.message||'');return null;}
+  const d=await res.json();const t=d.choices?.[0]?.message?.content;return t?{reply:t.trim(),engine:'OpenRouter'}:null;
   }catch(e){console.warn('OpenRouter:',e.message);return null;}
 }
-
-// ── Master call function ─────────────────────────────────
-async function callEngine(id, prompt){
-  bumpUsage(id);
-  updateRoutingUI();
+async function callEngine(id,prompt){
   switch(id){
     case 'gemini':     return await callGemini(prompt);
     case 'groq':       return await callGroq(prompt);
@@ -2707,7 +1305,6 @@ async function callEngine(id, prompt){
     default:           return await callGemini(prompt);
   }
 }
-
 async function callClaude(prompt){
   const key=getClaudeKey();
   if(!key) return{reply:null,engine:'Claude',redirect:true};
@@ -2818,7 +1415,7 @@ async function setOut(id,prompt,loading,sys){
 // SETTINGS
 // ══════════════════════════════════════════════════════════════
 function saveKeys(){
-  const ids=['gemini','groq','mistral','cohere','openrouter','claude'];
+  const ids=['gemini','groq','mistral','cohere','claude'];
   const saved=[];
   ids.forEach(id=>{
     const val=document.getElementById('key-'+id)?.value.trim()||'';
@@ -2829,7 +1426,7 @@ function saveKeys(){
 }
 function openSettings(){
   document.getElementById('settings-modal').classList.remove('hidden');
-  ['gemini','groq','mistral','cohere','openrouter','claude'].forEach(id=>{
+  ['gemini','groq','mistral','cohere','claude'].forEach(id=>{
     const el=document.getElementById('key-'+id);
     if(!el) return;
     const saved=localStorage.getItem('kai_'+id+'_key')||(id==='gemini'?CFG.GEMINI_KEY:'');
@@ -2904,7 +1501,6 @@ function setBN(id){document.querySelectorAll('.bn-item').forEach(b=>b.classList.
 // ══════════════════════════════════════════════════════════════
 function addMsg(role,text,engine){
   const msgs=document.getElementById('chat-messages');
-  if(!msgs){ console.error('chat-messages not found!'); return; }
   document.getElementById('welcome')?.remove();
   const block=document.createElement('div');
   block.className='msg-block';
@@ -2981,11 +1577,10 @@ async function sendMsg(){
       bumpUsage(engineId);
       let r=null;
       switch(engineId){
-        case 'gemini':     r=await callGemini(txt);      break;
-        case 'groq':       r=await callGroq(txt);        break;
-        case 'mistral':    r=await callMistral(txt);     break;
-        case 'cohere':     r=await callCohere(txt);      break;
-        case 'openrouter': r=await callOpenRouter(txt);  break;
+        case 'gemini':  r=await callGemini(txt); break;
+        case 'groq':    r=await callGroq(txt);   break;
+        case 'mistral': r=await callMistral(txt);break;
+        case 'cohere':  r=await callCohere(txt); break;
       }
       if(r?.reply){ result=r; }
       else{
@@ -3022,8 +1617,7 @@ async function sendMsg(){
     }
   }catch(e){
     removeTyping();
-    console.error('sendMsg error:',e);
-    addMsg('ai','⚠️ Something went wrong: '+e.message+'\n\nTip: Check your internet connection. If using a downloaded file, make sure you are online.','System');
+    addMsg('ai','⚠️ Error: '+e.message+'. Check internet connection.','System');
   }
 
   updateRoutingUI();updateSelectorBtn();refreshDropdown();
@@ -3031,7 +1625,61 @@ async function sendMsg(){
 }
 
 // ── Try engines in fallback order ─────────────────────────────
+async function tryEnginesFrom(startId,prompt){
+  const order=['gemini','groq','mistral','cohere','claude'];
+  const si=Math.max(0,order.indexOf(startId));
+  for(let i=si+1;i<order.length;i++){
+    const id=order[i];
+    if(id==='claude') return await callClaude(prompt);
+    const key=getEngineKey(id);
+    const u=getUsage();
+    if(!key||key.length<5||(u[id]||0)>=ENGINES[id].limit) continue;
+    bumpUsage(id);
+    let r=null;
+    switch(id){case 'groq':r=await callGroq(prompt);break;case 'mistral':r=await callMistral(prompt);break;case 'cohere':r=await callCohere(prompt);break;}
+    if(r?.reply){r.reply='_(Auto-switched to '+ENGINES[id]?.name+')_\n\n'+r.reply;return r;}
+  }
+  return{reply:null,engine:'Claude',redirect:true};
+}
 
+function chip(t){document.getElementById('chat-input').value=t;sendMsg();}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function autoResize(ta){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,160)+'px';}
+
+// ══════════════════════════════════════════════════════════════
+// MIC
+// ══════════════════════════════════════════════════════════════
+function toggleMic(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert('Voice input works in Chrome & Safari.');return;}
+  if(micOn){try{recognition?.stop();}catch(e){}stopMic();return;}
+  recognition=new SR();
+  recognition.lang='en-US';recognition.continuous=false;recognition.interimResults=true;
+  const btn=document.getElementById('mic-btn'),icon=document.getElementById('mic-icon'),status=document.getElementById('mic-status');
+  btn.classList.add('recording');icon.className='ti ti-microphone-off';
+  status.classList.add('show');document.getElementById('mic-txt').textContent='Listening...';
+  micOn=true;
+  recognition.onresult=e=>{
+    let int='',fin='';
+    for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)fin+=e.results[i][0].transcript;else int+=e.results[i][0].transcript;}
+    document.getElementById('chat-input').value=fin||int;
+    if(fin)document.getElementById('mic-txt').textContent='✓ '+fin.substring(0,50);
+  };
+  recognition.onend=()=>{stopMic();const v=document.getElementById('chat-input').value.trim();if(v)setTimeout(()=>sendMsg(),400);};
+  recognition.onerror=e=>{stopMic();document.getElementById('mic-txt').textContent='Error: '+e.error;};
+  try{recognition.start();}catch(e){stopMic();}
+}
+function stopMic(){
+  micOn=false;
+  document.getElementById('mic-btn').classList.remove('recording');
+  document.getElementById('mic-icon').className='ti ti-microphone';
+  setTimeout(()=>document.getElementById('mic-status').classList.remove('show'),2000);
+}
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='m'){e.preventDefault();toggleMic();}if(e.key==='Escape')closeMobSidebar();});
+
+// ══════════════════════════════════════════════════════════════
+// LIVE: WEATHER
+// ══════════════════════════════════════════════════════════════
 async function loadLiveWeather(){
   try{
     const[curr,fore]=await Promise.all([
